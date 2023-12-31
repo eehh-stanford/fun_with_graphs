@@ -1,0 +1,522 @@
+# Interpreting Scientific Figures {#sec-fun}
+
+## Introduction
+
+Understanding scientific figures is an important part of becoming a scientist or a critical consumer of scientific information. This is a skill that, alas, is generally not taught in most schools. Here, I will try to provide a gentle introduction to reading scientific figures, especially theoretical plots. I have companion notes that describe how to generate scientific plots in `R`.
+
+We use theory in science to bring order to the complexity we observe in the world. Theory generates our hypotheses but it also guides us in what we observe, how we measure it, and what we should find surprising. Surprise is essential for the scientific enterprise because it is the surprise that comes when we observe something novel from a process we thought we understood that generates innovation and explanation.
+
+A couple starting points. We will use some very basic calculus here. Derivatives, second derivatives, and Taylor series.
+
+## Lines
+
+Presumably, we all remember the formula for a straight line from high school algebra:
+
+$$
+y = mx + b,
+$$
+
+where $m$ is the slope and $b$ is the $y$-intercept.
+
+```{r}
+#| fig-asp: 1
+m <- 2
+b <- 1
+curve(m*x+b, 0, 10, lwd=3, xlab="x", ylab="y")
+```
+
+Clearly, this is a straight line. What this means is that for whatever $x$-value you increment, you will increase by a factor of two.
+
+```{r}
+#| fig-asp: 1
+# define a linear function
+lin <- function(x,m=2,b=1) m*x + b
+# draw curve, add increments
+curve(lin(x), 0, 10, lwd=3, xlab="x", ylab="y")
+segments(1,lin(1),3,lin(1), col="red", lty=3)
+segments(3,lin(1),3,lin(3), col="red", lty=3)
+segments(4,lin(4),6,lin(4), col="red", lty=3)
+segments(6,lin(4),6,lin(6), col="red", lty=3)
+segments(7,lin(7),9,lin(7), col="red", lty=3)
+segments(9,lin(7),9,lin(9), col="red", lty=3)
+```
+
+Of course, we can show this analytically by calculating the derivative. Let $f(x) = mx + b$, then $f'(x) = m$. Not surprising since $m$ is literally the slope that the rate of change in $f(x)$ is always $m$.
+
+Linear change is a touchstone. We are often interested if something is changing faster or more slowly than linear.
+
+We often use linear functions to approximate more complex functions in some restricted range. For example, in the model of optimal virulence, discussed below, we need to draw a tangent line to the function relating transmissibility to disease-induced mortality. This tangent line is a linear approximation of that function in the vicinity of the optimal virulence.
+
+Note that this is what a derivative is. It's linear representation of the slope of a function over an infinitesimal change of the input variable.
+
+## Curves
+
+### Polynomial Curves
+
+When something is *nonlinear*, it changes at different rates in different parts of the curve. The simplest extension from a straight line is a polynomial, e.g., a quadratic function.
+
+```{r}
+#| fig-asp: 1
+# quadratic function
+quad <- function(x,m=2,b=1) m*x^2+b
+curve(quad(x), 0, 10, lwd=3, xlab="x", ylab="y")
+segments(1,quad(1),3,quad(1), col="red", lty=3)
+segments(3,quad(1),3,quad(3), col="red", lty=3)
+segments(4,quad(4),6,quad(4), col="red", lty=3)
+segments(6,quad(4),6,quad(6), col="red", lty=3)
+segments(7,quad(7),9,quad(7), col="red", lty=3)
+segments(9,quad(7),9,quad(9), col="red", lty=3)
+```
+
+The quadratic curve changes at an increasing rate. For $f(x) = mx^2 + b$, $f'(x)=2x$.
+
+### Exponential and Logarithmic Curves
+
+When people say that something is growing "exponentially," what they usually mean is that it's growing fast. Exponential growth is much more specific than that (and there are, indeed, ways to grow much faster than exponentially!). In continuous time, something grows exponentially if it increases at a constant rate regardless of its size.
+
+Exponential growth has the wild property that the derivative of an exponential is proportional to the exponential itself. For example, if $f(x)=e^r$, then $f'(x) = e^r$. If $f(x)=e^{2r}$, then $f'(x) = 2e^{2r}$, and so on.
+
+```{r}
+#| fig-asp: 1
+curve(exp(x), 0, 10, lwd=3, xlab="x", ylab="y")
+segments(1,exp(1),3,exp(1), col="red", lty=3)
+segments(3,exp(1),3,exp(3), col="red", lty=3)
+segments(4,exp(4),6,exp(4), col="red", lty=3)
+segments(6,exp(4),6,exp(6), col="red", lty=3)
+segments(7,exp(7),9,exp(7), col="red", lty=3)
+segments(9,exp(7),9,exp(9), col="red", lty=3)
+```
+
+Looking at the increments, we quickly discern another important feature of exponential growth: it sneaks up on you! In the early phase of an exponential-growth process, it can be quite difficult to tell it apart from linear growth or even no growth. The red dotted lines showing the growth between $x=1$ and $x=3$ are barely visible.
+
+Because of the explosiveness of exponential growth, the initial conditions can matter a lot for outcomes. Compare the following two curves:
+
+```{r}
+#| fig-asp: 1
+curve(5*exp(x), 0, 10, lwd=3, col="red", xlab="x", ylab="y")
+curve(1*exp(x), 0, 10, lwd=3, col="black", add=TRUE)
+```
+
+We predict that virulence of a virus, for example, will increase with the size of the infectious innoculum. The intuition behind this prediction is that a larger innoculum provides a larger initial population size that can quickly increase to overwhelm a host's immunological defenses. The smaller size of the viral population for any given time after infection arising from the smaller innoculum provides a greater likelihood that the host will control the infection quickly and with less tissue damage, etc.
+
+It's also super-important to note that things can also *decrease* exponentially! Exponential decay is a thing.
+
+```{r}
+#| fig-asp: 1
+curve(50*exp(-x), 0, 10, lwd=3, xlab="x", ylab="y")
+segments(1,50*exp(-1),3,50*exp(-1), col="red", lty=3)
+segments(3,50*exp(-1),3,50*exp(-3), col="red", lty=3)
+segments(4,50*exp(-4),6,50*exp(-4), col="red", lty=3)
+segments(6,50*exp(-4),6,50*exp(-6), col="red", lty=3)
+segments(7,50*exp(-7),9,50*exp(-7), col="red", lty=3)
+segments(9,50*exp(-7),9,50*exp(-9), col="red", lty=3)
+```
+
+Compare them.
+
+```{r}
+#| fig-asp: 1
+# draw exp first to make sure axes fit
+require(viridisLite)
+c <- plasma(3)
+curve(quad(x), 0, 10, lwd=3, col=c[1],
+      xlab="x", ylab="y",
+      xaxs="i", yaxs="i")
+curve(lin(x), 0, 10, lwd=3, col="black", add=TRUE)
+curve(exp(x), 0, 10, lwd=3, col=c[2], add=TRUE)
+curve(log(x), 0.01, 10, lwd=3, col=c[3], add=TRUE)
+legend("topleft", c("linear","quadratic","exponential","logarithmic"),
+       col=c("black",c), lty=1, lwd=3)
+```
+
+### Power Laws
+
+It turns out that much of the world -- particularly in biology -- scales according to a power law. Nearly everything you can imagine measuring about an organism scales with an organism's body mass and it does so according to a power law. So for some outcome $Y$ (e.g., lifespan, annual fertility, brain mass, metabolic rate, etc.), where we let $W$ indicate body mass, the scaling relationship takes the form
+
+$$
+Y = A W^a.
+$$
+
+If $a>1$, this curve will be convex (i.e., increasing returns to size), while if $0<a<1$, the curve will be concave. If $a=1$, then we simply have a straight line with slope $A$ and intercept zero. In comparative biology, the case where $a=1$ is known as "isometry" and the case where $a \neq 1$ is known as "allometry".
+
+If we take logarithms of both sides of the power-law relation, we get a linearized form,
+
+$$
+\log(Y) = \log(A) + a \log(W).
+$$
+
+Plotting data on double-logarithmic axes can help in diagnosing a power law.
+
+When $a<0$, we have the case of power-law decay. This provides a very interesting case where the decay of some function can be considerably slower than exponential. For example, most of the common probability distributions that we use (e.g., normal, exponential, Poisson, binomial) have "exponential" tails. This means that the probability associated with a particular value decays exponentially as the values move away from the region of highest probability. In contrast, power-law probability distributions can have fat tails, meaning that extreme values are more likely than they would be under a comparable probability distribution with exponential decay.
+
+The key difference between a power law and an exponential, which at first glance appear to be quite similar, is that for the power law, the power is constant ($x^a$) whereas for an exponential, the power is the variable $a^x$ (where we usually use the specific value of $a=e$, where $e$ is the base of the natural logarithm). Note that we've already looked at a comparison between exponential growth and power-law growth, when we compared the quadratic ($a=2$) to the exponential. Let's look at power-law decay now.
+
+```{r}
+#| fig-asp: 1
+curve(0.5^x,0, 10, lwd=3, xaxs="i", xlab="x", ylab="y")
+curve(x^-2, 0, 10, lwd=3, col="red", add=TRUE)
+```
+
+The power decay starts much higher (it is, in fact, asymptotic to the $y$-axis) and declines very rapidly. However, while the exponential curve will quickly approach the $x$-axis (to which it is asymptotic), the red curve will approach it very slowly. For the exponential curve, every $x$-increment of one reduces the value of $y$ by a half. In contrast, for large values of $x$, every increment contributes a tiny marginal decay. For the exponential $0.5^{x+1}/0.5^{x} = 0.5^1=0.5$ for all values of $x$. The analogous ratio for the power law is lower for low values of $x$. For $x=2$, $(x+1)^{-2}/x^{-2}=0.44$, whereas it is 0.98 for $x=100$.
+
+## Convexity and Concavity
+
+The derivative of a function provides a measure of how fast a function is changing. The second derivative measures how that rate of change itself is changing. In this sense, it measures the *curvature* of a function.
+
+Many theoretical models depend on the curvature of functions to make their predictions. A common assumption employed in many theoretical models is that of concavity. A very common use of concavity in theory is when curve hows *diminishing marginal returns*. The word "marginal" essentially means the derivative, so diminishing marginal returns means that the derivative of the function is getting smaller for larger values of the input.
+
+The classic trade-off model for the evolution of virulence relies on the concavity of transmissibility with respect to disease-induced mortality. If virulence produces decreasing marginal transmissibility with respect to disease-induced mortality, then selection will favor intermediate virulence. Denote virulence by $x$. Both transmission and disease-induced mortality are functions of virulence: $\beta(x)$ and $\delta(x)$. The fitness measure for the pathogen is, as usual, $R_0$, which we can write as
+
+$$
+R_0 = \frac{\beta(x)}{\mu + \delta(x)},
+$$
+
+where $\mu$ is the disease-independent mortality.
+
+To find the optimal value of virulence, differentiate with respect to $x$ and solve for $dR_0/dx=0$. Employing the quotient rule for differentiation and doing a little algebra to tidy up, we get:
+
+$$
+\frac{d \beta(x)}{d \delta(x)} = \frac{\beta(x^*)}{\mu + \delta(x^*)},
+$$
+
+where $x^*$ indicates the optimal value of virulence.
+
+The geometric interpretation of this result is that optimal virulence satisfies the condition that a line, rooted at the origin, is tangent to the curve relating transmissibility to mortality. This result is known as the *Marginal Value Theorem* in behavioral ecology and, in addition to describing a model for optimal virulence, also predicts the optimal length of time for a foraging bout in a feeding patch or the optimal copula duration when a male has multiple mating opportunities but his sperm can be displaced by subsequent matings.
+
+```{r}
+#| fig-asp: 1
+x <- seq(0,30,length=500)
+# transmissibility function fp> 0 fpp < 0
+f <- function(x) {
+  0.5 - exp(-0.2*(x-7))
+}
+# derivative of the utility function
+fprime <- function(x) {
+  0.2*exp(-0.2*(x-7))
+}
+
+# 1st-degree Taylor series around x: f + fp*(z-x) = 0
+# z = x -(f/fp)
+# solve for tangency; find the root of this
+xinter <- function(x) {
+  return(x - f(x)/fprime(x))
+}
+
+soln <- uniroot(xinter,c(0,40))
+plot(x,f(x), type="l", lwd=2, xaxs="i", yaxs="i",
+     axes=FALSE,
+     xlab="Mortality",
+     ylab="Transmissibility",
+     ylim=c(0,0.7))
+axis(1,labels=FALSE,tick=FALSE)
+axis(2,labels=FALSE,tick=FALSE)
+box()
+lines(x,(f(soln$root)/soln$root)*x,col=grey(0.75))
+segments(soln$root,0,soln$root,f(soln$root), lty=2, col="red")
+segments(0,f(soln$root),soln$root,f(soln$root), lty=2, col="red")
+mtext(expression(paste(delta,"*")),1,at=soln$root, padj=1)
+mtext(expression(paste(beta,"*")),2,at=f(soln$root),padj=0.5, adj=1.5, las=2)
+mtext(expression(mu),1,at=5, padj=1)
+```
+
+What would happen if the function was convex ($f''(x)>0$), rather than concave? There can be no intermediate optimum for a such a convex function. The optimal virulence is maximum.
+
+In one of the most important papers in the field of life history theory, @gadgil_bossert1970 noted that the only conditions under which natural selection will favor intermediate reproductive effort are when the fitness gains to effort are concave and, importantly, that the costs of effort are either linear or convex. We can easily visualize why this is the case.
+
+```{r}
+#| fig-asp: 1
+x <- seq(1,11,,110)
+y <- 4*log(x)
+y1 <- 0.1*exp(x/2)
+y2 <- 0.1*exp(x/1.5)
+# maxima
+d1 <- y-y1
+d2 <- y-y2
+max1 <- x[which(d1==max(d1))]
+max2 <- x[which(d2==max(d2))]
+
+### concave benefits/concave costs
+plot((x-1)/10,y/11, type="l", lwd=3, 
+     xlab="Reproductive Effort", 
+     ylab="Cost or Benefit",  
+     xlim=c(0,1), ylim=c(0,1))
+lines((x-1)/10, y/11 + 0.01*x, lwd=3, col="red")
+#legend(0.05,1, c("Benefit","Cost"), lwd=3, lty=1, col=c("black","red"))
+abline(v=0, col=grey(0.65))
+title("No Reproduction")
+
+### concave benefits/convex costs
+plot((x-1)/10,y/11, type="l", lwd=3, 
+     xlab="Reproductive Effort", 
+     ylab="Cost or Benefit", 
+     xlim=c(0,1), ylim=c(0,1))
+lines((x-1)/10,y1/11, lwd=3, col="red")
+abline(v=max1/11, col=grey(0.65))
+#legend(0.05,1, c("Benefit","Cost"), lwd=3, lty=1, col=c("black","red"))
+title("Intermediate Reproduction")
+
+### concave benefits/concave costs, full RE
+plot((x-1)/10,y/11, type="l", lwd=3, col="red", 
+     xlab="Reproductive Effort", 
+     ylab="Cost or Benefit", 
+     xlim=c(0,1), ylim=c(0,1))
+lines((x-1)/10, y/11 + 0.01*x, lwd=3, col="black")
+#legend(0.05,1, c("Benefit","Cost"), lwd=3, lty=1, col=c("black","red"))
+abline(v=1, col=grey(0.65))
+title("Maximal (Suicidal) Reproduction")
+```
+
+Only for the concave benefit/linear cost case does the maximum difference between the curves lie in the middle of the plot.
+
+### Concavity Introduces Asymmetries
+
+Suppose you have a curve representing the fitness, $w$, corresponding to a given level of effort, $x$, similar to the Gadgil-Bossert curves discussed above. Further suppose that this curve is concave, showing diminishing marginal returns so that $w'(x)>0$ and $w''<0$.
+
+Starting at some point on this curve, say at the mean effort $\bar{x}$, imagine you flip a coin and get decremented a unit's worth of fitness if it comes up heads and increase a unit's worth if it comes up tails. This is known as a lottery, a decision in which there is a discrete, variable payoff. We can plot this as follows:
+
+```{r}
+#| fig-asp: 1
+## risk-aversion
+x <- seq(0,5,length=1000)
+r <- 0.75
+fx <- 1-exp(-r*x)
+## for part deux
+aaa <- (fx-0.4882412)^2
+which(aaa==min(aaa))
+#[1] 179
+plot(x,fx, type="n", lwd=3, axes=FALSE, frame=TRUE,
+     xlab="Parity (x)", ylab="Fitness (w(x))", 
+     xaxs="i", yaxs="i", xlim=c(-0.1,5.1), ylim=c(0,1))
+#segments(0,0,5,fx[1000], lwd=2, col=grey(0.75))
+axis(1, at=c(0,2.5,5), labels=c(expression(x[0]), expression(bar(x)),
+                                expression(x[1])), tick=FALSE)
+segments(2.5,0,2.5,0.846645, lwd=3, lty=1, col=grey(0.65))
+segments(2.5,0.846645,0,0.846645, lwd=3, lty=1, col="red")
+arrows(0,0.846645,0,0.01, lwd=3, lty=1, col="red", length=.25,angle=10)
+segments(2.5,0.846645,5,0.846645, lwd=3, lty=1, col="red")
+arrows(5,0.846645,5,fx[1000], lwd=3, lty=1, col="red", length=.25,angle=10)
+lines(x,fx, lwd=3, col="black")
+```
+
+The upside of this lottery increases fitness considerably less than the downside reduces it. This arises because of the curvature of the function, in particular, its diminishing marginal fitness returns to effort. This is a very important insight and defines the phenomenon of *risk aversion*. Risk-aversion in lotteries where the fitness function is a concave function of effort are an application of Jensen's Inequality, which states that for a concave function, $w(x)$,
+
+$$
+w(E(x)) \geq E(w(x)),
+$$
+
+where $E()$ indicates mathematical expectation.
+
+We can show this graphically. We will draw a chord connecting the upside- and downside-payoffs, the midpoint of which is $E(w(x))$. Note that this is considerably less than $w(\bar{x})$.
+
+```{r}
+#| fig-asp: 1
+plot(x,fx, type="n", lwd=3, axes=FALSE, frame=TRUE,
+     xlab="Parity (x)", ylab="", 
+     xaxs="i", yaxs="i", xlim=c(0,5.1), ylim=c(0,1))
+segments(0,0,5,fx[1000], lwd=3, col=grey(0.75))
+axis(1, at=c(0.05,x[179],2.5,5), 
+     labels=c(expression(x[0]), expression(x[C]),
+               expression(bar(x)), expression(x[1])),
+     tick=FALSE)
+mtext("Fitness (w(x))", side=2,line=2, adj=0.65)
+axis(2, at=0.4882412, labels="", tick=FALSE)
+segments(2.5,0,2.5,0.4882412,lwd=3, lty=1, col="red") # vertical line at bar(x)
+segments(2.5,0.4882412,2.5,fx[501], lwd=3, lty=2, col="red")
+lines(x,fx, lwd=3, col="black")
+```
+
+A risk-averse decision-maker should be willing to pay for certainty. We can show why this is graphically. Note that the expected fitness of this lottery (i.e., the average of the two possible outcomes) does not, in fact, fall on the fitness curve. We can move horizontally from this point back to the curve and the fitness would not change. If (and this is a big if) we can achieve certainty in our payoff by paying the difference between $E(w(x))$ and what is called the *certainty-equivalent* return, we should.
+
+```{r}
+#| fig-asp: 1
+plot(x,fx, type="n", lwd=3, axes=FALSE, frame=TRUE,
+     xlab="Parity (x)", ylab="", 
+     xaxs="i", yaxs="i", xlim=c(0,5.1), ylim=c(0,1))
+segments(0,0,5,fx[1000], lwd=3, col=grey(0.75))
+axis(1, at=c(0.05,x[179],2.5,5), 
+     labels=c(expression(x[0]), expression(x[C]),
+              expression(bar(x)), expression(x[1])),
+     tick=FALSE)
+mtext("Fitness (w(x))", side=2,line=2, adj=0.65)
+axis(2, at=0.4882412, labels="", tick=FALSE)
+segments(2.5,0,2.5,0.4882412,lwd=3, lty=1, col="red") # vertical line at bar(x)
+segments(2.5,0.4882412,x[179],0.4882412,lwd=3, lty=1, col="red") # horizontal line back to utility curve
+segments(x[179],0.4882412,x[179],0, lwd=3, lty=1, col="green") # vertical line to x_c
+lines(x,fx, lwd=3, col="black")
+text(0.35, 0.54, expression(pi==bar(x) - x[C]))
+```
+
+## Equilibria
+
+In ecology, evolution, etc., we frequently plot two (or more) sets of rates. For example: birth and death rates in a demographic model or rates of colonization and extinction in a metapopulation model.
+
+For example, the classic Levins model for metapopulations
+
+$$
+\dot{n} = cn(1-n) - en,
+$$
+
+where $n$ is patch occupancy, $c$ is the colonization rate, and $e$ is the extinction rate. The equilibrium for this happens when $\dot{n}=0$, which is
+
+$$
+\hat{n} = 1 - \frac{e}{c}.
+$$
+
+If the extinction rate is greater than the colonization rate ($e>c$ ), then, sensibly, the overall population is extinct. Moreover, there will generally always be unoccupied patches at equilibrium.
+
+A classic example of a graphical representation of such an equilibrium process is the MacArthur-Wilson model, which is similar to the Levins metapopulation model in that it posits the number of species on an island is a dynamic balance between the colonization rate (which declines as a function of the number of resident species) and the extinction rate (which increases as a function of the number of resident species). The equilibrium occurs where the colonization rate just balances out the extinction rate, so that the overall rate of change of species is zero, the definition of an equilibrium.
+
+```{r}
+#| fig-asp: 1
+n <- seq(0,20,,500)
+rate <- 0.2
+cinit <- 55
+plot(n, cinit*exp(-rate*n), type="l", 
+     lwd=3, col="#0D0887FF",
+     xlab="Number of Species", 
+     ylab="Rate",
+     ylim=c(0,60),
+     xlim=c(-3,23),
+     yaxs="i",
+     axes=FALSE)
+lines(n, exp(rate*n), lwd=3, col="#9C179EFF")
+segments(log(cinit)/(2*rate),0,log(cinit)/(2*rate),exp(rate*log(cinit)/(2*rate)), lty=2)
+axis(1, at=c(log(cinit)/(2*rate)), labels = c(expression(hat(N))))
+box()
+```
+
+### Equilibria in Discrete-Time
+
+Recursions.
+
+Poverty-trap model. We plot the wealth at time $t+1$ agains the wealth at time $t$. Use a Prelec weighting function to produce the characteristic S-shape of the poverty-trap model. An equilibrium occurs when the the wealth in the next time step is equal to the wealth in the current time step (i.e., there is no change). In this plot, this occurs wherever our curve touches the line of equality, $w_{t+1}=w_t$.
+
+The downside of the Prelec function is that we can't easily solve for an equilibrium analytically, but we can solve it numerically using `uniroot()`.
+
+```{r}
+#| fig-asp: 1
+prelec <- function(p,a,b) (exp(-(-log(p))^a))^b
+## function to solve for interior equilibrium
+fn <- function(p,a,b) (exp(-(-log(p))^a))^b - p
+a <- 2
+b <- 1.7
+# we know p=0 and p=1 are solutions so limit to searching an interior interval
+pint <- uniroot(fn,interval=c(0.1,0.9),a=a,b=b)$root
+p <- seq(0,1,,1000)
+plot(p, prelec(p=p,a=a,b=b), type="l", col="blue4", lwd=2, 
+     axes=FALSE, frame=TRUE,
+     xaxs="i", yaxs="i", 
+     xlab=expression(W[t]), ylab=expression(W[t+1]),
+     xlim=c(-0.05,1.05), ylim=c(-0.05,1.05))
+abline(a=0,b=1,lwd=1, col=grey(0.75))
+points(c(0,pint,1),c(0,prelec(p=pint,a=a,b=b),1), pch=c(19,1,19), cex=1.5)
+```
+
+There are three equilibria for the poverty-trap model: (1) a stable equilibrium at destitution ($w_t=0$), (2) an unstable interior equilibrium, and (3) a stable equilibrium at maximum wealth.
+
+## Indifference Curves
+
+We encounter indifference curves when we consider the case of multi-species epidemics, as described by Holt and colleagues (2003). Suppose there is an infectious disease that can infect multiple species. In order to be above the epidemic threshold, there have to be a certain minimum number of susceptible individuals.
+
+On one side of the curve -- where the minimum conditions for an epidemic are exceeded -- an epidemic is possible. On the other side of the curve, no epidemic is possible. Any combination of species numbers along the isoclines satisfy the conditions equally well. This is why we call them "indifference curves."
+
+Start with the trivial case where the two species don't interact at all. There will be an epidemic if there are either enough of species 1 or of species 2. The region where both species are below their respective thresholds lies inside the rectangular isocline
+
+```{r}
+#| fig-asp: 1
+plot(1:10,1:10, type="n", axes=FALSE, frame=TRUE, xlab="Specis 1", ylab="Species 2")
+segments(0,6,6,6, lwd=3)
+segments(6,0,6,6, lwd=3)
+axis(1, at=c(6), labels=c(expression(hat(S)[1])))
+axis(2, at=c(6), las=2, labels=c(expression(hat(S)[2])))
+text(3,3, "No Epidemic")
+text(7.5,7.5, "Epidemic")
+```
+
+Now consider the slightly more interesting case where hosts of different species can substitute for each other. This means that even if the critical threshold for either of the species is reached, there can still be an epidemic. If the pathogen is not well adapted to a generalist-transmission mode, this effect might be quite small. We can call the epidemic isocline that arises from such conditions *weakly-interacting.*
+
+```{r}
+#| fig-asp: 1
+g <- seq(0,sqrt(1/5),,500)
+h <- sqrt(1-(5*g^2))
+plot(g,h, type="l", axes=FALSE, frame=TRUE, yaxs="i", xaxs="i", 
+     ylim=c(0,1.1), xlim=c(0,0.5), lwd=3, 
+     xlab="Species 1", ylab="Species 2")
+axis(1, at=c(sqrt(1/5)), labels=c(expression(hat(S)[1])))
+axis(2, at=c(1), las=2, labels=c(expression(hat(S)[2])))
+segments(0,1,sqrt(1/5),1, lty=3)
+segments(sqrt(1/5),0,sqrt(1/5),1, lty=3)
+text(0.2,0.45, "No Epidemic")
+text(0.4,0.9, "Epidemic")
+```
+
+I've left the non-interacting isocline in this figure to show how, even though species are only interacting weakly, the space in which an epidemic is possible is greater.
+
+Now consider the case where *substitutable*.
+
+```{r}
+#| fig-asp: 1
+plot(0:10,0:10, type="n", axes=FALSE, frame=TRUE, 
+     yaxs="i", xaxs="i",
+     xlab="Species 1", ylab="Species 2")
+segments(0,9,9,0, lwd=3)
+axis(1, at=c(9), labels=c(expression(hat(S)[1])))
+axis(2, at=c(9), las=2, labels=c(expression(hat(S)[2])))
+text(2.8,2.7, "No Epidemic")
+text(6.7,5.3, "Epidemic")
+```
+
+A perfectly substitutable curve is linear. This means if you can substitute one individual of species 2 for one individual of species 1 when species 1 is just below its critical threshold and still get an epidemic, you can substitute one for one at any point along the isocline. Now, the slope might not be unity. Maybe you have to substitute two of species 2 for one of species 1. The key is that ratio of substitution remains the same for any mixture of the two species.
+
+Things get more interesting when having a mixture of the two species makes it more likely that there will be an epidemic when there is a more event mixture of the two species that when the mixture is toward one of the extremes (i.e., mostly species 1 or mostly species 2). We call such an isocline *complementary*.
+
+```{r}
+#| fig-asp: 1
+x <- seq(0,10,,1000)
+plot(x, exp(-0.5*x), 
+     type="n", 
+     axes=FALSE, frame=TRUE, 
+     xaxs="i", yaxs="i", 
+     xlab="Species 1",
+     ylab="Species 2", 
+     xlim=c(2,9), 
+     ylim=c(0.02,0.4))
+lines(x,exp(-0.5*x), lwd=3)
+segments(2,exp(-0.5*2),log(0.02)/-0.5,0.02, lty=3)
+axis(1, at=c(7.859947), labels=c(expression(hat(S)[1])))
+axis(2, at=c(0.36800318), las=2, labels=c(expression(hat(S)[2])))
+text(3, 0.08755055, "No Epidemic")
+text(5,0.13, "Epidemic")
+```
+
+To see this, we can look at how the rate of substitution happens at different mixtures of the two species. For example, as you approach the extreme of $S_1=0$, it takes increasingly more of $S_2$ to stay above the epidemic threshold. This is obviously also true as we approach the $S_2=0$ extreme as well, but we'll focus on the $S_1=0$ extreme here. In the middle of the range, a small change in one can be compensated by a small change in the other, making the epidemic threshold easier to achieve in the middle of the species' population sizes.
+
+```{r}
+#| fig-asp: 1
+x <- seq(0,12,,1000)
+plot(x, exp(-0.5*x), 
+     type="n", 
+     axes=FALSE, frame=TRUE, 
+     xaxs="i", yaxs="i", 
+     xlab="Species 1",
+     ylab="Species 2", 
+     xlim=c(2,12), 
+     ylim=c(0.002,0.4))
+lines(x,exp(-0.5*x), lwd=3)
+segments(2.1,exp(-0.5*2.1),2.1,exp(-0.5*2.6), lwd=2, col="red")
+segments(2.1,exp(-0.5*2.6),2.6,exp(-0.5*2.6), lwd=2, col="red")
+segments(5,exp(-0.5*5),5,exp(-0.5*5.5), lwd=2, col="red")
+segments(5,exp(-0.5*5.5),5.5,exp(-0.5*5.5), lwd=2, col="red")
+```
+
+## Contour Plots
+
+## Plotting Tricks
+
+I have a whole other set of notes on how to produce scientific figures in `R`. However, I've repeatedly done some things in these notes that merit a brief explanation. Otherwise, there is a risk of things seeming obscure and generally confusing.
+
+Theoretical plots usually don't depend on specific values of inputs or functions -- you're typically care just about the shapes and not the specific values. You are trying to show the general behavior of your system. `R` is a statistical programming language and, as such, expects you to be plotting data. Presumably, you care about the actual values when data are involved. For our theoretical plots, we usually want to suppress the values on the plot's axes. This is why nearly all of these figures include the arguments to the `plot()` command `axes=FALSE` and `frame=TRUE`. This suppresses the axes and any ticks and labels indicating specific values on them. We can then add in custom axis labels, such as the critical population size for each species in the multi-species epidemic isoclines using the command `axis()`.
+
+Perhaps a more mysterious tick I use is to include the arguments `xaxs="i"` and `yaxs="i"`. This is really the special sauce of a scientific-theory plot in `R`. Again, `R` expects data when you call the `plot()` command. A good aesthetic practice for data plots is to pad the range of the observed data and `R` does this by default. By forcing the style of the axes to be "internal" (that's what the "i" stands for), you restrict the axes to the range of your data. This means that $y$-intercepts actually intercept the $y$ axis, curves that should start at zero actually look like they're starting at zero, etc.
+
+We often want to lay out the axes but not draw a curve quite yet. To do this, we add the argument `type="n"` to the `plot()` command. This allows us to build up complex figures with more precision and control. You might notice that we often plot the actual curve we care about last. This is because we want it on top of the various lines we've added to indicate interesting bits of the curve (e.g., equilibria and such).

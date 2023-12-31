@@ -1,0 +1,26 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Fun with Graphs"
+  author: "James Holland Jones"
+  date: "12/31/2023"
+  chapters:
+    - index.qmd
+    - interpreting.qmd
+    - drawing.qmd
+    - graphs.qmd
+    - odes.qmd
+    - references.qmd
+
+bibliography: graphics.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+editor: visual
+

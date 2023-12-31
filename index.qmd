@@ -1,0 +1,9 @@
+# Fun with Graphs {.unnumbered}
+
+In the Fall of 1992, I was a first-year Ph.D. student in biological anthropology at Harvard. Mark Leighton was looking for someone to serve as a TF for his class, Primate Evolutionary Ecology. This was an amazing class that brought the theoretical evolutionary ecology of MacArthur and Levins and the behavioral ecology of Krebs, Davies, and Charnov to bear on problems of primate ecology. I didn't need to teach, but I signed up anyway, hoping to really learn the material to which I had only a superficial introduction during undergraduate tutorials. This turned out to be a pretty fateful decision.
+
+On every exam that Mark administered, there was a section cheekily titled *Fun with Graphs*, where students had to display their graphical reasoning chops. In general, I don't think the students had all that much fun with this section. When Bill Durham and I first taught our class, Environmental Change and Emerging Infectious Disease, I brought back this tradition and it has been a staple of all my in-person exams for classes I've taught at Stanford ever since.
+
+I worry that the sort of intuitive graphical reasoning that motivated so much of this incredible theory is not developed in students who must expend all their effort studying for tests which will allow them admission to increasingly competitive universities. I also worry that theoretical ecologists (along with formal demographers and mathematical epidemiologists) have not reproduced themselves culturally and this important material is increasingly not taught.
+
+You could think of this book as essentially *Nonstandard Uses of `R`*. `R` graphics are clearly designed for plotting data. However, `R` is a highly versatile and powerful tool for making theoretical and expository figures in science. That's the vibe. Maybe there will be more...
