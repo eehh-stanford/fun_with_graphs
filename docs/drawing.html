@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Fun with Graphs - 2&nbsp; Theoretical Scientific Figures in R</title>
+<title>3&nbsp; Theoretical Scientific Figures in R – Fun with Graphs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,17 +91,23 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,13 +116,42 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -125,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./drawing.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in `R`</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./drawing.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -140,7 +176,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Fun with Graphs</a> 
@@ -161,26 +197,32 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./gettingR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./interpreting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./drawing.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./graphs.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./odes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -192,51 +234,51 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">2.1</span> Introduction</a></li>
-  <li><a href="#the-taylor-series-approximation-is-your-friend" id="toc-the-taylor-series-approximation-is-your-friend" class="nav-link" data-scroll-target="#the-taylor-series-approximation-is-your-friend"><span class="header-section-number">2.2</span> The Taylor-Series Approximation is Your Friend</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">3.1</span> Introduction</a></li>
+  <li><a href="#the-taylor-series-approximation-is-your-friend" id="toc-the-taylor-series-approximation-is-your-friend" class="nav-link" data-scroll-target="#the-taylor-series-approximation-is-your-friend"><span class="header-section-number">3.2</span> The Taylor-Series Approximation is Your Friend</a>
   <ul class="collapse">
-  <li><a href="#cobb-douglas-production-function" id="toc-cobb-douglas-production-function" class="nav-link" data-scroll-target="#cobb-douglas-production-function"><span class="header-section-number">2.2.1</span> Cobb-Douglas Production Function</a></li>
-  <li><a href="#marginal-value-theorem" id="toc-marginal-value-theorem" class="nav-link" data-scroll-target="#marginal-value-theorem"><span class="header-section-number">2.2.2</span> Marginal Value Theorem</a></li>
-  <li><a href="#optimal-age-at-first-reproduction" id="toc-optimal-age-at-first-reproduction" class="nav-link" data-scroll-target="#optimal-age-at-first-reproduction"><span class="header-section-number">2.2.3</span> Optimal Age at First Reproduction</a></li>
-  <li><a href="#fitness-sets" id="toc-fitness-sets" class="nav-link" data-scroll-target="#fitness-sets"><span class="header-section-number">2.2.4</span> Fitness Sets</a></li>
-  <li><a href="#graphical-newton-raphson-method" id="toc-graphical-newton-raphson-method" class="nav-link" data-scroll-target="#graphical-newton-raphson-method"><span class="header-section-number">2.2.5</span> Graphical Newton-Raphson Method</a></li>
+  <li><a href="#cobb-douglas-production-function" id="toc-cobb-douglas-production-function" class="nav-link" data-scroll-target="#cobb-douglas-production-function"><span class="header-section-number">3.2.1</span> Cobb-Douglas Production Function</a></li>
+  <li><a href="#marginal-value-theorem" id="toc-marginal-value-theorem" class="nav-link" data-scroll-target="#marginal-value-theorem"><span class="header-section-number">3.2.2</span> Marginal Value Theorem</a></li>
+  <li><a href="#optimal-age-at-first-reproduction" id="toc-optimal-age-at-first-reproduction" class="nav-link" data-scroll-target="#optimal-age-at-first-reproduction"><span class="header-section-number">3.2.3</span> Optimal Age at First Reproduction</a></li>
+  <li><a href="#fitness-sets" id="toc-fitness-sets" class="nav-link" data-scroll-target="#fitness-sets"><span class="header-section-number">3.2.4</span> Fitness Sets</a></li>
+  <li><a href="#graphical-newton-raphson-method" id="toc-graphical-newton-raphson-method" class="nav-link" data-scroll-target="#graphical-newton-raphson-method"><span class="header-section-number">3.2.5</span> Graphical Newton-Raphson Method</a></li>
   </ul></li>
-  <li><a href="#using-expression-to-draw-functional-response-curves" id="toc-using-expression-to-draw-functional-response-curves" class="nav-link" data-scroll-target="#using-expression-to-draw-functional-response-curves"><span class="header-section-number">2.3</span> Using <code>expression()</code> to Draw Functional-Response Curves</a></li>
-  <li><a href="#fold-catastrophe-model" id="toc-fold-catastrophe-model" class="nav-link" data-scroll-target="#fold-catastrophe-model"><span class="header-section-number">2.4</span> Fold-Catastrophe Model</a>
+  <li><a href="#using-expression-to-draw-functional-response-curves" id="toc-using-expression-to-draw-functional-response-curves" class="nav-link" data-scroll-target="#using-expression-to-draw-functional-response-curves"><span class="header-section-number">3.3</span> Using <code>expression()</code> to Draw Functional-Response Curves</a></li>
+  <li><a href="#fold-catastrophe-model" id="toc-fold-catastrophe-model" class="nav-link" data-scroll-target="#fold-catastrophe-model"><span class="header-section-number">3.4</span> Fold-Catastrophe Model</a>
   <ul class="collapse">
-  <li><a href="#mechanistic-foundation-of-fold-catastrophe" id="toc-mechanistic-foundation-of-fold-catastrophe" class="nav-link" data-scroll-target="#mechanistic-foundation-of-fold-catastrophe"><span class="header-section-number">2.4.1</span> Mechanistic Foundation of Fold-Catastrophe</a></li>
+  <li><a href="#mechanistic-foundation-of-fold-catastrophe" id="toc-mechanistic-foundation-of-fold-catastrophe" class="nav-link" data-scroll-target="#mechanistic-foundation-of-fold-catastrophe"><span class="header-section-number">3.4.1</span> Mechanistic Foundation of Fold-Catastrophe</a></li>
   </ul></li>
-  <li><a href="#cobwebbing" id="toc-cobwebbing" class="nav-link" data-scroll-target="#cobwebbing"><span class="header-section-number">2.5</span> Cobwebbing</a></li>
-  <li><a href="#numerical-derivative-for-equilibria-and-tangent-lines" id="toc-numerical-derivative-for-equilibria-and-tangent-lines" class="nav-link" data-scroll-target="#numerical-derivative-for-equilibria-and-tangent-lines"><span class="header-section-number">2.6</span> Numerical Derivative for Equilibria and Tangent Lines</a>
+  <li><a href="#cobwebbing" id="toc-cobwebbing" class="nav-link" data-scroll-target="#cobwebbing"><span class="header-section-number">3.5</span> Cobwebbing</a></li>
+  <li><a href="#numerical-derivative-for-equilibria-and-tangent-lines" id="toc-numerical-derivative-for-equilibria-and-tangent-lines" class="nav-link" data-scroll-target="#numerical-derivative-for-equilibria-and-tangent-lines"><span class="header-section-number">3.6</span> Numerical Derivative for Equilibria and Tangent Lines</a>
   <ul class="collapse">
-  <li><a href="#why-period-doubling" id="toc-why-period-doubling" class="nav-link" data-scroll-target="#why-period-doubling"><span class="header-section-number">2.6.1</span> Why Period Doubling</a></li>
+  <li><a href="#why-period-doubling" id="toc-why-period-doubling" class="nav-link" data-scroll-target="#why-period-doubling"><span class="header-section-number">3.6.1</span> Why Period Doubling</a></li>
   </ul></li>
-  <li><a href="#bifurcation-diagram" id="toc-bifurcation-diagram" class="nav-link" data-scroll-target="#bifurcation-diagram"><span class="header-section-number">2.7</span> Bifurcation Diagram</a></li>
-  <li><a href="#bistable-attractors" id="toc-bistable-attractors" class="nav-link" data-scroll-target="#bistable-attractors"><span class="header-section-number">2.8</span> Bistable Attractors</a></li>
-  <li><a href="#polygons" id="toc-polygons" class="nav-link" data-scroll-target="#polygons"><span class="header-section-number">2.9</span> Polygons</a></li>
-  <li><a href="#s-shaped-curves" id="toc-s-shaped-curves" class="nav-link" data-scroll-target="#s-shaped-curves"><span class="header-section-number">2.10</span> S-Shaped Curves</a>
+  <li><a href="#bifurcation-diagram" id="toc-bifurcation-diagram" class="nav-link" data-scroll-target="#bifurcation-diagram"><span class="header-section-number">3.7</span> Bifurcation Diagram</a></li>
+  <li><a href="#bistable-attractors" id="toc-bistable-attractors" class="nav-link" data-scroll-target="#bistable-attractors"><span class="header-section-number">3.8</span> Bistable Attractors</a></li>
+  <li><a href="#polygons" id="toc-polygons" class="nav-link" data-scroll-target="#polygons"><span class="header-section-number">3.9</span> Polygons</a></li>
+  <li><a href="#s-shaped-curves" id="toc-s-shaped-curves" class="nav-link" data-scroll-target="#s-shaped-curves"><span class="header-section-number">3.10</span> S-Shaped Curves</a>
   <ul class="collapse">
-  <li><a href="#polygyny-threshold-model" id="toc-polygyny-threshold-model" class="nav-link" data-scroll-target="#polygyny-threshold-model"><span class="header-section-number">2.10.1</span> Polygyny Threshold Model</a></li>
+  <li><a href="#polygyny-threshold-model" id="toc-polygyny-threshold-model" class="nav-link" data-scroll-target="#polygyny-threshold-model"><span class="header-section-number">3.10.1</span> Polygyny Threshold Model</a></li>
   </ul></li>
-  <li><a href="#evolutionary-stable-strategies" id="toc-evolutionary-stable-strategies" class="nav-link" data-scroll-target="#evolutionary-stable-strategies"><span class="header-section-number">2.11</span> Evolutionary Stable Strategies</a>
+  <li><a href="#evolutionary-stable-strategies" id="toc-evolutionary-stable-strategies" class="nav-link" data-scroll-target="#evolutionary-stable-strategies"><span class="header-section-number">3.11</span> Evolutionary Stable Strategies</a>
   <ul class="collapse">
-  <li><a href="#rogers-paradox" id="toc-rogers-paradox" class="nav-link" data-scroll-target="#rogers-paradox"><span class="header-section-number">2.11.1</span> Rogers Paradox</a></li>
-  <li><a href="#producer-scrounger-game" id="toc-producer-scrounger-game" class="nav-link" data-scroll-target="#producer-scrounger-game"><span class="header-section-number">2.11.2</span> Producer-Scrounger Game</a></li>
+  <li><a href="#rogers-paradox" id="toc-rogers-paradox" class="nav-link" data-scroll-target="#rogers-paradox"><span class="header-section-number">3.11.1</span> Rogers Paradox</a></li>
+  <li><a href="#producer-scrounger-game" id="toc-producer-scrounger-game" class="nav-link" data-scroll-target="#producer-scrounger-game"><span class="header-section-number">3.11.2</span> Producer-Scrounger Game</a></li>
   </ul></li>
-  <li><a href="#prey-choice-model" id="toc-prey-choice-model" class="nav-link" data-scroll-target="#prey-choice-model"><span class="header-section-number">2.12</span> Prey-Choice Model</a></li>
-  <li><a href="#linear-programming" id="toc-linear-programming" class="nav-link" data-scroll-target="#linear-programming"><span class="header-section-number">2.13</span> Linear Programming</a></li>
-  <li><a href="#extreme-value-distribution-for-innovation" id="toc-extreme-value-distribution-for-innovation" class="nav-link" data-scroll-target="#extreme-value-distribution-for-innovation"><span class="header-section-number">2.14</span> Extreme-Value Distribution for Innovation</a></li>
-  <li><a href="#the-right-ibis" id="toc-the-right-ibis" class="nav-link" data-scroll-target="#the-right-ibis"><span class="header-section-number">2.15</span> The Right Ibis</a></li>
-  <li><a href="#autocorrelated-time-series" id="toc-autocorrelated-time-series" class="nav-link" data-scroll-target="#autocorrelated-time-series"><span class="header-section-number">2.16</span> Autocorrelated Time Series</a></li>
-  <li><a href="#how-wavelets-work" id="toc-how-wavelets-work" class="nav-link" data-scroll-target="#how-wavelets-work"><span class="header-section-number">2.17</span> How Wavelets Work</a></li>
-  <li><a href="#to-do" id="toc-to-do" class="nav-link" data-scroll-target="#to-do"><span class="header-section-number">2.18</span> To Do</a></li>
+  <li><a href="#prey-choice-model" id="toc-prey-choice-model" class="nav-link" data-scroll-target="#prey-choice-model"><span class="header-section-number">3.12</span> Prey-Choice Model</a></li>
+  <li><a href="#linear-programming" id="toc-linear-programming" class="nav-link" data-scroll-target="#linear-programming"><span class="header-section-number">3.13</span> Linear Programming</a></li>
+  <li><a href="#extreme-value-distribution-for-innovation" id="toc-extreme-value-distribution-for-innovation" class="nav-link" data-scroll-target="#extreme-value-distribution-for-innovation"><span class="header-section-number">3.14</span> Extreme-Value Distribution for Innovation</a></li>
+  <li><a href="#the-right-ibis" id="toc-the-right-ibis" class="nav-link" data-scroll-target="#the-right-ibis"><span class="header-section-number">3.15</span> The Right Ibis</a></li>
+  <li><a href="#autocorrelated-time-series" id="toc-autocorrelated-time-series" class="nav-link" data-scroll-target="#autocorrelated-time-series"><span class="header-section-number">3.16</span> Autocorrelated Time Series</a></li>
+  <li><a href="#how-wavelets-work" id="toc-how-wavelets-work" class="nav-link" data-scroll-target="#how-wavelets-work"><span class="header-section-number">3.17</span> How Wavelets Work</a></li>
+  <li><a href="#to-do" id="toc-to-do" class="nav-link" data-scroll-target="#to-do"><span class="header-section-number">3.18</span> To Do</a></li>
   </ul>
 </nav>
     </div>
@@ -245,7 +287,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-draw" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></h1>
+<h1 class="title"><span id="sec-draw" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></h1>
 </div>
 
 
@@ -258,28 +300,30 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
-<section id="introduction" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">2.1</span> Introduction</h2>
+
+<section id="introduction" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">3.1</span> Introduction</h2>
 <p><code>R</code> has powerful graphics capabilities. While we typically use these for plotting data, we can also make publication-quality plots for elucidating theoretical topics as well.</p>
 <p>These notes are a very tentative start to a much larger body of work. I hope they are nonetheless helpful in their rather incomplete form.</p>
 </section>
-<section id="the-taylor-series-approximation-is-your-friend" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="the-taylor-series-approximation-is-your-friend"><span class="header-section-number">2.2</span> The Taylor-Series Approximation is Your Friend</h2>
+<section id="the-taylor-series-approximation-is-your-friend" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="the-taylor-series-approximation-is-your-friend"><span class="header-section-number">3.2</span> The Taylor-Series Approximation is Your Friend</h2>
 <p>You may be familiar with Taylor polynomials (or series) and how useful they are for applied mathematics and science. A Taylor series allows you to approximate a function <span class="math inline">\(f(x)\)</span> in terms of an infinite sum of its derivatives taken at a single point <span class="math inline">\(a\)</span>:</p>
 <p><span class="math display">\[ f(x) = f(a) + f'(a)(x-a) + \frac{f''(a)(x-a)^2}{2!} + \frac{f'''(a)(x-a)^3}{3!} + \cdots
 \]</span></p>
 <p>When we truncate the Taylor series at the first term, we produce a linear approximation of our function. In other words, it’s a tangent line. It turns out that we often want to draw tangents in theoretical figures and just as the Taylor series can help us derive theory, so too can it help us generate plots!</p>
-<section id="cobb-douglas-production-function" class="level3" data-number="2.2.1">
-<h3 data-number="2.2.1" class="anchored" data-anchor-id="cobb-douglas-production-function"><span class="header-section-number">2.2.1</span> Cobb-Douglas Production Function</h3>
+<section id="cobb-douglas-production-function" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="cobb-douglas-production-function"><span class="header-section-number">3.2.1</span> Cobb-Douglas Production Function</h3>
 <p>The Cobb-Douglas production function is a model for production that is the product of two power functions. The classic model combines capital (<span class="math inline">\(K\)</span>) and labor <span class="math inline">\(L\)</span>. The inputs are raised to powers <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span>.</p>
 <p><span class="math display">\[ W = K^{\alpha} L^{\beta}
 \]</span></p>
 <p>In the Cobb-Douglas form, the exponents also turn out to be the elasticities of production with respect to the inputs. So, suppose that <span class="math inline">\(\alpha=0.25\)</span>, this means that a 1% increase in the capital will increase overall wealth by 0.25%.</p>
 <p>If <span class="math inline">\(\alpha + \beta =1\)</span>, then there are constant returns to scale: doubling inputs will double the output. If, on the other hand, <span class="math inline">\(\alpha + \beta &gt; 1\)</span>, there are increasing returns to scale so that doubling inputs will more than double the output.</p>
 <p>The optimal balance between capital and labor occurs when a budget line is tangent to this curve.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">0.8</span>,<span class="at">length=</span><span class="dv">100</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="at">length=</span><span class="dv">100</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> (<span class="dv">1</span><span class="sc">/</span>L<span class="sc">^</span><span class="fl">0.7</span>)<span class="sc">^</span>(<span class="dv">1</span><span class="sc">/</span><span class="fl">0.3</span>)</span>
@@ -304,19 +348,23 @@ div.csl-indent {
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(<span class="fu">hat</span>(L)),<span class="dv">1</span>,<span class="at">at=</span><span class="fl">0.3</span>, <span class="at">padj=</span><span class="fl">0.5</span>)</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(<span class="fu">hat</span>(K)),<span class="dv">2</span>, <span class="at">at=</span><span class="fu">kf</span>(<span class="fl">0.3</span>), <span class="at">adj=</span><span class="dv">2</span>, <span class="at">padj=</span><span class="fl">0.5</span>, <span class="at">las=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Graphics Tip:</strong> Note that in labeling the optimum value of capital, we used the argument <code>las=2</code>. This says to print text always perpendicular to the axis and is useful for labeling interesting points on particularly the vertical axis.</p>
 <p>You will notice that in most of these plots, we suppress the axis labeling. For a theoretical plot, we want to see the shape of the relationships between variables and care less about the specific <span class="math inline">\((x,y)\)</span> values. This means that we typically include in the <code>plot()</code> command the argument <code>axes=FALSE</code>. When we turn off the axes, this also, by default, removes the frame around the axes. We usually want that, so we have to also include the argument <code>frame=TRUE</code>.</p>
 <p>We can add mathematical, typset material to any text (e.g., axis labels, labels for equilibria and other interesting points, titles, etc.) using <code>expression()</code>. There is a stripped-down markup language for this in <code>R</code>. To learn more, do a help search for <code>plotmath</code>.</p>
 </section>
-<section id="marginal-value-theorem" class="level3" data-number="2.2.2">
-<h3 data-number="2.2.2" class="anchored" data-anchor-id="marginal-value-theorem"><span class="header-section-number">2.2.2</span> Marginal Value Theorem</h3>
+<section id="marginal-value-theorem" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="marginal-value-theorem"><span class="header-section-number">3.2.2</span> Marginal Value Theorem</h3>
 <p>Something like the Marginal Value Theorem (MVT), a phrase coined by <span class="citation" data-cites="charnov1976">Charnov (<a href="references.html#ref-charnov1976" role="doc-biblioref">1976</a>)</span>, appears in many applications: foraging theory <span class="citation" data-cites="charnov1976">(<a href="references.html#ref-charnov1976" role="doc-biblioref">Charnov 1976</a>)</span>, sexual selection <span class="citation" data-cites="parker_stuart1976">(<a href="references.html#ref-parker_stuart1976" role="doc-biblioref">Parker and Stuart 1976</a>)</span>, the evolution of virulence <span class="citation" data-cites="vanbaalen_sabelis1995">(<a href="references.html#ref-vanbaalen_sabelis1995" role="doc-biblioref">Baalen and Sabelis 1995</a>)</span>, and of course, life history theory <span class="citation" data-cites="smith_fretwell1974">(<a href="references.html#ref-smith_fretwell1974" role="doc-biblioref">Smith and Fretwell 1974</a>)</span>. If you pay careful attention, you will notice that it’s always the maximization of some sort of ratio, where the numerator and denominator trade-off. In this case, the MVT solution arises naturally from the quotient rule for differtiation. The MVT states that the optimal value of the ratio fitness measure can be found when a straight line rooted at the origin is tangent to the fitness/constraint function. This the eponymous “marginal value.”</p>
 <p>In previous examples, we specified the tangent point. Here we solve for the optimal value, which for the marginal value theorem, says that the rate is maximized where a line rooted at the origin is tangent to the utility function. We can mess around with different slopes and try to find something that’s approximately right or we can find the actual solution using the root-finding function in <code>R</code>. I need to acknowledge Mike Price here because he helped me get unstuck as I flailed to get <code>uniroot()</code> to work. I should also note that when I publish notes like this, even if I accompany them with caveats about incompleteness, you are seeing the product of lots of trial and error (lots of error, I assure you). Remember, the struggle is part of the scientific process.</p>
 <p>Anyway, code for the marginal value theorem (in its many guises).</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="at">length=</span><span class="dv">500</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># utility function fp&gt; 0 fpp &lt; 0</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># turns out that RMarkdown does not handle comments with single quotes </span></span>
@@ -351,22 +399,28 @@ div.csl-indent {
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,(<span class="fu">f</span>(<span class="fl">1.5</span>)<span class="sc">/</span><span class="fl">1.5</span>)<span class="sc">*</span>x,<span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.85</span>))</span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,(<span class="fu">f</span>(<span class="dv">11</span>)<span class="sc">/</span><span class="dv">11</span>)<span class="sc">*</span>x,<span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.85</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Marginal value theorem plot. A line rooted at the origin that is tangent to the gain curve provides the optimal patch-residence time, <span class="math inline">\(\hat{t}\)</span>.</p>
 <p><strong>Graphics Tip:</strong> In this case, we had to find the point where a line rooted at the orgin is tangent to the gain curve. We found this using <code>uniroot()</code> which is a one-dimensional optimization routine that searches an interval for the zero of a function. The function returns an list with at least four elements. The one we want is called <code>root</code>, hence the use of <code>soln$root</code> in plotting arguments in the above code.</p>
 </section>
-<section id="optimal-age-at-first-reproduction" class="level3" data-number="2.2.3">
-<h3 data-number="2.2.3" class="anchored" data-anchor-id="optimal-age-at-first-reproduction"><span class="header-section-number">2.2.3</span> Optimal Age at First Reproduction</h3>
+<section id="optimal-age-at-first-reproduction" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="optimal-age-at-first-reproduction"><span class="header-section-number">3.2.3</span> Optimal Age at First Reproduction</h3>
 <p>Simple Example of the optimal trade-off between adult reproductive value (<span class="math inline">\(E\)</span>) and juvenile recruitment (<span class="math inline">\(S\)</span>). <span class="citation" data-cites="charnov1997">Charnov (<a href="references.html#ref-charnov1997" role="doc-biblioref">1997</a>)</span> has suggested that fitness is a product, broadly construed, of three things: juvenile recruitment, annual fertility of adults, and adult life expectancy. In turn, these elements can be combined. For example, the product of annual fertility and adult life expectancy can be thought of as <em>adult reproductive value</em> because it is the expected total reproduction over the an individual’s lifespan, conditional on them being recruited into the breeding population. As Charnov notes, these things are likely to trade-off. Moreover, the multiplicative form of fitness makes these trade-offs particularly straightforward to visualize and analyze.</p>
 <p>When we plot the allowable combinations of <span class="math inline">\(\log(S)\)</span> and <span class="math inline">\(\log(E)\)</span>, we get a convex plot of the iso-fitness plot linking the logs of <span class="math inline">\(E\)</span> and <span class="math inline">\(S\)</span>, which indicates diminishing marginal returns in both dimensions. The optimal life history is the one for which a line with a slope of -1 is tangent to this iso-fitness constraint curve. Why? The fitness measure (assuming population stationarity) is <span class="math inline">\(R_0 = S\, E\)</span>. Take logs such that <span class="math inline">\(\log(R_0) = \log E + \log S\)</span> and differentiate with respect to age at first reproduction (<span class="math inline">\(\alpha\)</span>; which, in Charnov’s formalism, is the control parameter for the life history):</p>
-<p><span class="math display">\[ \frac{d \log R_0}{d\alpha} = \frac{d \log E}{d\alpha} + \frac{d \log S}{d\alpha}.
+<p><span class="math display">\[
+\frac{d \log R_0}{d\alpha} = \frac{d \log E}{d\alpha} + \frac{d \log S}{d\alpha}.
 \]</span></p>
 <p>Set this equal to zero and rearrange. Divide <span class="math inline">\(d\log E/d\log \alpha\)</span> by <span class="math inline">\(d\log S/d\log \alpha\)</span> and we find the optimality criterion:</p>
-<p><span class="math display">\[ \frac{d\log E}{d \log S} = -1.
+<p><span class="math display">\[
+\frac{d\log E}{d \log S} = -1.
 \]</span></p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>),<span class="at">length=</span><span class="dv">200</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>h <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="dv">5</span><span class="sc">*</span>g<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>hf <span class="ot">&lt;-</span> <span class="cf">function</span>(g) <span class="fu">sqrt</span>(<span class="dv">1</span><span class="sc">-</span>(<span class="dv">5</span><span class="sc">*</span>g<span class="sc">^</span><span class="dv">2</span>))</span>
@@ -398,15 +452,19 @@ div.csl-indent {
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(<span class="fu">hat</span>(E)),<span class="dv">1</span>,<span class="at">at=</span>a, <span class="at">padj=</span><span class="fl">0.5</span>)</span>
 <span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(<span class="fu">hat</span>(S)),<span class="dv">2</span>, <span class="at">at=</span><span class="fu">hf</span>(a), <span class="at">adj=</span><span class="dv">2</span>, <span class="at">padj=</span><span class="fl">0.5</span>, <span class="at">las=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="fitness-sets" class="level3" data-number="2.2.4">
-<h3 data-number="2.2.4" class="anchored" data-anchor-id="fitness-sets"><span class="header-section-number">2.2.4</span> Fitness Sets</h3>
+<section id="fitness-sets" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="fitness-sets"><span class="header-section-number">3.2.4</span> Fitness Sets</h3>
 <p><span class="citation" data-cites="levins1962">Richard Levins (<a href="references.html#ref-levins1962" role="doc-biblioref">1962</a>)</span> introduced a the idea of <em>fitness sets</em> as a way to think about evolution in variable environments. This approach was more fully fleshed out in his subsequent monograph <span class="citation" data-cites="levins1968">(<a href="references.html#ref-levins1968" role="doc-biblioref">R. Levins 1968</a>)</span>. The fundamental idea is to represent the fitness of organisms in the different conditions that make up their variable environments and then find the strategy that maximizes fitness across these environments. The optimum can be a generalized compromise across the different environments or it can be the production of polymorphic specialized phenotypes that better match specific environmental conditions.</p>
 <p>Consider first a population with two phenotypes where the peak fitness in the two environments are quite separated from each other such that the fitness functions do not overlap tremendously. It’s conventional to assume Gaussian distributions of fitnesses with respect to the environment for simplicity, but to make things more interesting, we can use Gamma distributions, which will have more right-skew. The basic idea behind using these peaked functions is that there is an optimum for the environment and that fitness falls off as you move away from this optimum value of the phenotype. A Gaussian distribution just makes quite specific assumptions about how fitness falls off as the phenotype differs from the optimum: it does so symmetrically around the maximum and it declines exponentially in the squared difference from the optimum, while the Gamma distributions will be asymmetric in the way fitness falls off from the peak. The actual form of the fitness function will depend on the particulars of the environment and the phenotypes in question.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## skewed gamma distributions</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">25</span>,,<span class="dv">1000</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>k1 <span class="ot">&lt;-</span> <span class="dv">9</span></span>
@@ -419,13 +477,17 @@ div.csl-indent {
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Phenotype"</span>, <span class="at">ylab=</span><span class="st">"Fitness"</span>)</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,<span class="fu">dgamma</span>(x,<span class="at">shape=</span>k2,<span class="at">scale=</span>s2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>In this figure, we plotted the fitness functions against the environment. We can cut out the middleman, as it were, and simply plot the fitness functions against each other in a manner analogous to phase-plane analysis of, e.g., the Lotka-Volterra predator-prey model. Environment becomes implicit in the plots. What we have done is represent all possible phenotypes in our 2-dimensional fitness space.</p>
 <p>A quick note on convexity is probably warranted here. A space is said to be <em>convex</em> if, for any two points contained within the space, the entirety of the line segment that connects these points is also contained within the space. It’s easy to see that a line segment connecting points in horns of this fitness set would not be entirely contained within the set.</p>
 <p>Our two distributions overlap quite a bit and we will see that they form a convex fitness set. This suggests the geometrical interpretation of convexity, namely, that it implies the ability of a compromise phenotype. To find the optimal (compromise) phenotype, we add the <em>adaptive function</em> for a coarse-grained environment. For a coarse-grained environment, the adaptive function will have a hyperbolic form. Here again, the issue of convexity arises. An adaptive function that takes the hyperbolic form as in figure 3, is also said to be convex. Just as a convex fitness set implies an an optimum phenotype that is a compromise, convexity in the adaptive function suggests that average values have higher fitness than extremes. As the adaptive-function isoclines move from the center to the extremes, the increase in fitness in one dimension must be greater than the reduction of fitness in the other dimension. This is also related to diminishing marginal rate of substitution. Note, for example, as the isocline moves away from its convex center upward in the direction of <span class="math inline">\(W_2\)</span>, it takes increasing fitness in the <span class="math inline">\(W_2\)</span> dimension to make up for lost fitness in the <span class="math inline">\(W_1\)</span> direction.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## for the isoclines</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">0.5</span>,<span class="at">length=</span><span class="dv">100</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
@@ -444,14 +506,18 @@ div.csl-indent {
 <span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(G,<span class="fu">kf</span>(<span class="at">G=</span>G,<span class="at">W=</span><span class="fl">0.05</span>,<span class="at">alpha=</span><span class="fl">0.85</span>,<span class="at">beta=</span><span class="dv">1</span>), <span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(G,<span class="fu">kf</span>(<span class="at">G=</span>G,<span class="at">W=</span><span class="fl">0.05</span>,<span class="at">alpha=</span><span class="fl">0.63</span>,<span class="at">beta=</span><span class="dv">1</span>), <span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="graphical-newton-raphson-method" class="level3" data-number="2.2.5">
-<h3 data-number="2.2.5" class="anchored" data-anchor-id="graphical-newton-raphson-method"><span class="header-section-number">2.2.5</span> Graphical Newton-Raphson Method</h3>
+<section id="graphical-newton-raphson-method" class="level3" data-number="3.2.5">
+<h3 data-number="3.2.5" class="anchored" data-anchor-id="graphical-newton-raphson-method"><span class="header-section-number">3.2.5</span> Graphical Newton-Raphson Method</h3>
 <p>Another cool application of tangent lines in plots illustrates the popular and powerful family of optimization algorithms are broadly known as “Newton’s Method’ or the”Newton-Raphson Algorithm.” This algorithm finds roots of functions – that is, points where the function is zero. The basic idea is that we start from an initial guess point on our function. We then draw a line tangent to our function at this point. Finding the <span class="math inline">\(x\)</span>-intercept for the tangent line, we repeat the process only this time drawing our tangent line from the point on the curve corresponding to the <span class="math inline">\(x\)</span>-intercept of our last tangent line. It turns out that, for some initial guess, <span class="math inline">\(x_0\)</span>, the value <span class="math inline">\(x_1 = x_0 - f(x_0)/f'(x_0)\)</span> is a better estimate of the root. We can then repeat this process until we are satisfactorily close to the root of the function. We can make a quick graphical demonstration Newton’s method for a very simple function <span class="math inline">\(y=x^2-9\)</span>. We start with a guess at <span class="math inline">\(x=8\)</span>. The plot shows three iterations (numbered sequentially). We can see that each iteration gets much closer to the root of this equation (at <span class="math inline">\(x=3\)</span>). In fact, it gets so close after three steps that plotting another iteration is indistinguishable from the correct solution (though for a realistic tolerance, it would take a couple more steps to get right to <span class="math inline">\(x=3\)</span>).</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## graphical newton-method</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="at">length=</span><span class="dv">100</span>)</span>
@@ -476,18 +542,22 @@ div.csl-indent {
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">x1</span>(a)</span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="fu">y</span>(a) <span class="sc">+</span> (x<span class="sc">-</span>a)<span class="sc">*</span><span class="dv">2</span><span class="sc">*</span>a, <span class="at">col=</span><span class="st">"red"</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>If we were really feeling ambitious, we could animate this!</p>
 </section>
 </section>
-<section id="using-expression-to-draw-functional-response-curves" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="using-expression-to-draw-functional-response-curves"><span class="header-section-number">2.3</span> Using <code>expression()</code> to Draw Functional-Response Curves</h2>
+<section id="using-expression-to-draw-functional-response-curves" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="using-expression-to-draw-functional-response-curves"><span class="header-section-number">3.3</span> Using <code>expression()</code> to Draw Functional-Response Curves</h2>
 <p>There are several different ways that you can draw a theoretical curve. In the last chapter, I used <code>curve()</code> to draw many of the figures. I find that I have better control over the overall figure, however, if I can access the equation and its evaluation more directly. The quick-and-dirty way to do this is to write an <code>expression()</code>. An expression is an object whose evaluation is delayed until explicitly called for with the function <code>eval()</code>. So you can define your equation of theoretical interest, then enter its inputs, and then evaluate it when it is convenient for you (e.g., when you’re plotting).</p>
 <p>We can demonstrate this functionality by comparing the Holling family of functional-response curves. These curves model, among other things, the satiation of a predator as prey density increases.</p>
 <p>The most commonly-used of these functional responses is certainly Holling Type II, which is also known (e.g., in physiology) as the Michaelis–Menten function, which is a simple, if ubiquitous, model of enzyme kinetics.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>, <span class="at">length=</span><span class="dv">200</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fl">0.7</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fl">1.5</span></span>
@@ -502,16 +572,20 @@ div.csl-indent {
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Type II"</span>, <span class="st">"Type III"</span>, <span class="st">"Type IV"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"cyan"</span>,<span class="st">"magenta"</span>), <span class="at">lwd=</span><span class="dv">3</span>)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Graphics Tip:</strong> We add a legend to a figure, not surprisingly, with the function <code>legend()</code>. The first argument to <code>legend()</code> is its location. You can specify this with x,y-coordinates or, more simply, with a keyword from the list that includes: “bottomright”, “bottom”, “bottomleft”, “left”, “topleft”, “top”, “topright”, “right” and “center”. Sometimes you need to fiddle around with the location of the legend as it might appear quite different under different graphics devices (e.g., in the Plots window of RStudio vs.&nbsp;a .png file vs.&nbsp;a .pdf file).</p>
 </section>
-<section id="fold-catastrophe-model" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="fold-catastrophe-model"><span class="header-section-number">2.4</span> Fold-Catastrophe Model</h2>
+<section id="fold-catastrophe-model" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="fold-catastrophe-model"><span class="header-section-number">3.4</span> Fold-Catastrophe Model</h2>
 <p>A <em>catastrophe</em> is a sudden shift in system state <span class="citation" data-cites="zeeman1976">(<a href="references.html#ref-zeeman1976" role="doc-biblioref">Zeeman 1976</a>)</span>. An interesting form of catastrophe, which <span class="citation" data-cites="scheffer2009">Scheffer (<a href="references.html#ref-scheffer2009" role="doc-biblioref">2009</a>)</span> discusses in detail, is the <em>fold catastrophe</em>.</p>
 <p>This is a pretty complicated figure. The solid parts of the curve are stable – when the system state is perturbed when in the vicinity of this part of the attractor, it tends to return, as indicated by the grey arrows pointing back to the attractor. The dashed part of the attractor is unstable – perturbations in this neighborhood tend to move away from the attractor. This graphical representation of the system makes it pretty easy to see how a small perturbation could dramatically change the system if the current combination of conditions and system state place the system on the attractor near the neighborhood where the attractor changes from stable to unstable. The figure illustrates one such scenario. The conditions/system state start at point <span class="math inline">\(F1\)</span>. A small forcing perturbs the system off this point across the bifurcation. Further forcing now moves the system way off the current state to some new, far away, stable state. We go from a very high value of the system state to a very low value with only a very small change in conditions. Indeed, in this figure, the conditions remain constant from point <span class="math inline">\(F1\)</span> to the new value indicated by the white point – just a brief perturbation was sufficient to cause the drastic change.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">12</span>,<span class="dv">12</span>,<span class="at">length=</span><span class="dv">10000</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">10</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">3</span>), <span class="at">length=</span><span class="dv">1000</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## fold-catastrophe is a cubic</span></span>
@@ -537,14 +611,18 @@ div.csl-indent {
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="dv">357</span>,<span class="fl">6.5</span>,<span class="dv">357</span>,<span class="dv">4</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">length=</span><span class="fl">0.1</span>)</span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="dv">357</span>,<span class="fl">3.5</span>,<span class="dv">357</span>,<span class="sc">-</span><span class="fl">10.8</span>, <span class="at">code=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">length=</span><span class="fl">0.1</span>, <span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.75</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><strong>Graphics Tip:</strong> For the fold catastrophe, we want the upper and lower arms of the curve to be solid lines, indicating a that the attractor lies in a basin of attraction in these regions, and a dashed line in the middle, indicating that the attractor is unstable there. To do this we plot the whole curve as a dashed line <code>lty=2</code> and then plot solid lines over this curve in the regions we want it to be solid. Lots of trial-and-error in making such a plot!</p>
-<section id="mechanistic-foundation-of-fold-catastrophe" class="level3" data-number="2.4.1">
-<h3 data-number="2.4.1" class="anchored" data-anchor-id="mechanistic-foundation-of-fold-catastrophe"><span class="header-section-number">2.4.1</span> Mechanistic Foundation of Fold-Catastrophe</h3>
+<section id="mechanistic-foundation-of-fold-catastrophe" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="mechanistic-foundation-of-fold-catastrophe"><span class="header-section-number">3.4.1</span> Mechanistic Foundation of Fold-Catastrophe</h3>
 <p>The fold-castastrophe may seem like an incredibly specific model. It turns out there are various very natural ways of constructing such an attractor. Here, we discuss the approach of <span class="citation" data-cites="noy-meir1975">Noy-Meir (<a href="references.html#ref-noy-meir1975" role="doc-biblioref">1975</a>)</span> for a resource-exploitation case.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Logistic Recruitment</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>logistic.recruit <span class="ot">&lt;-</span> <span class="fu">expression</span>(r<span class="sc">*</span>N<span class="sc">*</span>(<span class="dv">1</span> <span class="sc">-</span> (N<span class="sc">/</span>K)<span class="sc">^</span>theta))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="dv">1</span></span>
@@ -571,17 +649,21 @@ div.csl-indent {
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="fl">57.497146</span><span class="sc">+</span><span class="dv">1</span>, <span class="fl">10.441517</span><span class="sc">+</span><span class="dv">2</span>, <span class="fl">57.497146+7.5</span>, <span class="fl">10.441517</span><span class="sc">+</span><span class="dv">2</span>, <span class="at">code=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">length=</span><span class="fl">0.1</span>, <span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.75</span>))</span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fu">c</span>(<span class="fl">59.13355</span>, <span class="fl">86.65497</span>), <span class="fu">c</span>(<span class="fl">11.458140</span>,  <span class="fl">6.107494</span>), <span class="fu">c</span>(<span class="st">"F2"</span>, <span class="st">"F1"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>There are three fixed points where the recruitment curve and the extraction curve intersect. The green points are stable fixed points, whereas the red points are unstable. The third set of points is near zero and I’ve not drawn those just to keep the plot less cluttered. This fixed point is also stable.</p>
 <p>If we imagine keeping the recruitment curve constant but sweeping extraction curves continuously up through the space (as we have for one big jump in the plot from <span class="math inline">\(F1\)</span> to <span class="math inline">\(F2\)</span>) and tracked the three fixed points along this sweeping, we would have a fold catastrophe.</p>
 </section>
 </section>
-<section id="cobwebbing" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="cobwebbing"><span class="header-section-number">2.5</span> Cobwebbing</h2>
+<section id="cobwebbing" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="cobwebbing"><span class="header-section-number">3.5</span> Cobwebbing</h2>
 <p>With a discrete-time model in one dimension (e.g., an unstructured population model), we can trace the dynamics as we iterate the model forward using a technique called <em>cobwebbing</em>. Here’s a quick example of a Ricker recruitment model, a density-dependent population model with the feature that it overcompensates when numbers exceed the carrying capacity. When the population of highly reactive (i.e., has strong growth potential), this tendency for overcompensation can lead to some pretty wild dynamics. This plot shows such a case.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Ricker recruitment function</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ricker.recruit <span class="ot">&lt;-</span> <span class="cf">function</span>(r0,K,N) N<span class="sc">*</span><span class="fu">exp</span>(r0<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(N<span class="sc">/</span>K)))</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## fast growth!</span></span>
@@ -608,20 +690,24 @@ div.csl-indent {
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">segments</span>(y[i<span class="sc">+</span><span class="dv">1</span>],y[i<span class="sc">+</span><span class="dv">2</span>],y[i<span class="sc">+</span><span class="dv">2</span>],y[i<span class="sc">+</span><span class="dv">2</span>], <span class="at">col=</span><span class="st">"red"</span>) <span class="co">#horiz</span></span>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="do">## this could very easily be made into a function (and probably should be)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This population model with highly over-compensatory dynamics will never settle down. It always overshoots or undershoots and so fluctuates wildly. <span class="citation" data-cites="may1976">May (<a href="references.html#ref-may1976" role="doc-biblioref">1976</a>)</span> notes that we can measure the strength of the response by the slope of the recruitment function at its equilibrium value (i.e., where the grey line of equality intersects with the recruitment function). Using the tools we’ve discussed in these note, we could calculate that slope and draw a tangent line at that point!</p>
 </section>
-<section id="numerical-derivative-for-equilibria-and-tangent-lines" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="numerical-derivative-for-equilibria-and-tangent-lines"><span class="header-section-number">2.6</span> Numerical Derivative for Equilibria and Tangent Lines</h2>
+<section id="numerical-derivative-for-equilibria-and-tangent-lines" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="numerical-derivative-for-equilibria-and-tangent-lines"><span class="header-section-number">3.6</span> Numerical Derivative for Equilibria and Tangent Lines</h2>
 <p>We can recreate the figures from May’s classic paper on how simple population models can yield very complex dynamics <span class="citation" data-cites="may1976">(<a href="references.html#ref-may1976" role="doc-biblioref">May 1976</a>)</span>. May investigates the <em>logistic map</em>, a first-order difference equation. The logistic map is essentially a discrete-time density-dependent model.</p>
 <p><span class="math display">\[
 X_{t+1} = aX_t(1 -X_t),
 \]</span></p>
 <p>where <span class="math inline">\(X_t\)</span> is the state of the population (e.g., its size) at time <span class="math inline">\(t\)</span> and <span class="math inline">\(a\)</span> is the per-period multiplicative growth rate in the absence of any density effect. <span class="citation" data-cites="may1976">May (<a href="references.html#ref-may1976" role="doc-biblioref">1976</a>)</span> shows that when <span class="math inline">\(a&gt;3\)</span>, this model becomes unstable about its fixed point and when</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># logistic map</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lmap <span class="ot">&lt;-</span> <span class="fu">expression</span>(a<span class="sc">*</span>x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x))</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,,<span class="dv">1000</span>)</span>
@@ -659,15 +745,19 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span><span class="dv">0</span>,<span class="at">b=</span><span class="dv">1</span>)</span>
 <span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"a=2.707"</span>, <span class="st">"a=3.414"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="fu">grey</span>(<span class="fl">0.75</span>), <span class="st">"black"</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The slope on the black curve at the fixed point is steeper than <span class="math inline">\(-45^{\circ}\)</span> so the fixed point for this higher-growth model is unstable, while the slope at the fixed point for the grey curve is shallower than <span class="math inline">\(-45^{\circ}\)</span> and is therefore stable.</p>
 <p>Naturally, we could have actually calculated the derivatives of the recruitment function, but this hack actually works pretty well. You just need to make sure that your <span class="math inline">\(x\)</span> values are fine-grained enough that the numerical derivative is approximately right.</p>
-<section id="why-period-doubling" class="level3" data-number="2.6.1">
-<h3 data-number="2.6.1" class="anchored" data-anchor-id="why-period-doubling"><span class="header-section-number">2.6.1</span> Why Period Doubling</h3>
+<section id="why-period-doubling" class="level3" data-number="3.6.1">
+<h3 data-number="3.6.1" class="anchored" data-anchor-id="why-period-doubling"><span class="header-section-number">3.6.1</span> Why Period Doubling</h3>
 <p><span class="citation" data-cites="may1976">May (<a href="references.html#ref-may1976" role="doc-biblioref">1976</a>)</span> shows how plotting the iterated map can help us understand the phenomenon of period-doubling.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lmap3 <span class="ot">&lt;-</span> <span class="fu">expression</span>(a<span class="sc">*</span>(a<span class="sc">*</span>(a<span class="sc">*</span>x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x))<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(a<span class="sc">*</span>x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x))))<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(a<span class="sc">*</span>(a<span class="sc">*</span>x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x))<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>(a<span class="sc">*</span>x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x))))))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fl">3.7</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">eval</span>(lmap3)</span>
@@ -679,16 +769,20 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,<span class="fu">eval</span>(lmap3), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.75</span>))</span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The black curve is only intersected by the line of equality once, indicating that there is a single period-3 cycle for <span class="math inline">\(a=3.7\)</span>. However, when we raise the growth rate to <span class="math inline">\(a=3.9\)</span>, the hills and valleys become much steeper and six more period-3 cycles appear!</p>
 </section>
 </section>
-<section id="bifurcation-diagram" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="bifurcation-diagram"><span class="header-section-number">2.7</span> Bifurcation Diagram</h2>
+<section id="bifurcation-diagram" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="bifurcation-diagram"><span class="header-section-number">3.7</span> Bifurcation Diagram</h2>
 <p><span class="citation" data-cites="may1976">May (<a href="references.html#ref-may1976" role="doc-biblioref">1976</a>)</span> logistic map. There is a doubling of the period of the time series at <span class="math inline">\(a=3\)</span>. At <span class="math inline">\(a=3.57\)</span>, cycles of period <span class="math inline">\(2^n\)</span> begin to appear. At <span class="math inline">\(a=3.68\)</span>, period-3 cycles appear, and at <span class="math inline">\(a=3.83\)</span>, every integer period is present. We can show this using a <em>bifurcation diagram</em>, which shows the different values of <span class="math inline">\(X\)</span> that the population will cycle between for various values of <span class="math inline">\(a\)</span>. For values of <span class="math inline">\(a&lt;3\)</span>, the equilibrium is stable, so there is only a line.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fl">2.5</span>,<span class="dv">4</span>,<span class="at">length=</span><span class="dv">1000</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">expression</span>(a<span class="sc">*</span>x<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>x))</span>
@@ -711,15 +805,19 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(R,data[<span class="dv">1</span>,], <span class="at">pch=</span><span class="st">"."</span>, <span class="at">xlab=</span><span class="st">"a"</span>, <span class="at">ylab=</span><span class="st">"X"</span>)</span>
 <span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">200</span>) <span class="fu">points</span>(R,data[i,], <span class="at">pch=</span><span class="st">"."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="bistable-attractors" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="bistable-attractors"><span class="header-section-number">2.8</span> Bistable Attractors</h2>
+<section id="bistable-attractors" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="bistable-attractors"><span class="header-section-number">3.8</span> Bistable Attractors</h2>
 <p>Bistability means that a dynamic system has two distinct stable states.</p>
 <p><span class="citation" data-cites="efferson_etal2020">Efferson, Vogt, and Fehr (<a href="references.html#ref-efferson_etal2020" role="doc-biblioref">2020</a>)</span> develop a model of cultural change with heterogeneous preferences. They show that the system is characterized by bistability.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="do">## mixture of 2 logistic curves</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(a1,b1,c1,a2,b2,c2,x,p){</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x<span class="sc">-</span>(p<span class="sc">*</span>(c1<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(<span class="sc">-</span>(b1<span class="sc">*</span>(x<span class="sc">-</span>a1)))))<span class="sc">+</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">*</span>(<span class="fl">0.25</span><span class="sc">+</span>c2<span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(<span class="sc">-</span>(b2<span class="sc">*</span>(x<span class="sc">-</span>a2)))))))</span>
@@ -761,15 +859,19 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(<span class="at">x0=</span><span class="dv">0</span>, <span class="at">y0=</span><span class="fl">0.45</span>, <span class="at">x1=</span><span class="dv">0</span>, <span class="at">y1=</span><span class="fl">0.35</span>, </span>
 <span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">code=</span><span class="dv">1</span>,<span class="at">length=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="polygons" class="level2" data-number="2.9">
-<h2 data-number="2.9" class="anchored" data-anchor-id="polygons"><span class="header-section-number">2.9</span> Polygons</h2>
+<section id="polygons" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="polygons"><span class="header-section-number">3.9</span> Polygons</h2>
 <p>To create a polygon between two curves, <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>, which are both functions of <span class="math inline">\(x\)</span>, you need to pass <code>polygon()</code> a concatenated vector of <span class="math inline">\(x\)</span> and the reverse of <span class="math inline">\(x\)</span> for the first vector, and then a concatenated vector of <span class="math inline">\(y_2\)</span> and the reverse of <span class="math inline">\(y_1\)</span> for the second vector.</p>
 <p>Here, fill in the polygon formed between the convex part of a logistic curve and a straight line that connects its endpoints.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">10</span>,<span class="dv">30</span>,,<span class="dv">500</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ux <span class="ot">&lt;-</span> <span class="cf">function</span>(a,b,x) <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(<span class="sc">-</span>(x<span class="sc">-</span>a)<span class="sc">/</span>b))</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="dv">20</span></span>
@@ -788,11 +890,15 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">10</span>,<span class="fu">ux</span>(<span class="at">a=</span>a,<span class="at">b=</span>b,<span class="at">x=</span><span class="dv">10</span>),<span class="dv">30</span>, <span class="fu">ux</span>(<span class="at">a=</span>a,<span class="at">b=</span>b,<span class="at">x=</span><span class="dv">30</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.85</span>))</span>
 <span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(<span class="fu">c</span>(x1, <span class="fu">rev</span>(x1)), <span class="fu">c</span>(y2, <span class="fu">rev</span>(y1)), <span class="at">col=</span><span class="st">"plum"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Probably one of the most common uses for polygons is to fill in the tail (or some other part) of a probability density to show how much relative probability is contained in an interval or a tail. Here we compare the tail probability of a standard normal distribution with a low-df <span class="math inline">\(t\)</span> distribution. We will color in the upper tail above the value of 1.96, the approximate 97.5th quantile of the standard normal distribution and the conventional definition of “statistical significance.”</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## normal</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">20</span>, <span class="at">length=</span><span class="dv">2000</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(z)</span>
@@ -804,7 +910,11 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>p0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, p0)</span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(z0, p0, <span class="at">col=</span><span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># integrate to see how much probability mass is in the tail</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(dnorm, <span class="fl">1.96</span>, <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -813,7 +923,7 @@ X_{t+1} = aX_t(1 -X_t),
 </div>
 </div>
 <p>Now for the <span class="math inline">\(t\)</span> distribution</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="do">## t, df=1</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">dt</span>(z,<span class="at">df=</span><span class="dv">1</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(z,q, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab=</span><span class="st">"Outcome"</span>, <span class="at">ylab=</span><span class="st">"Probability of Outcome"</span>)</span>
@@ -823,7 +933,11 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>q0 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">dt</span>(<span class="dv">20</span>,<span class="at">df=</span><span class="dv">1</span>), q0)</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(t0, q0, <span class="at">col=</span><span class="st">"grey"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## integrate to see how much probability mass is in the tail</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">integrate</span>(dt, <span class="fl">1.96</span>, <span class="cn">Inf</span>, <span class="at">df=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -833,13 +947,13 @@ X_{t+1} = aX_t(1 -X_t),
 </div>
 <p>Ooh, pointy. Note that the <span class="math inline">\(t\)</span> distribution decays so slowly that you can see that the polygon has a slope to it even when you extend the range out to 20. This explains why we added <code>dt(20,df=1)</code> as the first element of the <code>q</code> variable for the polygon.</p>
 </section>
-<section id="s-shaped-curves" class="level2" data-number="2.10">
-<h2 data-number="2.10" class="anchored" data-anchor-id="s-shaped-curves"><span class="header-section-number">2.10</span> S-Shaped Curves</h2>
+<section id="s-shaped-curves" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="s-shaped-curves"><span class="header-section-number">3.10</span> S-Shaped Curves</h2>
 <p>There are numerous instances where we want to draw S-shaped curves. For example, we might want to show density-dependent population growth or the fraction of a population who have adopted an innovation.</p>
 <p>There are a number of ways to draw S-shaped curves. The first is to use a logistic function.</p>
 <p>Another possibility is to use a cumulative distribution function for a normal random variable.</p>
 <p>Here is an example of an adoption curve <span class="citation" data-cites="rogers2003">(<a href="references.html#ref-rogers2003" role="doc-biblioref">E. M. Rogers 2003</a>)</span>.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## stylized adoption curve</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,,<span class="dv">500</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.16</span>, <span class="fl">0.5</span>, <span class="fl">0.84</span>)</span>
@@ -856,13 +970,17 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,<span class="fu">pnorm</span>(x), <span class="at">lwd=</span><span class="dv">3</span>)</span>
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,<span class="fu">c</span>(<span class="st">"incident"</span>,<span class="st">"cumulative"</span>),<span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="fu">grey</span>(<span class="fl">0.65</span>),<span class="st">"black"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<section id="polygyny-threshold-model" class="level3" data-number="2.10.1">
-<h3 data-number="2.10.1" class="anchored" data-anchor-id="polygyny-threshold-model"><span class="header-section-number">2.10.1</span> Polygyny Threshold Model</h3>
+</div>
+<section id="polygyny-threshold-model" class="level3" data-number="3.10.1">
+<h3 data-number="3.10.1" class="anchored" data-anchor-id="polygyny-threshold-model"><span class="header-section-number">3.10.1</span> Polygyny Threshold Model</h3>
 <p>Another application of S-shaped curves in behavioral ecology is the Polygyny Threshold Model <span class="citation" data-cites="orians1969">(<a href="references.html#ref-orians1969" role="doc-biblioref">Orians 1969</a>)</span>.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Polygyny Threshold</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>logisfun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">n0=</span><span class="dv">1</span>,<span class="at">K=</span><span class="dv">100</span>,<span class="at">r=</span><span class="fl">0.05</span>,t,<span class="at">delay=</span><span class="dv">0</span>) n0<span class="sc">*</span><span class="fu">exp</span>(r<span class="sc">*</span>(t<span class="sc">-</span>delay))<span class="sc">/</span>((<span class="dv">1</span><span class="sc">+</span>n0<span class="sc">*</span>(<span class="fu">exp</span>(r<span class="sc">*</span>(t<span class="sc">-</span>delay))<span class="sc">-</span><span class="dv">1</span>)<span class="sc">/</span>K))</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -888,19 +1006,23 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">177</span>,<span class="fl">0.6</span>, <span class="fu">expression</span>(RS[S]<span class="sc">==</span>RS[P]), <span class="at">col=</span><span class="st">"red"</span>)</span>
 <span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,<span class="fu">c</span>(<span class="st">"primary"</span>,<span class="st">"secondary"</span>), <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">"magenta"</span>,<span class="st">"purple"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The fitness of the secondary mate is lower for all resource levels except the very highest. If the quality of an already-mated male’s territory is greater than an unmated male’s territory by <span class="math inline">\(\Delta_{RHC}\)</span>, then the fitness of the secondary female is greater than the fitness of a primary female mated to the male with the lower-quality territory. As a result, we expect a polygynous mating.</p>
 <p>For a quick-and-dirty solution, it is convenient to just represent some equation of interest as an <code>expression()</code>, define some parameters, and then get the function’s values by using <code>eval()</code>. In most cases, it is going to be better to write a function for your equation. In this case, it allowed us to find values for FRS from the two logistic curves associated with specific values of RHC. While it might be a bit more work to write a function, it will probably save effort in the long run. I often prototype plots using <code>expression()</code> and then write a function once I’ve worked out the general features of the plot.</p>
 </section>
 </section>
-<section id="evolutionary-stable-strategies" class="level2" data-number="2.11">
-<h2 data-number="2.11" class="anchored" data-anchor-id="evolutionary-stable-strategies"><span class="header-section-number">2.11</span> Evolutionary Stable Strategies</h2>
-<section id="rogers-paradox" class="level3" data-number="2.11.1">
-<h3 data-number="2.11.1" class="anchored" data-anchor-id="rogers-paradox"><span class="header-section-number">2.11.1</span> Rogers Paradox</h3>
+<section id="evolutionary-stable-strategies" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="evolutionary-stable-strategies"><span class="header-section-number">3.11</span> Evolutionary Stable Strategies</h2>
+<section id="rogers-paradox" class="level3" data-number="3.11.1">
+<h3 data-number="3.11.1" class="anchored" data-anchor-id="rogers-paradox"><span class="header-section-number">3.11.1</span> Rogers Paradox</h3>
 <p>Selection doesn’t necessarily increase mean fitness <span class="citation" data-cites="rogers1988">(<a href="references.html#ref-rogers1988" role="doc-biblioref">A. R. Rogers 1988</a>)</span>. Different Rogers.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Figure 1 from Rogers (1988)</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>wi <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">b=</span><span class="dv">1</span>,<span class="at">c=</span><span class="fl">0.9</span>) <span class="dv">1</span> <span class="sc">+</span> b<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>c)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>ws <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">b=</span><span class="dv">1</span>,<span class="at">s=</span><span class="dv">0</span>,p,<span class="at">u=</span><span class="fl">0.8</span>) <span class="dv">1</span> <span class="sc">+</span> (b<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>s)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p)<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>u))<span class="sc">/</span>(<span class="dv">1</span> <span class="sc">-</span> p<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>u))</span>
@@ -920,13 +1042,17 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"individual"</span>,<span class="st">"social"</span>,<span class="st">"mean"</span>), </span>
 <span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"black"</span>,<span class="fu">grey</span>(<span class="fl">0.75</span>)), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="producer-scrounger-game" class="level3" data-number="2.11.2">
-<h3 data-number="2.11.2" class="anchored" data-anchor-id="producer-scrounger-game"><span class="header-section-number">2.11.2</span> Producer-Scrounger Game</h3>
-<div class="cell" data-fig.asp="1">
+<section id="producer-scrounger-game" class="level3" data-number="3.11.2">
+<h3 data-number="3.11.2" class="anchored" data-anchor-id="producer-scrounger-game"><span class="header-section-number">3.11.2</span> Producer-Scrounger Game</h3>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">1</span>,,<span class="dv">200</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>wthief <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="fl">1.5</span> <span class="sc">-</span> <span class="dv">2</span><span class="sc">*</span>p1)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>wfarmer <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">1.2</span><span class="sc">*</span>p1)</span>
@@ -946,16 +1072,20 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>,<span class="st">"black"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>))</span>
 <span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">3</span>,<span class="at">at=</span><span class="fl">0.625</span>,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">"ESS"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Draw arrows to show the equilibrium and its stability.</p>
 <p><strong><em>Graphics Tip:</em></strong> Note how we marked the location of the ESS on the top of the plot using <code>axis(3)</code>!</p>
 </section>
 </section>
-<section id="prey-choice-model" class="level2" data-number="2.12">
-<h2 data-number="2.12" class="anchored" data-anchor-id="prey-choice-model"><span class="header-section-number">2.12</span> Prey-Choice Model</h2>
-<div class="cell" data-fig.asp="1">
+<section id="prey-choice-model" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="prey-choice-model"><span class="header-section-number">3.12</span> Prey-Choice Model</h2>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">20</span>,<span class="at">length=</span><span class="dv">500</span>)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x,b) {</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span> <span class="sc">-</span> <span class="fu">exp</span>(<span class="sc">-</span>b<span class="sc">*</span>(x<span class="dv">-1</span>))</span>
@@ -979,15 +1109,19 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="fl">5.5</span>,<span class="dv">0</span>,<span class="fl">7.4</span>,<span class="dv">0</span>, <span class="at">lwd=</span><span class="dv">10</span>, <span class="at">col=</span><span class="st">"green"</span>, <span class="at">lend=</span><span class="dv">2</span>) </span>
 <span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="fl">6.45</span>,<span class="fl">0.04825</span>, <span class="st">"Fallback Foods"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>In a bad year, diet breadth expands. The extent of this expansion is indicated by the green bar.</p>
 </section>
-<section id="linear-programming" class="level2" data-number="2.13">
-<h2 data-number="2.13" class="anchored" data-anchor-id="linear-programming"><span class="header-section-number">2.13</span> Linear Programming</h2>
+<section id="linear-programming" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="linear-programming"><span class="header-section-number">3.13</span> Linear Programming</h2>
 <p>From <span class="citation" data-cites="belovsky1987">Belovsky (<a href="references.html#ref-belovsky1987" role="doc-biblioref">1987</a>)</span>. Optimal diet for hunter-gatherers based on constraints on feeding time, digestive capacity, energy requirements, and protein needs. Uses linear programming to find the optimal solution. Belovsky shows that, contrary to much thinking about foraging, that hunter-gatherers tend to maximize either total food intake or protein and do not time-minimize.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">#### constraint functions</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="do">## feeding time constraint</span></span>
@@ -1046,16 +1180,20 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="dv">807</span>,ddy[<span class="dv">808</span>], <span class="at">pch=</span><span class="dv">21</span>, <span class="at">cex=</span><span class="fl">1.5</span>)</span>
 <span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="extreme-value-distribution-for-innovation" class="level2" data-number="2.14">
-<h2 data-number="2.14" class="anchored" data-anchor-id="extreme-value-distribution-for-innovation"><span class="header-section-number">2.14</span> Extreme-Value Distribution for Innovation</h2>
+<section id="extreme-value-distribution-for-innovation" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="extreme-value-distribution-for-innovation"><span class="header-section-number">3.14</span> Extreme-Value Distribution for Innovation</h2>
 <p>Innovation happens when the skill of some learner exceeds the current highest level of skill. The distribution for extreme values like this is know, oddly enough, as an extreme value distribution. There are a number of specific flavors of such distributions.</p>
 <p><span class="citation" data-cites="henrich2004">Henrich (<a href="references.html#ref-henrich2004" role="doc-biblioref">2004</a>)</span> suggests that the specific EVD for the highest skill is a Gumbel distribution (a type of extreme-value distribution). The level of skill that improves culture is <span class="math inline">\(z_h\)</span>. The probability that there will be models with skill level <span class="math inline">\(z_h\)</span> or better is small in smaller populations because this value is out in the tail of the distribution.</p>
 <p>Two parameters: <span class="math inline">\(\alpha\)</span> (difficulty) and <span class="math inline">\(z\)</span> (skillfulness), which are assumed independent.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extreme-value distribution package</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(evd)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">100</span>,,<span class="dv">500</span>)</span>
@@ -1067,16 +1205,20 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">60</span>,<span class="at">lty=</span><span class="dv">2</span>)</span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(z[h]),<span class="dv">1</span>, <span class="at">at=</span><span class="dv">60</span>, <span class="at">padj=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Note that in the more-innovative population, far more individuals exceed the critical threshold <span class="math inline">\(z_h\)</span>, but also way more people are clearly bad at the skill.</p>
 <p>This result flows precisely from the assumption that learner’s skill follows a Gumbel distribution (i.e., Henrich 2004). It is perfectly fair to ask if this is a reasonable model, but we do know that innovation cultures make a lot of mistakes.</p>
 </section>
-<section id="the-right-ibis" class="level2" data-number="2.15">
-<h2 data-number="2.15" class="anchored" data-anchor-id="the-right-ibis"><span class="header-section-number">2.15</span> The Right Ibis</h2>
+<section id="the-right-ibis" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="the-right-ibis"><span class="header-section-number">3.15</span> The Right Ibis</h2>
 <p><span class="citation" data-cites="leslie_winterhalder2002">Leslie and Winterhalder (<a href="references.html#ref-leslie_winterhalder2002" role="doc-biblioref">2002</a>)</span> describe a bespoke utility function they call the <em>right ibis</em> model. We can code that and then use it to illustrate Tainter’s model of social collapse.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ribis <span class="ot">&lt;-</span> <span class="cf">function</span>(x,m,n,r){</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(x<span class="sc">&lt;</span><span class="dv">0</span> <span class="sc">|</span> x<span class="sc">&gt;=</span>r){</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    ibis <span class="ot">&lt;-</span> <span class="dv">0</span></span>
@@ -1123,19 +1265,23 @@ X_{t+1} = aX_t(1 -X_t),
 <span id="cb36-44"><a href="#cb36-44" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(C[opt]),<span class="dv">1</span>, <span class="at">at=</span><span class="dv">8</span>, <span class="at">padj=</span><span class="dv">1</span>)</span>
 <span id="cb36-45"><a href="#cb36-45" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="fu">expression</span>(C[hi]),<span class="dv">1</span>, <span class="at">at=</span><span class="dv">15</span>, <span class="at">padj=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="autocorrelated-time-series" class="level2" data-number="2.16">
-<h2 data-number="2.16" class="anchored" data-anchor-id="autocorrelated-time-series"><span class="header-section-number">2.16</span> Autocorrelated Time Series</h2>
+<section id="autocorrelated-time-series" class="level2" data-number="3.16">
+<h2 data-number="3.16" class="anchored" data-anchor-id="autocorrelated-time-series"><span class="header-section-number">3.16</span> Autocorrelated Time Series</h2>
 <p>Sometimes you want to plot a time series for illustrative purposes. More interesting time series, like most actual biophysical series, are likely to show some positive autocorrelation. The AR(1) model is simple model that can produce interesting plots. It is the simplest of the autoregressive models, where the state in the present depends only on the state in the previous time step. A</p>
 <p><span class="math display">\[
 X_{t+1} = \varphi X_t + \varepsilon_t
 \]</span></p>
 <p>The parameter <span class="math inline">\(\varphi\)</span> is the autocorrelation coefficient and <span class="math inline">\(\varepsilon_t\)</span> is the shock or “innovation” at time <span class="math inline">\(t\)</span>, which is taken to be <span class="math inline">\(\varepsilon \sim \mathcal{N}(0,\sigma^2)\)</span>.</p>
 <p>We might use this model to represent volatile income of an individual hunter:</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ac1fun <span class="ot">&lt;-</span> <span class="cf">function</span>(xo,alpha,sigma,tmax){</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,tmax<span class="sc">+</span><span class="dv">1</span>)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  x[<span class="dv">1</span>] <span class="ot">&lt;-</span> xo</span>
@@ -1162,7 +1308,11 @@ X_{t+1} = \varphi X_t + \varepsilon_t
 <span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>,<span class="at">labels=</span><span class="cn">FALSE</span>)</span>
 <span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a><span class="fu">box</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Calculate frequency spectrum</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1174,19 +1324,23 @@ X_{t+1} = \varphi X_t + \varepsilon_t
 <span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Frequency (1/day)"</span>, <span class="at">ylab=</span><span class="st">"Spectral Density"</span>)</span>
 <span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="fu">bquote</span>(.(ttext) <span class="sc">~</span> alpha<span class="sc">==</span><span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-26-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-26-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><code>spectrum</code> calculates the frequency axis in terms of cycles per sampling interval; it makes more sense to convert to cycles per unit time (so divide by the sampling interval). The spectrum is generally far more interpretable if it is smoothed. To do this, we use the argument <code>spans</code>, which specifies the parameter(s) for the what is known as the <em>modified Daniell kernel</em> for smoothing the spectrum. The modified Daniell kernel is essentially just a running average (see code below for a sense of what these parameters do). There is no hard-and-fast rule for how to do this (try a couple different values), but the higher the number of spans, the more smoothing and the lower the peaks of the spectrum will be.</p>
 <p>The default for <code>spectrum</code> is to calculate the spectrum on a log-scale. Use the argument <code>log="no"</code> to change this default. Note also that the spectrum needs to be multiplied by 2 to make it actually equal to variance!</p>
 </section>
-<section id="how-wavelets-work" class="level2" data-number="2.17">
-<h2 data-number="2.17" class="anchored" data-anchor-id="how-wavelets-work"><span class="header-section-number">2.17</span> How Wavelets Work</h2>
+<section id="how-wavelets-work" class="level2" data-number="3.17">
+<h2 data-number="3.17" class="anchored" data-anchor-id="how-wavelets-work"><span class="header-section-number">3.17</span> How Wavelets Work</h2>
 <p>Wavelets are like spectral analysis, but they work at multiple scales. Suppose we have a series <span class="math inline">\(x(t)\)</span>. The wavelet transform involves multiplying the series by the wavelet which has been stretched to various scales spanning the series and summing this product. The scale is determined by the parameter <span class="math inline">\(\tau\)</span>. Note how conceptually similar this is to calculating the covariance of two variables.</p>
 <p><span class="math display">\[
 W_x(a,\tau) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t)\psi^* \left(\frac{t-\tau}{a}\right) dt = \int_{-\infty}^{\infty} x(t)\psi^*_{a,\tau}(t) dt
 \]</span></p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biwavelet)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>morlet <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">exp</span>(<span class="sc">-</span>x<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">*</span> <span class="fu">cos</span>(<span class="dv">5</span><span class="sc">*</span>x)</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>,<span class="at">length=</span><span class="dv">1000</span>)</span>
@@ -1196,11 +1350,15 @@ W_x(a,\tau) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t)\psi^* \left(\frac{
 <span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">""</span>,<span class="at">ylab=</span><span class="fu">expression</span>(psi[a,tau](t)))</span>
 <span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lwd=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Now generate a periodic series and overlay on the mother wavelet.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>x)<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>pi<span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y,<span class="at">type=</span><span class="st">"l"</span>,  <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"purple4"</span>,</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.1</span>,<span class="fl">1.1</span>),</span>
@@ -1208,11 +1366,15 @@ W_x(a,\tau) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t)\psi^* \left(\frac{
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lwd=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">3</span>)</span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,<span class="fu">eval</span>(f), <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We can see that the wavelet captures this periodic variation pretty well. The wavelet transform of the signal (red) shows that most of the function lies above the <span class="math inline">\(x=0\)</span> line and its sum is strongly positive.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">diff</span>(x)</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>dx <span class="ot">&lt;-</span> <span class="fu">c</span>(dx,dx[<span class="dv">999</span>])</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1220,11 +1382,15 @@ W_x(a,\tau) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t)\psi^* \left(\frac{
 <span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"integrand, "</span>, psi[a,tau](t), <span class="fu">x</span>(t))))</span>
 <span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>What happens when the signal is not well matched by the wavelet? In the next figure, the signal in black is largely random with respect to the mother wavelet. When we plot the wavelet transform of this signal (red), there is approximately an equal amount of area above and below the the <span class="math inline">\(x=0\)</span> line and the sum is effectively zero.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># another function</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>f1 <span class="ot">&lt;-</span> <span class="fu">expression</span>(<span class="fu">cos</span>(<span class="dv">12</span><span class="sc">*</span>pi<span class="sc">*</span>x)<span class="sc">*</span><span class="fu">exp</span>(<span class="sc">-</span>pi<span class="sc">*</span>x<span class="sc">^</span><span class="dv">2</span>))</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x,y,<span class="at">type=</span><span class="st">"l"</span>,  <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"purple4"</span>,</span>
@@ -1233,18 +1399,26 @@ W_x(a,\tau) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t)\psi^* \left(\frac{
 <span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lwd=</span><span class="fl">0.5</span>, <span class="at">lty=</span><span class="dv">3</span>)</span>
 <span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(x,<span class="fu">eval</span>(f1), <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, y<span class="sc">*</span><span class="fu">eval</span>(f1)<span class="sc">*</span>dx, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">xlab=</span><span class="st">"x"</span>,</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">"integrand, "</span>, psi[a,tau](t), <span class="fu">x</span>(t))))</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="drawing_files/figure-html/unnamed-chunk-30-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="drawing_files/figure-html/unnamed-chunk-30-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="to-do" class="level2" data-number="2.18">
-<h2 data-number="2.18" class="anchored" data-anchor-id="to-do"><span class="header-section-number">2.18</span> To Do</h2>
+<section id="to-do" class="level2" data-number="3.18">
+<h2 data-number="3.18" class="anchored" data-anchor-id="to-do"><span class="header-section-number">3.18</span> To Do</h2>
 <ol type="1">
 <li>Splines</li>
 <li>Fitness surface/contour plot</li>
@@ -1256,7 +1430,7 @@ W_x(a,\tau) = \frac{1}{\sqrt{a}} \int_{-\infty}^{\infty} x(t)\psi^* \left(\frac{
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-vanbaalen_sabelis1995" class="csl-entry" role="listitem">
 Baalen, M. van, and M. W. Sabelis. 1995. <span>“The Dynamics of Multiple Infection and the Evolution of Virulence.”</span> <em>American Naturalist</em> 146 (6): 881–910. <a href="http://www.jstor.org/stable/2463102">http://www.jstor.org/stable/2463102</a>.
 </div>
@@ -1350,18 +1524,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1393,11 +1556,48 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1407,8 +1607,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1420,7 +1629,129 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1464,6 +1795,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1489,6 +1821,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1550,17 +1908,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./interpreting.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span>
+      <a href="./interpreting.html" class="pagination-link" aria-label="Interpreting Scientific Figures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./graphs.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./graphs.html" class="pagination-link" aria-label="Actual Graphs">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

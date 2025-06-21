@@ -116,12 +116,14 @@ Simple Example of the optimal trade-off between adult reproductive value ($E$) a
 
 When we plot the allowable combinations of $\log(S)$ and $\log(E)$, we get a convex plot of the iso-fitness plot linking the logs of $E$ and $S$, which indicates diminishing marginal returns in both dimensions. The optimal life history is the one for which a line with a slope of -1 is tangent to this iso-fitness constraint curve. Why? The fitness measure (assuming population stationarity) is $R_0 = S\, E$. Take logs such that $\log(R_0) = \log E + \log S$ and differentiate with respect to age at first reproduction ($\alpha$; which, in Charnov's formalism, is the control parameter for the life history):
 
-$$ \frac{d \log R_0}{d\alpha} = \frac{d \log E}{d\alpha} + \frac{d \log S}{d\alpha}.
+$$ 
+\frac{d \log R_0}{d\alpha} = \frac{d \log E}{d\alpha} + \frac{d \log S}{d\alpha}.
 $$
 
 Set this equal to zero and rearrange. Divide $d\log E/d\log \alpha$ by $d\log S/d\log \alpha$ and we find the optimality criterion:
 
-$$ \frac{d\log E}{d \log S} = -1.
+$$ 
+\frac{d\log E}{d \log S} = -1.
 $$
 
 ```{r}
