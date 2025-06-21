@@ -293,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="1.5" class="anchored" data-anchor-id="rhesus-money-grooming-network"><span class="header-section-number">1.5</span> Rhesus Money Grooming Network</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(igraph)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>rhesus <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"~/Teaching/social_networks/data/sade1.txt"</span>, <span class="at">skip=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>rhesus <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./data/sade1.txt"</span>, <span class="at">skip=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rhesus <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(rhesus)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>nms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"066"</span>, <span class="st">"R006"</span>, <span class="st">"CN"</span>, <span class="st">"ER"</span>, <span class="st">"CY"</span>, <span class="st">"EC"</span>, <span class="st">"EZ"</span>, <span class="st">"004"</span>, <span class="st">"065"</span>, <span class="st">"022"</span>, <span class="st">"076"</span>, </span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">"AC"</span>, <span class="st">"EK"</span>, <span class="st">"DL"</span>, <span class="st">"KD"</span>, <span class="st">"KE"</span>)</span>
@@ -321,12 +321,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <ul>
-<li><p>A note on loading data: the above code loads a data file apparently called <code>"../data/sade1.txt"</code></p></li>
+<li><p>A note on loading data: the above code loads a data file apparently called <code>"./data/sade1.txt"</code></p></li>
 <li><p>What does that mean?</p></li>
-<li><p>The two dots followed by a slash, <code>../</code>, mean to go out one directory in the hierachy</p></li>
-<li><p>In this higher-level directory, there will then be a subdirectory named <code>data</code> and in this subdirectory will be a file called <code>sade1.txt</code></p></li>
-<li><p>I do this because I assume that you’re running this code from the <code>intro-r.R</code> script in the <code>scripts</code> subdirectory of the <code>AABA2023_Workshop</code> directory</p></li>
+<li><p>The one dot followed by a slash, <code>./</code>, means to go into the sub-directory called <code>data</code>, which is in our current working directory, and read the text file called <code>sade1.txt</code></p></li>
+<li><p>If the <code>data</code> sub-directory was actually in, say, the same directory where our working directory is located (i.e., they were two sub-directories of the same higher-level folder), we would use two dots, <code>../</code>, which means to go out one directory in the hierarchy</p></li>
 <li><p>This is actually not <code>R</code> but the underlying OS file system</p></li>
+<li><p>Learning about the file/directory structure of your computer is actually an important (and under-appreciated) data-science skill</p></li>
+<li><p>Check out the fantastic MIT course <a href="https://missing.csail.mit.edu/">The Missing Semester of Your CS Education</a> for information on various tools that can really improve your workflows and general skill-level</p></li>
 </ul>
 </section>
 <section id="a-few-conventions-and-other-helpful-bits" class="level2" data-number="1.6">
@@ -414,10 +415,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 20 normally distributed random numbers</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.96172623  1.68611866 -0.65642461  0.34190327  0.08420069 -1.54085582
- [7] -0.60839316 -1.11892284 -1.90972598 -0.22387426  0.49562882 -0.93681181
-[13] -0.58741782  1.02987013  0.80638004 -0.48112871  1.96197665 -1.11918639
-[19]  0.95799294  0.73079666</code></pre>
+<pre><code> [1]  1.00590435 -1.23976436  0.51011776  0.08096098 -0.01256886  0.59723010
+ [7] -0.21482994 -0.30571274 -0.58535146 -0.73145576  0.58783811 -0.78487721
+[13]  0.66704158 -0.97025870 -0.63009894  0.02426134  0.59010540  0.89823446
+[19] -0.74756853 -1.13593199</code></pre>
 </div>
 </div>
 </section>
@@ -830,7 +831,7 @@ Blond     3   30     5     8</code></pre>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># read a space-delimitted file (a sociomatrix of kids 17 kids aggressive acts toward each other)</span></span>
-<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>(kids <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"~/Teaching/social_networks/data/strayer_strayer1976-fig2.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>(kids <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./data/strayer_strayer1976-fig2.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   V1 V2 V3 V4 V5 V6 V7 V8 V9 V10 V11 V12 V13 V14 V15 V16 V17
 1   0  1  3  4  1  0  0  1  1   0   1   0   7   0   1   0   0
@@ -857,7 +858,7 @@ Blond     3   30     5     8</code></pre>
 <li><p>Frequently, there will be non-tabular information at the top of a file (e.g., meta-data describing the data set). Use the <code>skip=n</code> option, where <code>n</code> is the number of lines you want skipped.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>quercus <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"~/Teaching/social_networks/data/quercus.txt"</span>, <span class="at">skip=</span><span class="dv">24</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a>quercus <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"./data/quercus.txt"</span>, <span class="at">skip=</span><span class="dv">24</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
 <span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(quercus)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    Species   Region Range acorn.size tree.height
@@ -911,7 +912,7 @@ Blond     3   30     5     8</code></pre>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load it again because we cleared all objects!</span></span>
-<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>quercus <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"~/Teaching/social_networks/data/quercus.txt"</span>, <span class="at">skip=</span><span class="dv">24</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a>quercus <span class="ot">&lt;-</span> <span class="fu">read.delim</span>(<span class="st">"./data/quercus.txt"</span>, <span class="at">skip=</span><span class="dv">24</span>, <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
 <span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(quercus<span class="sc">$</span>tree.height, quercus<span class="sc">$</span>acorn.size, <span class="at">pch=</span><span class="dv">16</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">xlab=</span><span class="st">"Tree Height (m)"</span>, <span class="at">ylab=</span><span class="st">"Acorn Size (cm3)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -1114,7 +1115,7 @@ Blond     3   30     5     8</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>donner <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"~/Teaching/social_networks/data/donner.dat"</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">skip=</span><span class="dv">2</span>)</span>
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a>donner <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./data/donner.dat"</span>, <span class="at">header=</span><span class="cn">TRUE</span>, <span class="at">skip=</span><span class="dv">2</span>)</span>
 <span id="cb153-2"><a href="#cb153-2" aria-hidden="true" tabindex="-1"></a><span class="co"># survival=0 == died; male=0 == female</span></span>
 <span id="cb153-3"><a href="#cb153-3" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(donner, <span class="fu">table</span>(male,survival))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1360,7 +1361,7 @@ male  0  1
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="do">## load it again because we cleared all objects!</span></span>
-<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a>kids <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"~/Teaching/social_networks/data/strayer_strayer1976-fig2.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
+<span id="cb167-2"><a href="#cb167-2" aria-hidden="true" tabindex="-1"></a>kids <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"./data/strayer_strayer1976-fig2.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
 <span id="cb167-3"><a href="#cb167-3" aria-hidden="true" tabindex="-1"></a>kid.names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ro"</span>,<span class="st">"Ss"</span>,<span class="st">"Br"</span>,<span class="st">"If"</span>,<span class="st">"Td"</span>,<span class="st">"Sd"</span>,<span class="st">"Pe"</span>,<span class="st">"Ir"</span>,<span class="st">"Cs"</span>,<span class="st">"Ka"</span>,</span>
 <span id="cb167-4"><a href="#cb167-4" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Ch"</span>,<span class="st">"Ty"</span>,<span class="st">"Gl"</span>,<span class="st">"Sa"</span>, <span class="st">"Me"</span>,<span class="st">"Ju"</span>,<span class="st">"Sh"</span>)</span>
 <span id="cb167-5"><a href="#cb167-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(kids) <span class="ot">&lt;-</span> kid.names</span>
@@ -1419,7 +1420,7 @@ $x
  5.5000000 -0.0708709 53.5300000 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb173"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cross-tabulation of sex partners from NHSLS</span></span>
-<span id="cb173-2"><a href="#cb173-2" aria-hidden="true" tabindex="-1"></a>sextable <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"~/Teaching/social_networks/data/nhsls_sextable.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
+<span id="cb173-2"><a href="#cb173-2" aria-hidden="true" tabindex="-1"></a>sextable <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/nhsls_sextable.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
 <span id="cb173-3"><a href="#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(sextable)[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>,<span class="st">"hispanic"</span>,<span class="st">"asian"</span>,<span class="st">"other"</span>)</span>
 <span id="cb173-4"><a href="#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(sextable)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>,<span class="st">"hispanic"</span>,<span class="st">"asian"</span>,<span class="st">"other"</span>)</span>
 <span id="cb173-5"><a href="#cb173-5" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate marginals</span></span>

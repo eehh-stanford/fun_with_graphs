@@ -67,7 +67,7 @@ What follows are some old notes that are very Base-`R` focused. The thing is, ev
 #| message: false
 
 require(igraph)
-rhesus <- read.table("~/Teaching/social_networks/data/sade1.txt", skip=1, header=FALSE)
+rhesus <- read.table("./data/sade1.txt", skip=1, header=FALSE)
 rhesus <- as.matrix(rhesus)
 nms <- c("066", "R006", "CN", "ER", "CY", "EC", "EZ", "004", "065", "022", "076", 
          "AC", "EK", "DL", "KD", "KE")
@@ -87,17 +87,19 @@ plot(grhesus,
      layout=rhesus.layout)
 ```
 
-- A note on loading data: the above code loads a data file apparently called `"../data/sade1.txt"`
+- A note on loading data: the above code loads a data file apparently called `"./data/sade1.txt"`
 
 - What does that mean?
 
-- The two dots followed by a slash, `../`, mean to go out one directory in the hierachy
+- The one dot followed by a slash, `./`, means to go into the sub-directory called `data`, which is in our current working directory, and read the text file called `sade1.txt`
 
-- In this higher-level directory, there will then be a subdirectory named `data` and in this subdirectory will be a file called `sade1.txt`
-
-- I do this because I assume that you're running this code from the `intro-r.R` script in the `scripts` subdirectory of the `AABA2023_Workshop` directory
+- If the `data` sub-directory was actually in, say, the same directory where our working directory is located (i.e., they were two sub-directories of the same higher-level folder), we would use two dots, `../`, which means to go out one directory in the hierarchy
 
 - This is actually not `R` but the underlying OS file system
+
+- Learning about the file/directory structure of your computer is actually an important (and under-appreciated) data-science skill
+
+- Check out the fantastic MIT course [The Missing Semester of Your CS Education](https://missing.csail.mit.edu/) for information on various tools that can really improve your workflows and general skill-level
 
 ## A Few Conventions and Other Helpful Bits
 
@@ -425,7 +427,7 @@ getwd()
 
 ```{r}
 # read a space-delimitted file (a sociomatrix of kids 17 kids aggressive acts toward each other)
-(kids <- read.table("~/Teaching/social_networks/data/strayer_strayer1976-fig2.txt", header=FALSE))
+(kids <- read.table("./data/strayer_strayer1976-fig2.txt", header=FALSE))
 ```
 
 - If your file is delimited by something other than spaces, it is a good idea to use a slightly different function, `read.delim()` and specify exactly what the delimiter is
@@ -433,7 +435,7 @@ getwd()
 - Frequently, there will be non-tabular information at the top of a file (e.g., meta-data describing the data set). Use the `skip=n` option, where `n` is the number of lines you want skipped.
 
 ```{r}
-quercus <- read.delim("~/Teaching/social_networks/data/quercus.txt", skip=24, sep="\t", header=TRUE)
+quercus <- read.delim("./data/quercus.txt", skip=24, sep="\t", header=TRUE)
 head(quercus)
 ```
 
@@ -468,7 +470,7 @@ objects()
 
 ```{r}
 ## load it again because we cleared all objects!
-quercus <- read.delim("~/Teaching/social_networks/data/quercus.txt", skip=24, sep="\t", header=TRUE)
+quercus <- read.delim("./data/quercus.txt", skip=24, sep="\t", header=TRUE)
 plot(quercus$tree.height, quercus$acorn.size, pch=16, col="red", xlab="Tree Height (m)", ylab="Acorn Size (cm3)")
 ```
 
@@ -607,7 +609,7 @@ table(aaa)
 ```
 
 ```{r}
-donner <- read.table("~/Teaching/social_networks/data/donner.dat", header=TRUE, skip=2)
+donner <- read.table("./data/donner.dat", header=TRUE, skip=2)
 # survival=0 == died; male=0 == female
 with(donner, table(male,survival))
 # table along 3 dimensions
@@ -656,7 +658,7 @@ collection[o,]
 
 ```{r}
 ## load it again because we cleared all objects!
-kids <- read.table("~/Teaching/social_networks/data/strayer_strayer1976-fig2.txt", header=FALSE)
+kids <- read.table("./data/strayer_strayer1976-fig2.txt", header=FALSE)
 kid.names <- c("Ro","Ss","Br","If","Td","Sd","Pe","Ir","Cs","Ka",
                 "Ch","Ty","Gl","Sa", "Me","Ju","Sh")
 colnames(kids) <- kid.names
@@ -683,7 +685,7 @@ lapply(aaa,mean)
 # more compact as a vector
 sapply(aaa,mean)
 # cross-tabulation of sex partners from NHSLS
-sextable <- read.csv("~/Teaching/social_networks/data/nhsls_sextable.txt", header=FALSE)
+sextable <- read.csv("./data/nhsls_sextable.txt", header=FALSE)
 dimnames(sextable)[[1]] <- c("white","black","hispanic","asian","other")
 dimnames(sextable)[[2]] <- c("white","black","hispanic","asian","other")
 # calculate marginals
