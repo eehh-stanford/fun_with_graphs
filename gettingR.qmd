@@ -1,5 +1,6 @@
 # Getting Started in R {#sec-r}
 
+These notes will help get you started with `R`. They are mostly quite non-graphical, focusing instead on the basics of the `R` language.
 
 ## Setting up `R` and RStudio
 
@@ -8,13 +9,15 @@ To get started, you need to do two things:
 1. [Download R CRAN](https://ftp.osuosl.org/pub/cran/)
 2. [Download and Install RStudio](https://posit.co/download/rstudio-desktop/)
 
-`R` is the software. RStudio is what is known as an Integrated Development Environment (IDE). Basically, an IDE is a way of running base software the provides various tools to make the coding experience easier (e.g., an editor, debugger, and interactive graphics facilities).
+`R` is the software. RStudio is what is known as an Integrated Development Environment (IDE). Basically, an IDE is a way of running base software the provides various tools to make the coding experience easier (e.g., an editor with syntax highlighting, debugger, and interactive graphics facilities).
 
 Here is a brief video explaining what to do:
 
 {{< video https://youtu.be/m5BZkW54LI8 >}}
 
-What follows are some old notes that are very Base-`R` focused. The thing is, even though most people use the tidyverse these days, it's still valuable to understand Base-`R` (since that's what everything else is built upon!)
+What follows are some old notes that are very Base-`R` focused. The thing is, even though most people use the [tidyverse](https://www.tidyverse.org/) tools these days, it's still valuable to understand Base-`R` (since that's what everything else is built upon!). This is particularly true for the material that forms the bulk of these notes. Making theoretical scientific figures (chapter @sec-draw) is simply easier in Base-`R`. You typically don't need to do complex data wrangling to make a theoretical figure, so the powerful data-manipulation tools of `dplyr`, for instance, are unnecessary. Sometimes, we want to utilize the [`grid` package](https://www.stat.auckland.ac.nz/~paul/RG2e/), which underlies the tidyverse graphics library `ggplot2`, directly. Again, I find this more straightforward in Base-`R`. 
+
+The `igraph` package for drawing graphs (a.k.a., "networks") that we discuss in chapter @sec-graphs also runs in Base-`R`.
 
 ## What Is `R`?
 
@@ -697,6 +700,8 @@ sapply(sextable,sum)
 lapply(sextable,sum)
 ```
 
+- The `apply` family of functions used to be more widely used and have been largely supplanted by the immensely powerful tools in `dplyr` and the [tidyverse](https://www.tidyverse.org/) more generally
+
 ## Flow Control: `if`
 
 - `if` allows you to conditionally evaluate expressions.
@@ -760,9 +765,11 @@ for(i in 1:5) print(x[i])
 
 ```{r}
 library(igraph)
+#| warning: false
+#| message: false
 # might as well do something with it
 # a small graph
-g <- graph( c(1,2, 1,3, 2,3, 3,5), n=5 )
+g <- make_graph( c(1,2, 1,3, 2,3, 3,5), n=5 )
 plot(g)
 ```
 

@@ -242,6 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>These notes will help get you started with <code>R</code>. They are mostly quite non-graphical, focusing instead on the basics of the <code>R</code> language.</p>
 <section id="setting-up-r-and-rstudio" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="setting-up-r-and-rstudio"><span class="header-section-number">1.1</span> Setting up <code>R</code> and RStudio</h2>
 <p>To get started, you need to do two things:</p>
@@ -249,10 +250,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://ftp.osuosl.org/pub/cran/">Download R CRAN</a></li>
 <li><a href="https://posit.co/download/rstudio-desktop/">Download and Install RStudio</a></li>
 </ol>
-<p><code>R</code> is the software. RStudio is what is known as an Integrated Development Environment (IDE). Basically, an IDE is a way of running base software the provides various tools to make the coding experience easier (e.g., an editor, debugger, and interactive graphics facilities).</p>
+<p><code>R</code> is the software. RStudio is what is known as an Integrated Development Environment (IDE). Basically, an IDE is a way of running base software the provides various tools to make the coding experience easier (e.g., an editor with syntax highlighting, debugger, and interactive graphics facilities).</p>
 <p>Here is a brief video explaining what to do:</p>
 <div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/m5BZkW54LI8" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
-<p>What follows are some old notes that are very Base-<code>R</code> focused. The thing is, even though most people use the tidyverse these days, it’s still valuable to understand Base-<code>R</code> (since that’s what everything else is built upon!)</p>
+<p>What follows are some old notes that are very Base-<code>R</code> focused. The thing is, even though most people use the <a href="https://www.tidyverse.org/">tidyverse</a> tools these days, it’s still valuable to understand Base-<code>R</code> (since that’s what everything else is built upon!). This is particularly true for the material that forms the bulk of these notes. Making theoretical scientific figures (chapter <a href="drawing.html" class="quarto-xref"><span>Chapter 3</span></a>) is simply easier in Base-<code>R</code>. You typically don’t need to do complex data wrangling to make a theoretical figure, so the powerful data-manipulation tools of <code>dplyr</code>, for instance, are unnecessary. Sometimes, we want to utilize the <a href="https://www.stat.auckland.ac.nz/~paul/RG2e/"><code>grid</code> package</a>, which underlies the tidyverse graphics library <code>ggplot2</code>, directly. Again, I find this more straightforward in Base-<code>R</code>.</p>
+<p>The <code>igraph</code> package for drawing graphs (a.k.a., “networks”) that we discuss in chapter <a href="graphs.html" class="quarto-xref"><span>Chapter 4</span></a> also runs in Base-<code>R</code>.</p>
 </section>
 <section id="what-is-r" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="what-is-r"><span class="header-section-number">1.2</span> What Is <code>R</code>?</h2>
@@ -415,10 +417,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 20 normally distributed random numbers</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  1.00590435 -1.23976436  0.51011776  0.08096098 -0.01256886  0.59723010
- [7] -0.21482994 -0.30571274 -0.58535146 -0.73145576  0.58783811 -0.78487721
-[13]  0.66704158 -0.97025870 -0.63009894  0.02426134  0.59010540  0.89823446
-[19] -0.74756853 -1.13593199</code></pre>
+<pre><code> [1] -0.81593989  2.24630796 -1.15295773 -0.37259112  0.01241681  0.60826224
+ [7]  0.91377992 -0.54673530  0.36271025  0.88816594  0.86262646 -1.59792735
+[13] -1.14458520  0.33999846  0.19558133 -1.38506401  0.40395654 -2.49976083
+[19]  0.28283065  0.48229027</code></pre>
 </div>
 </div>
 </section>
@@ -1459,6 +1461,9 @@ $other
 [1] 40</code></pre>
 </div>
 </div>
+<ul>
+<li>The <code>apply</code> family of functions used to be more widely used and have been largely supplanted by the immensely powerful tools in <code>dplyr</code> and the <a href="https://www.tidyverse.org/">tidyverse</a> more generally</li>
+</ul>
 </section>
 <section id="flow-control-if" class="level2" data-number="1.23">
 <h2 data-number="1.23" class="anchored" data-anchor-id="flow-control-if"><span class="header-section-number">1.23</span> Flow Control: <code>if</code></h2>
@@ -1529,14 +1534,12 @@ $other
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb189"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
-<span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="co"># might as well do something with it</span></span>
-<span id="cb189-3"><a href="#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="co"># a small graph</span></span>
-<span id="cb189-4"><a href="#cb189-4" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph</span>( <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">1</span>,<span class="dv">3</span>, <span class="dv">2</span>,<span class="dv">3</span>, <span class="dv">3</span>,<span class="dv">5</span>), <span class="at">n=</span><span class="dv">5</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: `graph()` was deprecated in igraph 2.1.0.
-ℹ Please use `make_graph()` instead.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb189-3"><a href="#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb189-4"><a href="#cb189-4" aria-hidden="true" tabindex="-1"></a><span class="co"># might as well do something with it</span></span>
+<span id="cb189-5"><a href="#cb189-5" aria-hidden="true" tabindex="-1"></a><span class="co"># a small graph</span></span>
+<span id="cb189-6"><a href="#cb189-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">make_graph</span>( <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">1</span>,<span class="dv">3</span>, <span class="dv">2</span>,<span class="dv">3</span>, <span class="dv">3</span>,<span class="dv">5</span>), <span class="at">n=</span><span class="dv">5</span> )</span>
+<span id="cb189-7"><a href="#cb189-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

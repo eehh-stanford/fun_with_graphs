@@ -157,14 +157,13 @@ plot(g, layout=tri.coords, vertex.color="skyblue2",vertex.label.family="Helvetic
 
 The sociomatrix corresponding to our triangle is
 
-```{=tex}
 \begin{equation}
 \mathbf{A} = \left[ \begin{array}{cccc} 
  0   &  1   & 1 \\
  1   &  0   & 1 \\
  1   &  1   & 0  \end{array} \right]. 
 \end{equation}
-```
+
 By convention, the diagonal elements of a sociomatrix are all zero (i.e., self-loops are not allowed). Sociomatrix $\mathbf{A}$ in the equation above is symmetric ($a_{ij} = a_{ji}$) because the graph is undirected. For a digraph, the upper triangle (i.e., matrix elements above the diagonal) of the sociomatrix will generally be different than the lower triangle.
 
 Most primatologists/behavioral ecologists probably have experience thinking in terms of adjacency matrices. An example of an adjacency matrix is the pairwise interaction matrices (e.g., agonistic or affiliative interactions) that we construct from behavioral observations.
@@ -236,7 +235,11 @@ plot(g3, vertex.color="skyblue2",
 
 The layout is of any given plot is random (e.g., plot the same graph repeatedly and you'll see that the layout changes with each plot). `igraph` provides a tool for tinkering with the layout called `tkplot()`. Call `tkplot()` and it will open an X11 window (on Macs at least). Select and drag the vertices into the layout you want, then use `tkplot.getcoords(gid)` to get the coordinates (where `gid` is the graph id returned when calling `tkplot()` on your graph).
 
-<center>![tkplot() window of triangle graph](figures/tkplot_screenshot.png){width="50%"}</center>
+<center>
+
+![tkplot() window of triangle graph](figures/tkplot_screenshot.png){width="50%"}
+
+</center>
 
 ```{r}
 g <- graph( c(1,2, 2,3, 1,3), n=3, dir=FALSE)
