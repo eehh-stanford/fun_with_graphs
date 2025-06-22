@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Fun with Graphs - 4&nbsp; ODEs in R</title>
+<title>5&nbsp; ODEs in R – Fun with Graphs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -90,17 +91,25 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/videojs/video.min.js"></script>
+<link href="site_libs/quarto-contrib/videojs/video-js.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,13 +118,42 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -125,12 +163,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./odes.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ODEs in `R`</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./odes.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -140,7 +178,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Fun with Graphs</a> 
@@ -161,26 +199,32 @@ div.csl-indent {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./gettingR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./interpreting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./drawing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./graphs.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./odes.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -192,20 +236,20 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#lotka-volterra-model" id="toc-lotka-volterra-model" class="nav-link active" data-scroll-target="#lotka-volterra-model"><span class="header-section-number">4.1</span> Lotka-Volterra Model</a>
+  <li><a href="#lotka-volterra-model" id="toc-lotka-volterra-model" class="nav-link active" data-scroll-target="#lotka-volterra-model"><span class="header-section-number">5.1</span> Lotka-Volterra Model</a>
   <ul class="collapse">
-  <li><a href="#rosenzweig-macarthur" id="toc-rosenzweig-macarthur" class="nav-link" data-scroll-target="#rosenzweig-macarthur"><span class="header-section-number">4.1.1</span> Rosenzweig-MacArthur</a></li>
+  <li><a href="#rosenzweig-macarthur" id="toc-rosenzweig-macarthur" class="nav-link" data-scroll-target="#rosenzweig-macarthur"><span class="header-section-number">5.1.1</span> Rosenzweig-MacArthur</a></li>
   </ul></li>
-  <li><a href="#sir-model" id="toc-sir-model" class="nav-link" data-scroll-target="#sir-model"><span class="header-section-number">4.2</span> SIR Model</a></li>
-  <li><a href="#measles-model" id="toc-measles-model" class="nav-link" data-scroll-target="#measles-model"><span class="header-section-number">4.3</span> Measles Model</a></li>
-  <li><a href="#lorenz-attractor" id="toc-lorenz-attractor" class="nav-link" data-scroll-target="#lorenz-attractor"><span class="header-section-number">4.4</span> Lorenz Attractor</a></li>
+  <li><a href="#sir-model" id="toc-sir-model" class="nav-link" data-scroll-target="#sir-model"><span class="header-section-number">5.2</span> SIR Model</a></li>
+  <li><a href="#measles-model" id="toc-measles-model" class="nav-link" data-scroll-target="#measles-model"><span class="header-section-number">5.3</span> Measles Model</a></li>
+  <li><a href="#lorenz-attractor" id="toc-lorenz-attractor" class="nav-link" data-scroll-target="#lorenz-attractor"><span class="header-section-number">5.4</span> Lorenz Attractor</a></li>
   </ul>
 </nav>
     </div>
@@ -214,7 +258,7 @@ div.csl-indent {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-odes" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></h1>
+<h1 class="title"><span id="sec-odes" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></h1>
 </div>
 
 
@@ -227,16 +271,18 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <p>We can also use <code>R</code> to numerically integrate systems of ordinary differential equations (ODEs). These are commonly used in ecology and epidemiology.</p>
 <p>We do this using the package <code>deSolve</code>, which has some excellent learning <a href="https://cran.r-project.org/web/packages/deSolve/index.html">resources</a> to support it (check out the vignettes).</p>
-<section id="lotka-volterra-model" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="lotka-volterra-model"><span class="header-section-number">4.1</span> Lotka-Volterra Model</h2>
+<section id="lotka-volterra-model" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="lotka-volterra-model"><span class="header-section-number">5.1</span> Lotka-Volterra Model</h2>
 <p>The Italian biologist Humberto D’Ancona noted that during the first World War, the composition of fish in the markets around the Adriatic Sea changed substantially. During the war, the percentage of predatory fish for sale in the markets of Trieste, Fiume, and Venice increased. D’Ancona had no explanation for this and approached his father-in-law, the eminent mathematician Vito Volterra, with the riddle. Volterra’s solution forms the foundation for nearly all subsequent theory regarding the interaction of species within communities. The great American biologist and demographer, Alfred Lotka, developed the same framework about the same time and the equations have since been known as the Lotka-Volterra model for predatory/prey dynamics.</p>
 <p>The classical theory of species interactions is attributable to Alfred Lotka and Vito Volterra involves reducing communities to a single consumer-resource relationship – typically between a primary consumer (i.e., a herbivore) and a secondary consumer (i.e., a carnivore).</p>
 <p>The assumptions of Lotka-Volterra model include: - in the absence of a predator, the prey population increases exponentially - in the absence of prey, the predator population decays exponentially - per capita rate of kill a linear function of prey density - each kill contributes equally to predator growth</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(deSolve)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>lv <span class="ot">&lt;-</span> <span class="cf">function</span>(t, x, parms) {</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">as.list</span>(parms), {</span>
@@ -257,18 +303,26 @@ div.csl-indent {
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(out1, <span class="fu">lines</span>(time, x2, ,<span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"blue"</span>))</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,<span class="fu">c</span>(<span class="st">"prey"</span>,<span class="st">"predator"</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">with</span>(out1, <span class="fu">plot</span>(x1, x2, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">col=</span><span class="st">"magenta"</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">xlab=</span><span class="st">"Prey Population Size"</span>, <span class="at">ylab=</span><span class="st">"Predator Population Size"</span>,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">90</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<section id="rosenzweig-macarthur" class="level3" data-number="4.1.1">
-<h3 data-number="4.1.1" class="anchored" data-anchor-id="rosenzweig-macarthur"><span class="header-section-number">4.1.1</span> Rosenzweig-MacArthur</h3>
+</div>
+<section id="rosenzweig-macarthur" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="rosenzweig-macarthur"><span class="header-section-number">5.1.1</span> Rosenzweig-MacArthur</h3>
 <p><span class="citation" data-cites="rosenzweig_macarthur1963">Rosenzweig and MacArthur (<a href="references.html#ref-rosenzweig_macarthur1963" role="doc-biblioref">1963</a>)</span> include two elements of ecological realism in their extension of the classic Lotka-Volterra model. First, they include density-dependence of the prey population. The growth of the prey population in the absence of the predator is no longer exponential, but is now a function of current size of the population, with a fixed upper limit to total prey population size. Second, the kill rate of predators is no longer linear. Predators have a <em>functional response</em> to prey abundance. In particular, the number of prey harvested by predators saturates, reflecting the eventual satiation of the predators. Here, I present slightly modified code for the Rosenzsweig-MacArthur model presented in <span class="citation" data-cites="stevens2009">Stevens (<a href="references.html#ref-stevens2009" role="doc-biblioref">2009</a>)</span>.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(deSolve)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">### Lotka-Volterra with Type II Functional Response</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Rosenzweig &amp; MacArthur (1963) model</span></span>
@@ -305,14 +359,19 @@ div.csl-indent {
 <span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(RM1[,<span class="st">"time"</span>], RM1[,<span class="st">"predator"</span>], <span class="at">col=</span><span class="st">"orange"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>,<span class="fu">c</span>(<span class="st">"Predator"</span>,<span class="st">"Prey"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">"orange"</span>,<span class="st">"blue"</span>),<span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>No more cycles!</p>
+<p>I have created a shiny app that allows you to interact with the Lotka-Volterra model <a href="https://juemos.shinyapps.io/lotka-volterra/">here</a>. Using the model of <span class="citation" data-cites="hastings_powell1991">Hastings and Powell (<a href="references.html#ref-hastings_powell1991" role="doc-biblioref">1991</a>)</span>, I’ve made <a href="https://juemos.shinyapps.io/chaoticlv/">another shiny app</a> that shows how a model with just three trophic levels, parameterized with realistic values for the parameters, can display chaotic dynamics.</p>
 </section>
 </section>
-<section id="sir-model" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="sir-model"><span class="header-section-number">4.2</span> SIR Model</h2>
+<section id="sir-model" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sir-model"><span class="header-section-number">5.2</span> SIR Model</h2>
 <p>We start with a simple Susceptible-Infeced-Recovered (SIR) epidemic. The SIR epidemic is a system of three coupled ODEs.</p>
 <ul>
 <li><p>Simple model for a closed-population (i.e., no births or deaths)</p></li>
@@ -352,7 +411,7 @@ div.csl-indent {
 <li><p>The solver will return the solutions as a matrix; we coerce this using <code>data.frame()</code> to make it easier to work with, plot, etc.</p></li>
 <li><p>Once we have the data frame, we name the columns to make them easier to refer to</p></li>
 </ul>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fl">1e4</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>parms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">N=</span>N,<span class="at">beta=</span><span class="fl">0.0001</span>, <span class="at">nu =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">2.5</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="fl">0.1</span>)</span>
@@ -367,24 +426,32 @@ div.csl-indent {
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(stateMatrix[,<span class="st">"time"</span>], stateMatrix[,<span class="st">"R"</span>], <span class="at">col=</span><span class="st">"green"</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"right"</span>, <span class="fu">c</span>(<span class="st">"S"</span>,<span class="st">"I"</span>,<span class="st">"R"</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue"</span>,<span class="st">"red"</span>,<span class="st">"green"</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Plot the phase portrait.</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stateMatrix[,<span class="st">"S"</span>], stateMatrix[,<span class="st">"I"</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"blue"</span>,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Susceptible"</span>, <span class="at">ylab=</span><span class="st">"Infected"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
-<section id="measles-model" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="measles-model"><span class="header-section-number">4.3</span> Measles Model</h2>
+<section id="measles-model" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="measles-model"><span class="header-section-number">5.3</span> Measles Model</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figures/seir.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">State diagram for the SEIR model.</figcaption>
+<figcaption>State diagram for the SEIR model.</figcaption>
 </figure>
 </div>
 <ul>
@@ -395,7 +462,7 @@ div.csl-indent {
 <li><p>Model is a damped oscillator</p></li>
 </ul>
 <p>Based on this parameterization, what is the life expectancy of individuals in the population? How long is the latent period? How long are cases infectious?</p>
-<div class="cell" data-fig.asp="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>seir <span class="ot">&lt;-</span> <span class="cf">function</span>(t,x,parms){</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    S <span class="ot">&lt;-</span> x[<span class="dv">1</span>]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    E <span class="ot">&lt;-</span> x[<span class="dv">2</span>]</span>
@@ -420,24 +487,36 @@ div.csl-indent {
 <span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stateMatrix[,<span class="st">"time"</span>], stateMatrix[,<span class="st">"I"</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"blue"</span>,</span>
 <span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Time"</span>, <span class="at">ylab=</span><span class="st">"Fraction Infected"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Spiralize! (i.e., plot the phase portrait)</p>
-<div class="cell" data-fig.asp="1" data-hash="odes_cache/html/unnamed-chunk-7_8e8ffd9e1e33d0279996925add55f315">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(stateMatrix[,<span class="st">"S"</span>], stateMatrix[,<span class="st">"I"</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"blue"</span>,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Susceptible"</span>, <span class="at">ylab=</span><span class="st">"Infected"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Calculate the power spectrum. We’ll trim the plot for all periods greater than 2.5 yrs, since the power is essentially zero for all such periods.</p>
-<div class="cell" data-fig.asp="1" data-hash="odes_cache/html/unnamed-chunk-8_182e58daa4a242a76aa20c3411fea924">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">spectrum</span>(stateMatrix<span class="sc">$</span>I, <span class="at">log=</span><span class="st">"no"</span>, <span class="at">spans=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">plot=</span><span class="cn">FALSE</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>delta <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">52</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(spec<span class="sc">$</span>freq[<span class="dv">1</span><span class="sc">:</span><span class="dv">84</span>]<span class="sc">/</span>delta, <span class="dv">2</span><span class="sc">*</span>spec<span class="sc">$</span>spec[<span class="dv">1</span><span class="sc">:</span><span class="dv">84</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">xlab=</span><span class="st">"Period"</span>, <span class="at">ylab=</span><span class="st">"Spectrum"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>fmax <span class="ot">&lt;-</span> <span class="fu">which</span>(spec<span class="sc">$</span>spec<span class="sc">==</span><span class="fu">max</span>(spec<span class="sc">$</span>spec))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span>spec<span class="sc">$</span>freq[fmax]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -446,10 +525,10 @@ div.csl-indent {
 </div>
 </div>
 </section>
-<section id="lorenz-attractor" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="lorenz-attractor"><span class="header-section-number">4.4</span> Lorenz Attractor</h2>
-<p>The <a href="http://mathworld.wolfram.com/LorenzAttractor.html">Lorenz Attractor</a> is a classic model for dynamical systems and I include it to give you another example of numerically integrating a system of equations in <code>deSolve</code>.</p>
-<div class="cell" data-fig.asp="1" data-hash="odes_cache/html/unnamed-chunk-9_7a78a66eae1e715575de0c3742a5ee35">
+<section id="lorenz-attractor" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="lorenz-attractor"><span class="header-section-number">5.4</span> Lorenz Attractor</h2>
+<p>The <a href="http://mathworld.wolfram.com/LorenzAttractor.html">Lorenz Attractor</a> is a classic model for dynamical systems and I include it to give you another example of numerically integrating a system of equations in <code>deSolve</code>. It certainly makes for cool phase portraits.</p>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lorenz <span class="ot">&lt;-</span> <span class="cf">function</span>(t, state, p) {</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">with</span>(<span class="fu">as.list</span>(<span class="fu">c</span>(state, parms)), {</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -471,25 +550,53 @@ div.csl-indent {
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out[,<span class="st">"x"</span>], out[,<span class="st">"y"</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="fl">0.25</span>, <span class="at">main =</span> <span class="st">"Lorenz butterfly"</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out[,<span class="st">"x"</span>], out[,<span class="st">"z"</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="fl">0.25</span>, <span class="at">main =</span> <span class="st">"Lorenz butterfly"</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(out[,<span class="st">"y"</span>], out[,<span class="st">"z"</span>], <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="fl">0.25</span>, <span class="at">main =</span> <span class="st">"Lorenz butterfly"</span>, <span class="at">xlab =</span> <span class="st">"y"</span>, <span class="at">ylab =</span> <span class="st">"z"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="odes_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="odes_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
+</div>
+<p>Even cooler than the static phase-portraits, we can animate the dynamics of the model on the underlying attractor. We create the animation using the <code>animation</code> package. Here’s an example of its usage:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(animation)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">saveVideo</span>({</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ani.options</span>(<span class="at">interval =</span> <span class="fl">0.05</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">2</span>,<span class="dv">10000</span>,<span class="at">by=</span><span class="dv">2</span>)) {</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(out[,<span class="st">"x"</span>], out[,<span class="st">"z"</span>], <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">col=</span><span class="fu">grey</span>(<span class="fl">0.85</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">20</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">50</span>), <span class="at">xlab=</span><span class="st">"x"</span>, <span class="at">ylab=</span><span class="st">"z"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">points</span>(out[i,<span class="st">"x"</span>], out[i,<span class="st">"z"</span>], <span class="at">pch=</span><span class="dv">19</span>, <span class="at">col=</span><span class="fu">ifelse</span>(out[i,<span class="st">"x"</span>]<span class="sc">&lt;</span><span class="dv">0</span>,<span class="st">"red"</span>,<span class="st">"blue"</span>))}</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>}, <span class="at">video.name =</span> <span class="st">"lorenz1.mp4"</span>, <span class="at">other.opts =</span> <span class="st">"-pix_fmt yuv420p -b 300k"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="quarto-video"><video id="video_shortcode_videojs_video1" class="video-js vjs-default-skin vjs-fluid" controls="" preload="auto" data-setup="{}" title=""><source src="./figures/lorenz1.mp4"></video></div>
+<p>When the <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span> variables are positively correlated, the point is colored blue. When they are negatively correlated, the point is colored red. If you were to measure this system, whether you saw a positive or a negative correlation between <span class="math inline">\(x\)</span> and <span class="math inline">\(z\)</span> would depend on where in the attractor the system was. Different researchers studying the system at different times could get very different ideas about the system if they didn’t understand the underlying attractor. This is an important lesson from complex systems.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-hastings_powell1991" class="csl-entry" role="listitem">
+Hastings, Alan, and Thomas Powell. 1991. <span>“Chaos in a Three-Species Food Chain.”</span> <em>Ecology</em> 72 (3): 896–903. <a href="https://doi.org/10.2307/1940591">https://doi.org/10.2307/1940591</a>.
+</div>
 <div id="ref-rosenzweig_macarthur1963" class="csl-entry" role="listitem">
 Rosenzweig, M. L., and R. H. MacArthur. 1963. <span>“Graphical Representation and Stability Conditions of Predator-Prey Interactions.”</span> <em>The American Naturalist</em> 97 (895): 209–23. <a href="https://doi.org/10.1086/282272">https://doi.org/10.1086/282272</a>.
 </div>
 <div id="ref-stevens2009" class="csl-entry" role="listitem">
-Stevens, M. Henry. 2009. <em>A Primer of Ecology with r</em>. Edited by M. HenryH Stevens. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-89882-7">https://doi.org/10.1007/978-0-387-89882-7</a>.
+Stevens, M. Henry. 2009. <em>A Primer of Ecology with <span>R</span></em>. Edited by M. HenryH Stevens. New York: Springer. <a href="https://doi.org/10.1007/978-0-387-89882-7">https://doi.org/10.1007/978-0-387-89882-7</a>.
 </div>
 </div>
 </section>
@@ -530,18 +637,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -573,11 +669,48 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -587,8 +720,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -600,7 +742,129 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -644,6 +908,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -669,6 +934,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -730,17 +1021,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./graphs.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span>
+      <a href="./graphs.html" class="pagination-link" aria-label="Actual Graphs">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
+      <a href="./references.html" class="pagination-link" aria-label="References">
         <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+<script>videojs(video_shortcode_videojs_video1);</script>
+
 
 
 

@@ -36,7 +36,7 @@ The `igraph` package for drawing graphs (a.k.a., "networks") that we discuss in 
   
 ## Why Use `R`?
 
-- `R` is FREE! That, by itself, is almost enough. No complicated licensing.  Broad dissemination of research methodologies and results, etc.
+- `R` is FREE! That, by itself, is almost enough. No complicated licensing. Broad dissemination of research methodologies and results, etc.
 
 - `R` is available for a variety of computer platforms (e.g., Linux, MacOS, Windows).
 

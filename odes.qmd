@@ -40,6 +40,7 @@ with(out1, plot(x1, x2, type="l", col="magenta", lwd=3, xlab="Prey Population Si
                 xlim=c(0,90), ylim=c(0,20)))
 ```
 
+
 ### Rosenzweig-MacArthur
 
 @rosenzweig_macarthur1963 include two elements of ecological realism in their extension of the classic Lotka-Volterra model. First, they include density-dependence of the prey population. The growth of the prey population in the absence of the predator is no longer exponential, but is now a function of current size of the population, with a fixed upper limit to total prey population size. Second, the kill rate of predators is no longer linear. Predators have a *functional response* to prey abundance. In particular, the number of prey harvested by predators saturates, reflecting the eventual satiation of the predators. Here, I present slightly modified code for the Rosenzsweig-MacArthur model presented in @stevens2009.
@@ -86,6 +87,8 @@ legend("topright",c("Predator","Prey"), col=c("orange","blue"),lwd=2)
 ```
 
 No more cycles!
+
+I have created a shiny app that allows you to interact with the Lotka-Volterra model [here](https://juemos.shinyapps.io/lotka-volterra/). Using the model of @hastings_powell1991, I've made [another shiny app](https://juemos.shinyapps.io/chaoticlv/) that shows how a model with just three trophic levels, parameterized with realistic values for the parameters, can display chaotic dynamics. 
 
 ## SIR Model
 
@@ -224,7 +227,7 @@ fmax <- which(spec$spec==max(spec$spec))
 
 ## Lorenz Attractor
 
-The [Lorenz Attractor](http://mathworld.wolfram.com/LorenzAttractor.html) is a classic model for dynamical systems and I include it to give you another example of numerically integrating a system of equations in `deSolve`.
+The [Lorenz Attractor](http://mathworld.wolfram.com/LorenzAttractor.html) is a classic model for dynamical systems and I include it to give you another example of numerically integrating a system of equations in `deSolve`. It certainly makes for cool phase portraits.
 
 ```{r, cache=TRUE}
 #| fig-asp: 1
@@ -251,3 +254,23 @@ plot(out[,"x"], out[,"y"], type="l", lwd=0.25, main = "Lorenz butterfly", xlab =
 plot(out[,"x"], out[,"z"], type="l", lwd=0.25, main = "Lorenz butterfly", xlab = "x", ylab = "z")
 plot(out[,"y"], out[,"z"], type="l", lwd=0.25, main = "Lorenz butterfly", xlab = "y", ylab = "z")
 ```
+
+Even cooler than the static phase-portraits, we can animate the dynamics of the model on the underlying attractor. We create the animation using the `animation` package. Here's an example of its usage:
+
+```{r}
+#| eval: false
+#| message: false
+#| warning: false
+library(animation)
+saveVideo({
+    ani.options(interval = 0.05)
+    for (i in seq(2,10000,by=2)) {
+    plot(out[,"x"], out[,"z"], type = "l", col=grey(0.85),
+         xlim = c(-20, 20), ylim = c(0, 50), xlab="x", ylab="z")
+    points(out[i,"x"], out[i,"z"], pch=19, col=ifelse(out[i,"x"]<0,"red","blue"))}
+}, video.name = "lorenz1.mp4", other.opts = "-pix_fmt yuv420p -b 300k")
+```
+
+{{< video ./figures/lorenz1.mp4 >}}
+
+When the $x$ and $z$ variables are positively correlated, the point is colored blue. When they are negatively correlated, the point is colored red. If you were to measure this system, whether you saw a positive or a negative correlation between $x$ and $z$ would depend on where in the attractor the system was. Different researchers studying the system at different times could get very different ideas about the system if they didn’t understand the underlying attractor. This is an important lesson from complex systems.
