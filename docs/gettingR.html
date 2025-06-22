@@ -417,10 +417,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 20 normally distributed random numbers</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  0.4858282  1.6839140 -1.5170537 -0.2262298  0.3677248  0.4816495
- [7]  1.8641886 -0.5636035  0.6544165 -0.2814171  1.1579695 -0.3542760
-[13] -0.2078753  0.3397069 -0.1201487  3.3889897 -0.4768858 -1.0427696
-[19] -0.7169345 -0.1905858</code></pre>
+<pre><code> [1] -0.55548639  1.58648978  0.07409605 -1.35204133 -0.06184667 -0.97931042
+ [7]  0.73018343  0.77966396 -0.69112465 -0.09852193 -0.32490740 -1.11062449
+[13]  0.29839230 -2.18842272 -1.37627974 -1.27803552  1.17836447  0.83956895
+[19]  1.44656667  0.51809160</code></pre>
 </div>
 </div>
 </section>
@@ -1108,8 +1108,9 @@ Blond     3   30     5     8</code></pre>
 <li>The function <code>table()</code> is a very useful way of exploring data</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a>aaa <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>,<span class="dv">5</span>)</span>
-<span id="cb151-2"><a href="#cb151-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(aaa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 100 Poisson random numbers with mean/variance=5</span></span>
+<span id="cb151-2"><a href="#cb151-2" aria-hidden="true" tabindex="-1"></a>aaa <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>,<span class="dv">5</span>)</span>
+<span id="cb151-3"><a href="#cb151-3" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(aaa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>aaa
  1  2  3  4  5  6  7  8  9 10 11 12 
@@ -1391,8 +1392,7 @@ Sh  0  0  0  0  0  0  0  0  1  1  0  0  0  0  0  0  0</code></pre>
 </div>
 </div>
 <ul>
-<li><p><code>colnames()</code> and <code>rownames()</code> are convenience functions</p></li>
-<li><p>A More General Method Will Be Presented Next Slide</p></li>
+<li><code>colnames()</code> and <code>rownames()</code> are convenience functions</li>
 </ul>
 </section>
 <section id="working-on-lists" class="level2" data-number="1.22">
@@ -1403,47 +1403,58 @@ Sh  0  0  0  0  0  0  0  0  1  1  0  0  0  0  0  0  0</code></pre>
 <li><p><code>sapply()</code> is similar to <code>lapply()</code> but generates a vector as its output</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a>aaa <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">beta =</span> <span class="fu">rnorm</span>(<span class="dv">100</span>), <span class="at">x =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">100</span>, <span class="at">replace=</span><span class="cn">TRUE</span>))</span>
-<span id="cb169-2"><a href="#cb169-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(aaa,mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb169"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb169-1"><a href="#cb169-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cross-tabulation of sex partners by race/ethnicity from NHSLS</span></span>
+<span id="cb169-2"><a href="#cb169-2" aria-hidden="true" tabindex="-1"></a>sextable <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/nhsls_sextable.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
+<span id="cb169-3"><a href="#cb169-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(sextable)[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>,<span class="st">"hispanic"</span>,<span class="st">"asian"</span>,<span class="st">"other"</span>)</span>
+<span id="cb169-4"><a href="#cb169-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(sextable)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>,<span class="st">"hispanic"</span>,<span class="st">"asian"</span>,<span class="st">"other"</span>)</span>
+<span id="cb169-5"><a href="#cb169-5" aria-hidden="true" tabindex="-1"></a><span class="co"># take a peek at it</span></span>
+<span id="cb169-6"><a href="#cb169-6" aria-hidden="true" tabindex="-1"></a>sextable</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         white black hispanic asian other
+white     1131    12       16     3    15
+black        5   268        5     0     0
+hispanic    39     1      115     0     3
+asian       12     0        0    10     4
+other        7     0        1     0    18</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate marginals</span></span>
+<span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a>(row.sums <span class="ot">&lt;-</span> <span class="fu">apply</span>(sextable,<span class="dv">1</span>,sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   white    black hispanic    asian    other 
+    1177      278      158       26       26 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1" aria-hidden="true" tabindex="-1"></a>(col.sums <span class="ot">&lt;-</span> <span class="fu">apply</span>(sextable,<span class="dv">2</span>,sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   white    black hispanic    asian    other 
+    1194      281      137       13       40 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb175"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using sapply() gives similar output</span></span>
+<span id="cb175-2"><a href="#cb175-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(sextable,sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   white    black hispanic    asian    other 
+    1194      281      137       13       40 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create a list -- each element of the list has a different length</span></span>
+<span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a>aaa <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">beta =</span> <span class="fu">rnorm</span>(<span class="dv">50</span>), <span class="at">x =</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">100</span>, <span class="at">replace=</span><span class="cn">TRUE</span>))</span>
+<span id="cb177-3"><a href="#cb177-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(aaa,mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$alpha
 [1] 5.5
 
 $beta
-[1] -0.0708709
+[1] -0.0248892
 
 $x
-[1] 53.53</code></pre>
+[1] 50.63</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb171"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb171-1"><a href="#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># more compact as a vector</span></span>
-<span id="cb171-2"><a href="#cb171-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(aaa,mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># more compact as a vector</span></span>
+<span id="cb179-2"><a href="#cb179-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(aaa,mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     alpha       beta          x 
- 5.5000000 -0.0708709 53.5300000 </code></pre>
+ 5.5000000 -0.0248892 50.6300000 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb173"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb173-1"><a href="#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cross-tabulation of sex partners from NHSLS</span></span>
-<span id="cb173-2"><a href="#cb173-2" aria-hidden="true" tabindex="-1"></a>sextable <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./data/nhsls_sextable.txt"</span>, <span class="at">header=</span><span class="cn">FALSE</span>)</span>
-<span id="cb173-3"><a href="#cb173-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(sextable)[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>,<span class="st">"hispanic"</span>,<span class="st">"asian"</span>,<span class="st">"other"</span>)</span>
-<span id="cb173-4"><a href="#cb173-4" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(sextable)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"white"</span>,<span class="st">"black"</span>,<span class="st">"hispanic"</span>,<span class="st">"asian"</span>,<span class="st">"other"</span>)</span>
-<span id="cb173-5"><a href="#cb173-5" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate marginals</span></span>
-<span id="cb173-6"><a href="#cb173-6" aria-hidden="true" tabindex="-1"></a>(row.sums <span class="ot">&lt;-</span> <span class="fu">apply</span>(sextable,<span class="dv">1</span>,sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   white    black hispanic    asian    other 
-    1177      278      158       26       26 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb175"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb175-1"><a href="#cb175-1" aria-hidden="true" tabindex="-1"></a>(col.sums <span class="ot">&lt;-</span> <span class="fu">apply</span>(sextable,<span class="dv">2</span>,sum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   white    black hispanic    asian    other 
-    1194      281      137       13       40 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb177"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb177-1"><a href="#cb177-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using sapply() gives similar output</span></span>
-<span id="cb177-2"><a href="#cb177-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(sextable,sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   white    black hispanic    asian    other 
-    1194      281      137       13       40 </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb179"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb179-1"><a href="#cb179-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the output of sapply() to lapply()</span></span>
-<span id="cb179-2"><a href="#cb179-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(sextable,sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the output of sapply() to lapply()</span></span>
+<span id="cb181-2"><a href="#cb181-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(sextable,sum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$white
 [1] 1194
@@ -1473,14 +1484,14 @@ $other
 <li><p>The <code>else</code> part of the statement is optional</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb181"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb181-1"><a href="#cb181-1" aria-hidden="true" tabindex="-1"></a>(coin <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"heads"</span>,<span class="st">"tails"</span>),<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb183"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a>(coin <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"heads"</span>,<span class="st">"tails"</span>),<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "heads"</code></pre>
+<pre><code>[1] "tails"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb183"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb183-1"><a href="#cb183-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(coin<span class="sc">==</span><span class="st">"tails"</span>) b <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="cf">else</span> b <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb183-2"><a href="#cb183-2" aria-hidden="true" tabindex="-1"></a>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb185"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb185-1"><a href="#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(coin<span class="sc">==</span><span class="st">"tails"</span>) b <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="cf">else</span> b <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb185-2"><a href="#cb185-2" aria-hidden="true" tabindex="-1"></a>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 1</code></pre>
 </div>
 </div>
 <ul>
@@ -1488,9 +1499,9 @@ $other
 <li><p><code>ifelse</code> takes three arguments: (1) the logical test, (2) the result if <code>TRUE</code>, (3) the result if <code>FALSE</code></p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb185"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb185-1"><a href="#cb185-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">:-</span><span class="dv">2</span></span>
-<span id="cb185-2"><a href="#cb185-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sqrt(x) produces warnings, but using ifelse to check works without producing warings</span></span>
-<span id="cb185-3"><a href="#cb185-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">ifelse</span>(x <span class="sc">&gt;=</span> <span class="dv">0</span>, x, <span class="cn">NA</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">:-</span><span class="dv">2</span></span>
+<span id="cb187-2"><a href="#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="co"># sqrt(x) produces warnings, but using ifelse to check works without producing warings</span></span>
+<span id="cb187-3"><a href="#cb187-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">ifelse</span>(x <span class="sc">&gt;=</span> <span class="dv">0</span>, x, <span class="cn">NA</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.000000 1.732051 1.414214 1.000000 0.000000       NA       NA</code></pre>
 </div>
@@ -1504,8 +1515,8 @@ $other
 <li><p>The basic syntax of a <code>for</code> loop is: <code>for(item in sequence) statement(s)</code></p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb187"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb187-1"><a href="#cb187-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
-<span id="cb187-2"><a href="#cb187-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="fu">print</span>(x[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb189"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="fu">print</span>(x[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1
 [1] 2
@@ -1533,13 +1544,13 @@ $other
 <li><p>Do this using the <code>library()</code> command</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb189"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb189-1"><a href="#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
-<span id="cb189-2"><a href="#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb189-3"><a href="#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
-<span id="cb189-4"><a href="#cb189-4" aria-hidden="true" tabindex="-1"></a><span class="co"># might as well do something with it</span></span>
-<span id="cb189-5"><a href="#cb189-5" aria-hidden="true" tabindex="-1"></a><span class="co"># a small graph</span></span>
-<span id="cb189-6"><a href="#cb189-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">make_graph</span>( <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">1</span>,<span class="dv">3</span>, <span class="dv">2</span>,<span class="dv">3</span>, <span class="dv">3</span>,<span class="dv">5</span>), <span class="at">n=</span><span class="dv">5</span> )</span>
-<span id="cb189-7"><a href="#cb189-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb191-2"><a href="#cb191-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb191-3"><a href="#cb191-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb191-4"><a href="#cb191-4" aria-hidden="true" tabindex="-1"></a><span class="co"># might as well do something with it</span></span>
+<span id="cb191-5"><a href="#cb191-5" aria-hidden="true" tabindex="-1"></a><span class="co"># a small graph</span></span>
+<span id="cb191-6"><a href="#cb191-6" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">make_graph</span>( <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">1</span>,<span class="dv">3</span>, <span class="dv">2</span>,<span class="dv">3</span>, <span class="dv">3</span>,<span class="dv">5</span>), <span class="at">n=</span><span class="dv">5</span> )</span>
+<span id="cb191-7"><a href="#cb191-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">

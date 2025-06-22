@@ -607,6 +607,7 @@ is.na(aaa)
 - The function `table()` is a very useful way of exploring data
 
 ```{r}
+# generate 100 Poisson random numbers with mean/variance=5
 aaa <- rpois(100,5)
 table(aaa)
 ```
@@ -671,7 +672,6 @@ kids
 
 - `colnames()` and `rownames()` are convenience functions
 
-- A More General Method Will Be Presented Next Slide
 
 ## Working on Lists
 
@@ -683,19 +683,22 @@ kids
 
 
 ```{r}
-aaa <- list(alpha = 1:10, beta = rnorm(100), x = sample(1:100, 100, replace=TRUE))
-lapply(aaa,mean)
-# more compact as a vector
-sapply(aaa,mean)
-# cross-tabulation of sex partners from NHSLS
+# cross-tabulation of sex partners by race/ethnicity from NHSLS
 sextable <- read.csv("./data/nhsls_sextable.txt", header=FALSE)
 dimnames(sextable)[[1]] <- c("white","black","hispanic","asian","other")
 dimnames(sextable)[[2]] <- c("white","black","hispanic","asian","other")
+# take a peek at it
+sextable
 # calculate marginals
 (row.sums <- apply(sextable,1,sum))
 (col.sums <- apply(sextable,2,sum))
 # using sapply() gives similar output
 sapply(sextable,sum)
+# create a list -- each element of the list has a different length
+aaa <- list(alpha = 1:10, beta = rnorm(50), x = sample(1:100, 100, replace=TRUE))
+lapply(aaa,mean)
+# more compact as a vector
+sapply(aaa,mean)
 # compare the output of sapply() to lapply()
 lapply(sextable,sum)
 ```

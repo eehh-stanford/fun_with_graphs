@@ -116,6 +116,7 @@ Compare them.
 
 ```{r}
 #| fig-asp: 1
+#| message: false
 # draw exp first to make sure axes fit
 require(viridisLite)
 c <- plasma(3)
@@ -155,15 +156,94 @@ The key difference between a power law and an exponential, which at first glance
 #| fig-asp: 1
 curve(0.5^x,0, 10, lwd=3, xaxs="i", xlab="x", ylab="y")
 curve(x^-2, 0, 10, lwd=3, col="red", add=TRUE)
+legend("topright",c("exponential","power"), lwd=3, col=c("black","red"))
 ```
 
-The power decay starts much higher (it is, in fact, asymptotic to the $y$-axis) and declines very rapidly. However, while the exponential curve will quickly approach the $x$-axis (to which it is asymptotic), the red curve will approach it very slowly. For the exponential curve, every $x$-increment of one reduces the value of $y$ by a half. In contrast, for large values of $x$, every increment contributes a tiny marginal decay. For the exponential $0.5^{x+1}/0.5^{x} = 0.5^1=0.5$ for all values of $x$. The analogous ratio for the power law is lower for low values of $x$. For $x=2$, $(x+1)^{-2}/x^{-2}=0.44$, whereas it is 0.98 for $x=100$.
+The power decay starts much higher (it is, in fact, asymptotic to the $y$-axis) and declines very rapidly at first. However, while the exponential curve will quickly approach the $x$-axis (to which it is asymptotic), the polynomial power-law curve will approach it very slowly. For the exponential curve, every $x$-increment of one reduces the value of $y$ by a half. In contrast, for the power-law, every increment contributes a tiny marginal decay as the values of $x$ increase. For the exponential the ratio of subsequent $y$ values is $0.5^{x+1}/0.5^{x} = 0.5^1=0.5$ for all values of $x$. The analogous ratio for the power law changes for different values of $x$. When $x$ is small, the ratio of successive $y$ values is similar to the exponential. For example, when $x=2$, $(x+1)^{-2}/x^{-2}=0.44$. However, when $x=100$, the ratio is nearly one (=0.98), meaning that the curve is decreasing very slowly. Successive values of the function are nearly identical, making the ratio close to one.
+
+### Why We Care About Power Laws
+
+The figure above shows how the probability of very high values decays to zero for the expontial function, but decays slowly for the polynomial power law. This turns out to be very important for thinking about the probability of extreme events.
+
+We say that a probability distribution has a *heavy tail* if, for large values of $x$, the log of the probability of $x$ is sublinear [@nair_etal2022]. Remember that when we take the logarithm of an exponential, we linearize it, so this is equivalent to saying that a heavy-tailed distribution decays more slowly than exponential. This is exactly what power-law distributions do. Their tails decay slowly -- much slower than an exponential.
+
+What this means is that if a random variable is characterized by a power-law distribution, extreme values, while not likely, are also not impossible. Heavy tails make the impossible only unlikely.
+
+Consider the case of a normal (Gaussian) distribution, which has exponential tails and the related $t$-distribution, which has heavy tails. The probability density function (pdf) for the normal distribution is:
+
+$$
+f(x)=\frac{1}{\sqrt{2 \pi \sigma^2}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}},
+$$
+where the parameters $\mu$ and $\sigma^2$ represent the mean and variance of the distribution.
+
+The pdf for the $t$ distribution is:
+
+$$
+f(x) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\pi \nu}\; \Gamma\left(\frac{\nu}{2}\right)}\left(1+\frac{x^2}{\nu}\right)^{-\frac{\nu+1}{2}},
+$$
+where the parameter $\nu$ represents the degrees of freedom of the distribution. Don't worry too much about that first fraction in the pdf. That is just a normalizing factor that ensures that the probability integrates to one (as all pdfs must).
+
+Note that, as with our last section, the pdf for the normal distribution (with exponential tail) has $x$ in the exponent, while for the $t$-distribution (with polynomial tail), $x$ is being raised to a constant power related to the degrees of freedom. 
+
+We can compare the two probability density functions:
+
+```{r}
+#| fig-asp: 1
+x <- seq(-10,10,length=1000)
+plot(x,dnorm(x), type="l", lwd=2, axes=FALSE, frame=TRUE, 
+     yaxs="i", ylim=c(0,0.42), xlim=c(-10,10),
+     xlab="Outcome (x)", ylab="Probability of Outcome (P(x))")
+lines(x,dt(x,df=1), lwd=2, col="red")
+legend("topright",c("normal","t"), lwd=3, col=c("black","red"))
+```
+The normal distribution is higher (i.e., has more mass) in the middle of the plot. The $t$ distribution has less of its mass in the central part of the distribution, and spreads out more of its total mass to its tails. 
+
+I should probably note that this is a particularly extreme $t$ distribution, as it only has one degree of freedom (this distribution is also known as a Cauchy distribution). This makes it particularly easy to see the differences between the normal and the $t$ distribution.
+
+We can focus on just the right tail. Normal theory tells us that the probability of observing any values greater than four standard deviations aboce the mean is essentially zero. We can calculate the remaining area in the tail above four standard deviations (for the standard normal distribution) by subtracting the cumulative distribution function at $x=4$ from one.
+
+```{r}
+1-pnorm(4)
+```
+
+Pretty nearly zero. 
+
+What about the same calculation for our $t$ distribution with one degree of freedom?
+
+```{r}
+1-pt(4,1)
+```
+Nearly eight percent of the total probability remains in the tail! That is, you have a 7.8% chance of observing a value of $x \geq 4$. 
+
+Let's compare a plot of the tails of the two distributions:
+
+
+```{r}
+#| fig-asp: 1
+plot(x,dnorm(x), type="l", lwd=2, axes=FALSE, frame=TRUE, 
+     yaxs="i", xaxs="i", ylim=c(0,0.4), xlim=c(0,10),
+     xlab="Outcome (x)", ylab="Probability Density of Outcome (f(x))")
+lines(x,dt(x,df=1), lwd=2, col="red")
+abline(h=0.01,lty=3)
+axis(1)
+axis(2)
+legend("topright",c("normal","t"), lwd=3, col=c("black","red"))
+```
+
+The horizontal dotted line indicates the value where the probability density is 1%. We can see that the $t$ distribution crosses this thresholds at a value of approximately $x=6$. The term *six-sigma event* is often used to indicate an outcome that is essentially impossible under our current understanding of a system. This comes from the fact that for a standard normal distribution, the variable $x$ is equivalent to the number of standard deviations from the mean of zero (a standard normal has $\mu=0$ and $\sigma^2=\sigma=1$). Thus, for a standard normal distribution, an observed value of of $x=6$ is six standard deviations (or $6\sigma$) greater than the mean and, based on what we know about the normal distribution, has a probability of essentially zero. Not so for the $t$ distribution! We can see that even extremely high values of $x$ have associated tail probabilities that, while low, are still a long way from zero.
+
+```{r}
+1-pt(6,1)
+1-pt(8,1)
+1-pt(10,1)
+```
+The key question, of course, is whether a $t$ distribution (or other heavy-tailed distribution) represents any phenomena we actually care about scientifically. Turns out, there are lots of things in Nature that follow power laws. One of the more interesting examples where the outcome is actually a $t$ distribution was described by @weitzman2009. When you have to learn about the mean value of some normally-distributed variable, but have limited opportunities to learn, the distribution of that mean is itself a $t$ distribution. This has huge implications for decision-making that I will discuss elsewhere. 
 
 ## Convexity and Concavity
 
 The derivative of a function provides a measure of how fast a function is changing. The second derivative measures how that rate of change itself is changing. In this sense, it measures the *curvature* of a function.
 
-Many theoretical models depend on the curvature of functions to make their predictions. A common assumption employed in many theoretical models is that of concavity. A very common use of concavity in theory is when curve hows *diminishing marginal returns*. The word "marginal" essentially means the derivative, so diminishing marginal returns means that the derivative of the function is getting smaller for larger values of the input.
+Many theoretical models depend on the curvature of functions to make their predictions. A common assumption employed in many theoretical models is that of concavity. A very common use of concavity in theory is when curve shows *diminishing marginal returns*. The word "marginal" essentially means the derivative, so diminishing marginal returns means that the derivative of the function is getting smaller for larger values of the input.
 
 The classic trade-off model for the evolution of virulence relies on the concavity of transmissibility with respect to disease-induced mortality. If virulence produces decreasing marginal transmissibility with respect to disease-induced mortality, then selection will favor intermediate virulence. Denote virulence by $x$. Both transmission and disease-induced mortality are functions of virulence: $\beta(x)$ and $\delta(x)$. The fitness measure for the pathogen is, as usual, $R_0$, which we can write as
 
@@ -515,8 +595,8 @@ segments(5,exp(-0.5*5.5),5.5,exp(-0.5*5.5), lwd=2, col="red")
 
 I have a whole other set of notes on how to produce scientific figures in `R`. However, I've repeatedly done some things in these notes that merit a brief explanation. Otherwise, there is a risk of things seeming obscure and generally confusing.
 
-Theoretical plots usually don't depend on specific values of inputs or functions -- you're typically care just about the shapes and not the specific values. You are trying to show the general behavior of your system. `R` is a statistical programming language and, as such, expects you to be plotting data. Presumably, you care about the actual values when data are involved. For our theoretical plots, we usually want to suppress the values on the plot's axes. This is why nearly all of these figures include the arguments to the `plot()` command `axes=FALSE` and `frame=TRUE`. This suppresses the axes and any ticks and labels indicating specific values on them. We can then add in custom axis labels, such as the critical population size for each species in the multi-species epidemic isoclines using the command `axis()`.
+Theoretical plots usually don't depend on specific values of inputs or functions -- you typically care just about the shapes and not the specific values. You are trying to show the general behavior of your system. `R` is a statistical programming language and, as such, expects you to be plotting data. Presumably, you care about the actual values when data are involved. For our theoretical plots, we usually want to suppress the values on the plot's axes. This is why nearly all of these figures include the arguments to the `plot()` command `axes=FALSE` and `frame=TRUE`. This suppresses the axes and any ticks and labels indicating specific values on them. We can then add in custom axis labels, such as the critical population size for each species in the multi-species epidemic isoclines using the command `axis()`.
 
-Perhaps a more mysterious tick I use is to include the arguments `xaxs="i"` and `yaxs="i"`. This is really the special sauce of a scientific-theory plot in `R`. Again, `R` expects data when you call the `plot()` command. A good aesthetic practice for data plots is to pad the range of the observed data and `R` does this by default. By forcing the style of the axes to be "internal" (that's what the "i" stands for), you restrict the axes to the range of your data. This means that $y$-intercepts actually intercept the $y$ axis, curves that should start at zero actually look like they're starting at zero, etc.
+Perhaps a more mysterious trick I use is to include the arguments `xaxs="i"` and `yaxs="i"`. This is really the special sauce of a scientific-theory plot in `R`. Again, `R` expects data when you call the `plot()` command. A good aesthetic practice for data plots is to pad the range of the observed data and `R` does this by default. By forcing the style of the axes to be "internal" (that's what the "i" stands for), you restrict the axes to the range of your data. This means that $y$-intercepts actually intercept the $y$ axis, curves that should start at zero actually look like they're starting at zero, etc.
 
 We often want to lay out the axes but not draw a curve quite yet. To do this, we add the argument `type="n"` to the `plot()` command. This allows us to build up complex figures with more precision and control. You might notice that we often plot the actual curve we care about last. This is because we want it on top of the various lines we've added to indicate interesting bits of the curve (e.g., equilibria and such).
