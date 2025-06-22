@@ -120,7 +120,7 @@ plot(grhesus,
 
 - Use comments liberally to help you (and others) understand your code
 
-- In these notes, the output that you would see on your own command line is marked in the grey box with two (non-italic) hashes, # #
+- In these notes, the output that you would see on your own command line will be white following a grey box (the input). Frequently, it will begin with a `[1]`, which indicates the first element of a vector 
 
 - Sometimes I enclose a command in parentheses; this is simply to force `R` to echo the output (for pedagogical purposes)
 
@@ -131,6 +131,8 @@ x <- c(1,2,3)
 ```
 
 - You will probably want to seek help on functions. At the command line, simply type a question mark followed immediately by the function you want to query, `?function.name`
+
+  - In Rstudio, you may be given auto-complete suggestions, which you can click on to save typing
 
 - When you are done with your `R` session, type `q()` at the command line
 

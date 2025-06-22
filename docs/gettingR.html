@@ -342,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Different environments make it more or less easy to use <code>&lt;-</code>. In <code>RStudio</code>, hit the option key and the minus sign simultaneously</p></li>
 <li><p>Comments are marked by <code>#</code>: anything following the hash will be ignored by <code>R</code></p></li>
 <li><p>Use comments liberally to help you (and others) understand your code</p></li>
-<li><p>In these notes, the output that you would see on your own command line is marked in the grey box with two (non-italic) hashes, # #</p></li>
+<li><p>In these notes, the output that you would see on your own command line will be white following a grey box (the input). Frequently, it will begin with a <code>[1]</code>, which indicates the first element of a vector</p></li>
 <li><p>Sometimes I enclose a command in parentheses; this is simply to force <code>R</code> to echo the output (for pedagogical purposes)</p></li>
 </ul>
 <div class="cell">
@@ -354,7 +354,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <ul>
-<li><p>You will probably want to seek help on functions. At the command line, simply type a question mark followed immediately by the function you want to query, <code>?function.name</code></p></li>
+<li><p>You will probably want to seek help on functions. At the command line, simply type a question mark followed immediately by the function you want to query, <code>?function.name</code></p>
+<ul>
+<li>In Rstudio, you may be given auto-complete suggestions, which you can click on to save typing</li>
+</ul></li>
 <li><p>When you are done with your <code>R</code> session, type <code>q()</code> at the command line</p></li>
 <li><p><code>R</code> will ask you if you want to save your workspace. For now, you probably don’t.</p></li>
 <li><p>Check out the much more comprehensive <a href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html">Introduction to R</a> for all the language details.</p></li>
@@ -417,10 +420,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generate 20 normally distributed random numbers</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.55548639  1.58648978  0.07409605 -1.35204133 -0.06184667 -0.97931042
- [7]  0.73018343  0.77966396 -0.69112465 -0.09852193 -0.32490740 -1.11062449
-[13]  0.29839230 -2.18842272 -1.37627974 -1.27803552  1.17836447  0.83956895
-[19]  1.44656667  0.51809160</code></pre>
+<pre><code> [1]  0.2009012  2.2207369 -0.3607866  1.4697813 -1.4384434  0.8721387
+ [7] -0.3946359  0.7073727  0.5261874  0.6818287 -0.4126075  0.5687733
+[13] -0.6435988  0.3862529  1.0785412  0.1752227  0.2863084 -0.0291453
+[19]  0.6750149 -0.8180922</code></pre>
 </div>
 </div>
 </section>

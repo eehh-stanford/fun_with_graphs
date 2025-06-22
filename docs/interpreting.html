@@ -260,7 +260,10 @@ window.Quarto = {
   </ul></li>
   <li><a href="#indifference-curves" id="toc-indifference-curves" class="nav-link" data-scroll-target="#indifference-curves"><span class="header-section-number">2.6</span> Indifference Curves</a></li>
   <li><a href="#contour-plots" id="toc-contour-plots" class="nav-link" data-scroll-target="#contour-plots"><span class="header-section-number">2.7</span> Contour Plots</a></li>
-  <li><a href="#plotting-tricks" id="toc-plotting-tricks" class="nav-link" data-scroll-target="#plotting-tricks"><span class="header-section-number">2.8</span> Plotting Tricks</a></li>
+  <li><a href="#plotting-tricks" id="toc-plotting-tricks" class="nav-link" data-scroll-target="#plotting-tricks"><span class="header-section-number">2.8</span> Plotting Tricks</a>
+  <ul class="collapse">
+  <li><a href="#colors" id="toc-colors" class="nav-link" data-scroll-target="#colors"><span class="header-section-number">2.8.1</span> Colors</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -288,9 +291,9 @@ window.Quarto = {
 
 <section id="introduction" class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">2.1</span> Introduction</h2>
-<p>Understanding scientific figures is an important part of becoming a scientist or a critical consumer of scientific information. This is a skill that, alas, is generally not taught in most schools. Here, I will try to provide a gentle introduction to reading scientific figures, especially theoretical plots. I have companion notes that describe how to generate scientific plots in <code>R</code>.</p>
+<p>Understanding scientific figures is an important part of becoming a scientist or a critical consumer of scientific information. This is a skill that, alas, is generally not taught in most schools. Here, I will try to provide a gentle introduction to reading scientific figures, especially theoretical plots. In chapter <a href="drawing.html" class="quarto-xref"><span>Chapter 3</span></a>, we go into some detail on how to generate scientific plots in <code>R</code>.</p>
 <p>We use theory in science to bring order to the complexity we observe in the world. Theory generates our hypotheses but it also guides us in what we observe, how we measure it, and what we should find surprising. Surprise is essential for the scientific enterprise because it is the surprise that comes when we observe something novel from a process we thought we understood that generates innovation and explanation.</p>
-<p>A couple starting points. We will use some very basic calculus here. Derivatives, second derivatives, and Taylor series.</p>
+<p>A couple starting points. We will use some very basic calculus here: Derivatives, second derivatives, and Taylor series, which give us slopes, curvature, and tangents for making figures.</p>
 </section>
 <section id="lines" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="lines"><span class="header-section-number">2.2</span> Lines</h2>
@@ -946,6 +949,68 @@ w(E(x)) \geq E(w(x)),
 <p>Theoretical plots usually don’t depend on specific values of inputs or functions – you typically care just about the shapes and not the specific values. You are trying to show the general behavior of your system. <code>R</code> is a statistical programming language and, as such, expects you to be plotting data. Presumably, you care about the actual values when data are involved. For our theoretical plots, we usually want to suppress the values on the plot’s axes. This is why nearly all of these figures include the arguments to the <code>plot()</code> command <code>axes=FALSE</code> and <code>frame=TRUE</code>. This suppresses the axes and any ticks and labels indicating specific values on them. We can then add in custom axis labels, such as the critical population size for each species in the multi-species epidemic isoclines using the command <code>axis()</code>.</p>
 <p>Perhaps a more mysterious trick I use is to include the arguments <code>xaxs="i"</code> and <code>yaxs="i"</code>. This is really the special sauce of a scientific-theory plot in <code>R</code>. Again, <code>R</code> expects data when you call the <code>plot()</code> command. A good aesthetic practice for data plots is to pad the range of the observed data and <code>R</code> does this by default. By forcing the style of the axes to be “internal” (that’s what the “i” stands for), you restrict the axes to the range of your data. This means that <span class="math inline">\(y\)</span>-intercepts actually intercept the <span class="math inline">\(y\)</span> axis, curves that should start at zero actually look like they’re starting at zero, etc.</p>
 <p>We often want to lay out the axes but not draw a curve quite yet. To do this, we add the argument <code>type="n"</code> to the <code>plot()</code> command. This allows us to build up complex figures with more precision and control. You might notice that we often plot the actual curve we care about last. This is because we want it on top of the various lines we’ve added to indicate interesting bits of the curve (e.g., equilibria and such).</p>
+<section id="colors" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="colors"><span class="header-section-number">2.8.1</span> Colors</h3>
+<p>You may have noticed that I use several different ways to specify colors throughout these notes. <code>R</code> has a number of colors built into its base. You can see them all by typing <code>colors()</code> at the prompt. I’m not going to do that here, because there are more than 650 of them and it would be a mess. But we can get a hint.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>what_are_the_colors <span class="ot">&lt;-</span> <span class="fu">colors</span>()</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(what_are_the_colors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 657</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the first 10</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>what_are_the_colors[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "white"         "aliceblue"     "antiquewhite"  "antiquewhite1"
+ [5] "antiquewhite2" "antiquewhite3" "antiquewhite4" "aquamarine"   
+ [9] "aquamarine1"   "aquamarine2"  </code></pre>
+</div>
+</div>
+<p>Sometimes I specify colors based on their hexadecimal codes such as <code>#0D0887FF</code> or <code>#9C179EFF</code>. These start with a hash (<code>#</code>). What follows the hash is actually a triplet of codes specifying red, green, and blue components of the color using hexidecimal (i.e., base 16) codes, which go from <code>00</code> to <code>FF</code>. I can almost hear your cries as I write this: “but those codes have eight digits following the hash, not six!” Sometimes a hex color code has a fourth byte (as these examples do), which specifies the alpha channel (i.e., degree of transparency) of the color. Note that for the two codes I’ve used here, this last byte is <code>FF</code>, which is the maximum value, so not at all transparent.</p>
+<p>You can find various web tools for picking colors and generating hex color codes. There is a lot to be said for using hex codes because the code <code>#F0F8FF</code> is a lot less ambiguous than <code>aliceblue</code>.</p>
+<p>If hexidecimal codes are not your jam, you can also specify a color using RGB (red, green, blue) codes. Once again, an optional fourth value specifies the alpha channel. The one thing that’s tricky about <code>rgb()</code> is that you need to specify what’s known as a <em>radix</em> or what the maximum value is. By convention, this is typically 255 (because of course it is). You could also use a radix of 1 or really anything you like. However, conventions make coding more legible for a wider audience (that may include your future self!). Note that the radix for the hex codes is 16 (or FF is you want to be cute).</p>
+<p>Here we can recreate a figure from earlier, using <code>rgb()</code>, rather than built-in colors, to specify the line colors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">5</span><span class="sc">*</span><span class="fu">exp</span>(x), <span class="dv">0</span>, <span class="dv">10</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">255</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>, <span class="at">maxColorValue =</span> <span class="dv">255</span>), <span class="at">xlab=</span><span class="st">"x"</span>, <span class="at">ylab=</span><span class="st">"y"</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">curve</span>(<span class="dv">1</span><span class="sc">*</span><span class="fu">exp</span>(x), <span class="dv">0</span>, <span class="dv">10</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">255</span>, <span class="at">maxColorValue =</span> <span class="dv">255</span>), <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interpreting_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Another way to specify colors is by using a color palette. Base <code>R</code> has a few built-in palettes, including <code>rainbow</code>, <code>heat</code>, <code>topo.colors</code>, and <code>terrain.colors</code>. To be honest, these aren’t really the best. We used a color palette above when we compared the curves of linear, quadratic, exponential, and logarithmic functions using the <code>viridisLite</code> package. In that plot, we used a classic palette called <code>plasma</code>. It’s interesting to see what these palette functions actually produce:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(viridisLite)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plasma</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "#0D0887FF" "#CC4678FF" "#F0F921FF"</code></pre>
+</div>
+</div>
+<p>A good color palette is designed to do several things. I should make attractive figures. Basically, you want the colors to be cool and, well, colorful. But you also want them to be perceptually uniform, meaning that values that are close to each other have colors that are close to each other throughout the range of the palette. Ideally, you also want your color choices to be robust for people with color blindness.</p>
+<p>My personal favorite color-palette package is <code>MetBrewer</code>, which translates the color schemes of various masterworks from the <a href="https://www.metmuseum.org/">Metropolitan Museum of Art</a>. You can check oout the various palettes and the works that inspired them on the <a href="https://github.com/BlakeRMills/MetBrewer">MetBrewer GitHub</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MetBrewer)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.brewer</span>(<span class="st">"Johnson"</span>,<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interpreting_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And just to remind ourselves what we’re actually doing when we create a palette:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>dope_colors <span class="ot">&lt;-</span> <span class="fu">met.brewer</span>(<span class="st">"Johnson"</span>,<span class="dv">7</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(dope_colors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "#A00E00" "#C03800" "#DC7400" "#F6C200" "#529A6F" "#066793" "#132B69"</code></pre>
+</div>
+</div>
+<p>Note that these are in the six-digit form (no alpha channel).</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -959,6 +1024,7 @@ Nair, Jayakrishnan, Adam Wierman, and Bert Zwart. 2022. <em>The Fundamentals of 
 Weitzman, M. L. 2009. <span>“On Modeling and Interpreting the Economics of Catastrophic Climate Change.”</span> <em>The Review of Economics and Statistics</em> XCI (1): 1–19. <a href="https://doi.org/10.1162/rest.91.1.1 ">https://doi.org/10.1162/rest.91.1.1 </a>.
 </div>
 </div>
+</section>
 </section>
 
 </main> <!-- /main -->

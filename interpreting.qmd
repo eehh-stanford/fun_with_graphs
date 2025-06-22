@@ -2,11 +2,12 @@
 
 ## Introduction
 
-Understanding scientific figures is an important part of becoming a scientist or a critical consumer of scientific information. This is a skill that, alas, is generally not taught in most schools. Here, I will try to provide a gentle introduction to reading scientific figures, especially theoretical plots. I have companion notes that describe how to generate scientific plots in `R`.
+Understanding scientific figures is an important part of becoming a scientist or a critical consumer of scientific information. This is a skill that, alas, is generally not taught in most schools. Here, I will try to provide a gentle introduction to reading scientific figures, especially theoretical plots. In chapter @sec-draw, we go into some detail on how to generate scientific plots in `R`.
 
 We use theory in science to bring order to the complexity we observe in the world. Theory generates our hypotheses but it also guides us in what we observe, how we measure it, and what we should find surprising. Surprise is essential for the scientific enterprise because it is the surprise that comes when we observe something novel from a process we thought we understood that generates innovation and explanation.
 
-A couple starting points. We will use some very basic calculus here. Derivatives, second derivatives, and Taylor series.
+A couple starting points. We will use some very basic calculus here: Derivatives, second derivatives, and Taylor series, which give us slopes, curvature, and tangents for making figures.
+
 
 ## Lines
 
@@ -600,3 +601,52 @@ Theoretical plots usually don't depend on specific values of inputs or functions
 Perhaps a more mysterious trick I use is to include the arguments `xaxs="i"` and `yaxs="i"`. This is really the special sauce of a scientific-theory plot in `R`. Again, `R` expects data when you call the `plot()` command. A good aesthetic practice for data plots is to pad the range of the observed data and `R` does this by default. By forcing the style of the axes to be "internal" (that's what the "i" stands for), you restrict the axes to the range of your data. This means that $y$-intercepts actually intercept the $y$ axis, curves that should start at zero actually look like they're starting at zero, etc.
 
 We often want to lay out the axes but not draw a curve quite yet. To do this, we add the argument `type="n"` to the `plot()` command. This allows us to build up complex figures with more precision and control. You might notice that we often plot the actual curve we care about last. This is because we want it on top of the various lines we've added to indicate interesting bits of the curve (e.g., equilibria and such).
+
+### Colors
+
+You may have noticed that I use several different ways to specify colors throughout these notes. `R` has a number of colors built into its base. You can see them all by typing `colors()` at the prompt. I'm not going to do that here, because there are more than 650 of them and it would be a mess. But we can get a hint.
+
+```{r}
+what_are_the_colors <- colors()
+length(what_are_the_colors)
+# the first 10
+what_are_the_colors[1:10]
+```
+
+Sometimes I specify colors based on their hexadecimal codes such as `#0D0887FF` or `#9C179EFF`. These start with a hash (`#`). What follows the hash is actually a triplet of codes specifying red, green, and blue components of the color using hexidecimal (i.e., base 16) codes, which go from `00` to `FF`. I can almost hear your cries as I write this: "but those codes have eight digits following the hash, not six!" Sometimes a hex color code has a fourth byte (as these examples do), which specifies the alpha channel (i.e., degree of transparency) of the color. Note that for the two codes I've used here, this last byte is `FF`, which is the maximum value, so not at all transparent.
+
+You can find various web tools for picking colors and generating hex color codes. There is a lot to be said for using hex codes because the code `#F0F8FF` is a lot less ambiguous than `aliceblue`.
+
+If hexidecimal codes are not your jam, you can also specify a color using RGB (red, green, blue) codes. Once again, an optional fourth value specifies the alpha channel. The one thing that's tricky about `rgb()` is that you need to specify what's known as a *radix* or what the maximum value is. By convention, this is typically 255 (because of course it is). You could also use a radix of 1 or really anything you like. However, conventions make coding more legible for a wider audience (that may include your future self!). Note that the radix for the hex codes is 16 (or FF is you want to be cute).
+
+Here we can recreate a figure from earlier, using `rgb()`, rather than built-in colors, to specify the line colors.
+
+```{r}
+#| fig-asp: 1
+curve(5*exp(x), 0, 10, lwd=3, col=rgb(255,0,0,255, maxColorValue = 255), xlab="x", ylab="y")
+curve(1*exp(x), 0, 10, lwd=3, col=rgb(0,0,0,255, maxColorValue = 255), add=TRUE)
+```
+Another way to specify colors is by using a color palette. Base `R` has a few built-in palettes, including `rainbow`, `heat`, `topo.colors`, and `terrain.colors`. To be honest, these aren't really the best. We used a color palette above when we compared the curves of linear, quadratic, exponential, and logarithmic functions using the `viridisLite` package. In that plot, we used a classic palette called `plasma`. It's interesting to see what these palette functions actually produce:
+
+```{r}
+require(viridisLite)
+plasma(3)
+```
+
+A good color palette is designed to do several things. I should make attractive figures. Basically, you want the colors to be cool and, well, colorful. But you also want them to be perceptually uniform, meaning that values that are close to each other have colors that are close to each other throughout the range of the palette. Ideally, you also want your color choices to be robust for people with color blindness. 
+
+My personal favorite color-palette package is `MetBrewer`, which translates the color schemes of various masterworks from the [Metropolitan Museum of Art](https://www.metmuseum.org/). You can check oout the various palettes and the works that inspired them on the [MetBrewer GitHub](https://github.com/BlakeRMills/MetBrewer).
+
+```{r}
+library(MetBrewer)
+met.brewer("Johnson",7)
+```
+
+And just to remind ourselves what we're actually doing when we create a palette:
+
+```{r}
+dope_colors <- met.brewer("Johnson",7)
+as.character(dope_colors)
+```
+
+Note that these are in the six-digit form (no alpha channel).
