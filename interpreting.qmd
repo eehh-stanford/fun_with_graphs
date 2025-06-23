@@ -378,6 +378,7 @@ segments(2.5,0.846645,5,0.846645, lwd=3, lty=1, col="red")
 arrows(5,0.846645,5,fx[1000], lwd=3, lty=1, col="red", length=.25,angle=10)
 lines(x,fx, lwd=3, col="black")
 ```
+Where do these seemingly very specific numbers that I use to draw the segments and arrows come from? In particular, the value of 0.846645 is simply the value of the utility function at $\bar{x} = 2.5$: $1-\exp(-0.75*0.25) = 0.846645$.
 
 The upside of this lottery increases fitness considerably less than the downside reduces it. This arises because of the curvature of the function, in particular, its diminishing marginal fitness returns to effort. This is a very important insight and defines the phenomenon of *risk aversion*. Risk-aversion in lotteries where the fitness function is a concave function of effort are an application of Jensen's Inequality, which states that for a concave function, $w(x)$,
 
@@ -497,7 +498,7 @@ There are three equilibria for the poverty-trap model: (1) a stable equilibrium 
 
 ## Indifference Curves
 
-We encounter indifference curves when we consider the case of multi-species epidemics, as described by Holt and colleagues (2003). Suppose there is an infectious disease that can infect multiple species. In order to be above the epidemic threshold, there have to be a certain minimum number of susceptible individuals.
+We encounter indifference curves when we consider the case of multi-species epidemics, as described by @holt_etal2003. Suppose there is an infectious disease that can infect multiple species. In order to be above the epidemic threshold, there have to be a certain minimum number of susceptible individuals.
 
 On one side of the curve -- where the minimum conditions for an epidemic are exceeded -- an epidemic is possible. On the other side of the curve, no epidemic is possible. Any combination of species numbers along the isoclines satisfy the conditions equally well. This is why we call them "indifference curves."
 
@@ -505,30 +506,43 @@ Start with the trivial case where the two species don't interact at all. There w
 
 ```{r}
 #| fig-asp: 1
-plot(1:10,1:10, type="n", axes=FALSE, frame=TRUE, xlab="Specis 1", ylab="Species 2")
-segments(0,6,6,6, lwd=3)
-segments(6,0,6,6, lwd=3)
-axis(1, at=c(6), labels=c(expression(hat(S)[1])))
-axis(2, at=c(6), las=2, labels=c(expression(hat(S)[2])))
-text(3,3, "No Epidemic")
-text(7.5,7.5, "Epidemic")
+x <- seq(1,10,,500)
+x1 <- seq(0,9,,100)
+plot(x,x, type="n", axes=FALSE, frame=TRUE, xlab="Species 1", ylab="Species 2")
+axis(1,at=c(7), labels=c(expression(hat(S)[1])))
+axis(2,at=c(7), las=2, labels=c(expression(hat(S)[2])))
+rect(par("usr")[1], par("usr")[3],
+     par("usr")[2], par("usr")[4],
+     col = grey(0.95))
+rect(par("usr")[1], par("usr")[3],
+     7, 7, col="white")
+#polygon(c(x1,rev(x1)), c(x1,rev(x1)), col="green", border=FALSE)
+segments(0,7,7,7, lwd=3, col="red")
+segments(7,0,7,7, lwd=3, col="red")
+text(5,5, expression(R[0]<1))
+text(8,8, expression(R[0]>1))
 ```
 
 Now consider the slightly more interesting case where hosts of different species can substitute for each other. This means that even if the critical threshold for either of the species is reached, there can still be an epidemic. If the pathogen is not well adapted to a generalist-transmission mode, this effect might be quite small. We can call the epidemic isocline that arises from such conditions *weakly-interacting.*
 
 ```{r}
 #| fig-asp: 1
-g <- seq(0,sqrt(1/5),,500)
+g <- seq(0,sqrt(1/5),length=100)
 h <- sqrt(1-(5*g^2))
-plot(g,h, type="l", axes=FALSE, frame=TRUE, yaxs="i", xaxs="i", 
-     ylim=c(0,1.1), xlim=c(0,0.5), lwd=3, 
-     xlab="Species 1", ylab="Species 2")
-axis(1, at=c(sqrt(1/5)), labels=c(expression(hat(S)[1])))
-axis(2, at=c(1), las=2, labels=c(expression(hat(S)[2])))
-segments(0,1,sqrt(1/5),1, lty=3)
-segments(sqrt(1/5),0,sqrt(1/5),1, lty=3)
-text(0.2,0.45, "No Epidemic")
-text(0.4,0.9, "Epidemic")
+plot(g,h, type="n", 
+     axes=FALSE, frame=TRUE, 
+     yaxs="i", xaxs="i", 
+     ylim=c(0,1.1), xlim=c(0,0.5),  
+     xlab="Spcies 1", ylab="Species 2")
+rect(par("usr")[1], par("usr")[3],
+     par("usr")[2], par("usr")[4],
+     col = grey(0.95))
+polygon(c(g[1],g),c(0,h),col="white", border=FALSE)
+lines(g,h,col="red", lwd=3)
+axis(1,at=c(0.4485), labels=c(expression(hat(S)[1])))
+axis(2,at=c(1), las=2, labels=c(expression(hat(S)[2])))
+text(0.37, 0.8, expression(R[0]>1))
+text(0.23,0.63, expression(R[0]<1))
 ```
 
 I've left the non-interacting isocline in this figure to show how, even though species are only interacting weakly, the space in which an epidemic is possible is greater.
@@ -537,40 +551,38 @@ Now consider the case where *substitutable*.
 
 ```{r}
 #| fig-asp: 1
-plot(0:10,0:10, type="n", axes=FALSE, frame=TRUE, 
-     yaxs="i", xaxs="i",
+m <- (0.8432192-0.1235539)/(1.230762-8.257112)
+b <- 0.8432192-(-m*1.230762)
+xint <- -b/m
+
+plot(x, 1/x, type="n", lwd=3, col="red", xlim=c(1.5,9), ylim=c(0.15,1/1.2), axes=FALSE,
      xlab="Species 1", ylab="Species 2")
-segments(0,9,9,0, lwd=3)
-axis(1, at=c(9), labels=c(expression(hat(S)[1])))
-axis(2, at=c(9), las=2, labels=c(expression(hat(S)[2])))
-text(2.8,2.7, "No Epidemic")
-text(6.7,5.3, "Epidemic")
+box()
+polygon(c(seq(1,10,length=100), seq(10,1,length=90)), c(m*seq(1,8.257112,length=100)+1.2*b, rep(8.257112,90)),
+        col=grey(0.95), border="red", lwd=3)
+#segments(1.230762,0.8432192,8.257112,0.1235539, lwd=3, col="red")
+axis(1,at=c(8.7), labels=c(expression(hat(S)[1])))
+axis(2,at=c(0.7423), las=2, labels=c(expression(hat(S)[2])))
+text(6.5, 0.56, expression(R[0]>1))
+text(3,0.3, expression(R[0]<1))
 ```
 
 A perfectly substitutable curve is linear. This means if you can substitute one individual of species 2 for one individual of species 1 when species 1 is just below its critical threshold and still get an epidemic, you can substitute one for one at any point along the isocline. Now, the slope might not be unity. Maybe you have to substitute two of species 2 for one of species 1. The key is that ratio of substitution remains the same for any mixture of the two species.
 
-Things get more interesting when having a mixture of the two species makes it more likely that there will be an epidemic when there is a more event mixture of the two species that when the mixture is toward one of the extremes (i.e., mostly species 1 or mostly species 2). We call such an isocline *complementary*.
+Things get more interesting when having a mixture of the two species makes it more likely that there will be an epidemic when there is a more even mixture of the two species than when the mixture is toward one of the extremes (i.e., mostly species 1 or mostly species 2). We call such an isocline *complementary*.
 
 ```{r}
 #| fig-asp: 1
-x <- seq(0,10,,1000)
-plot(x, exp(-0.5*x), 
-     type="n", 
-     axes=FALSE, frame=TRUE, 
-     xaxs="i", yaxs="i", 
-     xlab="Species 1",
-     ylab="Species 2", 
-     xlim=c(2,9), 
-     ylim=c(0.02,0.4))
-lines(x,exp(-0.5*x), lwd=3)
-segments(2,exp(-0.5*2),log(0.02)/-0.5,0.02, lty=3)
-axis(1, at=c(7.859947), labels=c(expression(hat(S)[1])))
-axis(2, at=c(0.36800318), las=2, labels=c(expression(hat(S)[2])))
-text(3, 0.08755055, "No Epidemic")
-text(5,0.13, "Epidemic")
+plot(x, 1/x, type="l", lwd=3, col="red", xlim=c(1.5,9), ylim=c(0.15,1/1.2), axes=FALSE,
+     xlab="Species 1", ylab="Species 2")
+box()
+polygon(c(seq(1,10,by=0.1), seq(9,1,by=-0.1)), c(1/seq(1,10,by=0.1), rep(10,81)), col=grey(0.95), border="red")
+axis(1,at=c(8.12), labels=c(expression(hat(S)[1])))
+axis(2,at=c(0.8325), las=2, labels=c(expression(hat(S)[2])))
+text( 5, 0.32, expression(R[0]>1))
+text(2.5, 0.24, expression(R[0]<1))
 ```
-
-To see this, we can look at how the rate of substitution happens at different mixtures of the two species. For example, as you approach the extreme of $S_1=0$, it takes increasingly more of $S_2$ to stay above the epidemic threshold. This is obviously also true as we approach the $S_2=0$ extreme as well, but we'll focus on the $S_1=0$ extreme here. In the middle of the range, a small change in one can be compensated by a small change in the other, making the epidemic threshold easier to achieve in the middle of the species' population sizes.
+The convexity of this plot indicates the existence of diminishing marginal effectiveness of each species to maintain the epidemic. To see this, we can look at how the rate of substitution happens at different mixtures of the two species. For example, as you approach the extreme of $S_1=0$, it takes increasingly more of $S_2$ to stay above the epidemic threshold. This is obviously also true as we approach the $S_2=0$ extreme as well, but we'll focus on the $S_1=0$ extreme here. In the middle of the range, a small change in one can be compensated by a small change in the other, making the epidemic threshold easier to achieve in the middle of the species' population sizes.
 
 ```{r}
 #| fig-asp: 1
@@ -590,17 +602,188 @@ segments(5,exp(-0.5*5),5,exp(-0.5*5.5), lwd=2, col="red")
 segments(5,exp(-0.5*5.5),5.5,exp(-0.5*5.5), lwd=2, col="red")
 ```
 
+
+For vector-borne pathogens with complex life cycles, passage through an intermediate host is obligate for the perpetuation of the transmission cycle. Frequently, passage through the ultimate host is also obligate. Elimination of either intermediate or ultimate hosts from the community will lead to pathogen extinction. Thus, in the *alternating* case, a critical threshold exists for one or both species. As long as both host species co-exist above their minimum critical densities, the presence of a mix of both hosts makes pathogen persistence more efficient -- this is why the isocline bends inward (i.e., is convex).
+
+```{r}
+#| fig-asp: 1
+x <- seq(0,10,,100)
+y <- 2/x
+
+plot(x,y,type="n", axes=FALSE, frame=TRUE, xlab="Species 1",
+     ylab="Species 2", xlim=c(0,7), ylim=c(0,7))
+polygon(c(x,rev(x)), c(y,rep(8,100)), col=grey(0.95))
+lines(x,y, lwd=3, col="red")
+text(0.65, 0.61, expression(R[0]<1))
+text(2.7, 2.1, expression(R[0]>1))
+```
+
+
+So far, all the interactions between species have made the epidemic more likely (or have been neutral). Sometimes, the presence of a second host species actually makes an outbreak less likely. For example, in zooprophylaxis, a dead-end host protects the host of interest (usually humans) by providing an alternate source of blood meals for biting arthopods such as mosquitoes, ticks, or triatomine bugs. This isocline for the *inhibitory* interaction has a positive slope: the presence of species 2 means you need more of species 1 to have an epidemic.
+
+```{r}
+#| fig-asp: 1
+x <- seq(1,15,,100)
+y <- -15 + 2*x
+
+x1 <- seq(8,15,,100)
+y1 <- -15 + 2*x1
+
+plot(1:15,1:15,type="n", xaxs="i", yaxs="i",
+     axes=FALSE, frame=TRUE, xlab="Species 1", ylab="Species 2")
+axis(1,at=c(8), labels=c(expression(hat(S)[1])))
+#polygon(c(8,8:15, col=grey(0.95)))
+polygon(c(x1[1],x1,x1[100]), c(1,y1,1), col=grey(0.95), border=FALSE)
+text(12,4.2, expression(R[0]>1))
+text(7.5, 5.2, expression(R[0]<1))
+lines(x,y, lwd=3, col="red")
+```
+
+
+
 ## Contour Plots
+
+A contour plot uses an idea very similar to that of an isocline. The most familiar example of a contour plot for most people is probably an elevation map, where the contour line joins points of equal elevation. It can take some practice to learn how to read a contour plot, but it is well worth the effort. Contour plots actually provide better information on spatial relationships in three dimensions than do false 3D plots, even if the latter can look cool.
+
+The concept of resilience is central to human ecology and sustainability. A common visual representation of resilience depicts two adjacent basins in a plane. These basins represent attractors for the system. A ball moving along the plane can get pulled into either of them. The catch is that one of these basins represents a good attractor, while the other one is bad. One of these basins is deeper than the other and represents the good attractor. However, some slow-moving factor is forcing the system, making it more likely that it will end up in the bad attractor. As intuitive as the spatial metaphor for resilience may be, it turns out to be quite hard to represent it. 
+
+One way to represent this figure is using a contour plot. Here we will take advantage of the `ggplot` aesthetic `geom_contour()` to render our contours.
+
+```{r}
+#| message: false
+#| warning: false
+require(mvtnorm)
+require(ggplot2)
+# Create grid
+x <- seq(-4, 4, length.out = 100)
+y <- seq(-4, 4, length.out = 100)
+grid <- expand.grid(x = x, y = y)
+
+# Define parameters for the two basins
+mu1 <- c(-1, 0)  # Center of first basin
+mu2 <- c(2, 0)   # Center of second basin
+sigma1 <- matrix(c(0.5, 0, 0, 0.5), 2, 2)  # Deeper basin
+sigma2 <- matrix(c(1, 0, 0, 0.7), 2, 2)  # Shallower basin
+
+# Calculate heights
+z1 <- -dmvnorm(grid, mu1, sigma1)
+z2 <- -0.7 * dmvnorm(grid, mu2, sigma2)
+z <- matrix(z1 + z2, nrow = length(x))
+## for ggplot
+grid$z <- z1 + z2
+
+## ggplot topo rendering
+ggplot(grid, aes(x = x, y = y)) +
+  geom_contour(aes(z = z), bins = 15, color = "gray30") +
+  theme_minimal() +
+  theme(
+    axis.text = element_blank(),
+    axis.title = element_blank(),
+    panel.grid = element_blank()
+  ) +
+  coord_fixed(ratio = 1)
+```
+The left-hand basin is deeper, as indicated by the greater number of contour lines making it up. It's also steeper, since these lines are closer together. A ball that gets pulled down into that basin should stay there. However, if some slow-moving force like climate change alters the structure of the landscape, a ball in that basin that is subjected to shocks might more easily jump out and land in the less desirable basin to the right. 
+
+We can also represent this surface using a false 3D image, along with the projected contours, using the `plot3D` library.
+
+```{r}
+library(plot3D)
+
+persp3D(x, y, z,
+        theta = 90, phi = 30,
+        contour = TRUE,
+        shade = 0.5,
+        colkey = FALSE,
+        expand = 0.5,
+        colvar = z,
+        col = colorRampPalette(c("darkblue", "blue", "lightblue", "white"))(100),
+        axes = FALSE,  # Remove axes
+        box = FALSE,   # Remove box
+        xlab = "", ylab = "", zlab = "") 
+```
+Another nice example of a contour plot is a little less abstract. In @jones2009, I introduced an idea called the *human demographic space*. Essentially, there is a range of values of total fertility rate (TFR), which is the number of live births that a woman would have if she survived to age 50, and life expectancy at birth ($e_0$), which is the average age of death in a population, that is compatible with the human life cycle. Different combinations of TFR and $e_0$ imply different population growth rates. All things being equal, a population that has a higher TFR will grow faster. However, populations with high TFR often also have low $e_0$, which will lower the growth rate.
+
+To calculate the intrinsic rate of increase, $r$, implied by a particular combination of TFR and $e_0$, we use the following approximation:
+
+$$
+r \approx \frac{\log(TFR) + \log(S(a))}{T},
+$$
+where $S(a)$ is the survivorship (i.e., the fraction of all ever-born individuals still alive) at age at first reproduction, and $T$ is the mean age of childbearing, also known as the *generation time* of the population. This approximation comes from the demographic identity $R_0 = e^{rT}$, where $R_0$ is the net reproduction ratio, or the ratio of population size from one generation to the next. Livi-Bacci noted that the net reproduction ratio is well-approximated by the product of TFR and $S(a)$. The rest is just algebra.
+
+Note that this relationship uses the the fraction surviving until age 20 and not life expectancy at birth. Fortunately, these two are very highly correlated. I use $S(a)$ from the West model life tables of Coale and Demeney, which are indexed by $e_0$. Life tables (i.e., survivorship curves) are given for different levels of life expectancy at birth and we can simply read off the value of $S(a)$ associated with a given value of $e_0$. 
+
+```{r}
+#| fig-asp: 1
+# S(20) from CDMLT West
+Sa <- c(0.3562541, 0.3969429, 0.4358999, 0.4732345, 0.5090507,
+        0.5434457, 0.5765105, 0.6083286, 0.6389776, 0.6685286, 0.697048,
+        0.724596, 0.7543878, 0.7817066, 0.805704, 0.8290955, 0.8518434,
+        0.8739262, 0.8953284, 0.9160435, 0.935412, 0.952371, 0.9676141,
+        0.980381, 0.9899677)
+tfr <- seq(1,8, by=0.5)
+T <- 27.5 # human generation time
+
+# calculate r from TFR, l(20), and generation time (T)
+f <- function(r,Sa,TFR,T) y <- -r + (log(TFR) + log(Sa))/T
+
+calcr <- function(S20,tfr, twosex=TRUE){
+  rr <- matrix(0,nr=length(S20),nc=length(tfr))
+  if(twosex) tfr <- tfr/2
+  
+  for(i in 1:length(S20)){
+    for(j in 1:length(tfr)){
+      rr[i,j] <- uniroot(f, c(-0.2,0.1), Sa=S20[i], TFR=tfr[j], T=T)$root
+    }
+  }
+  
+  rr
+}
+
+## calculate the implied growth rates
+rr <- calcr(S20=Sa,tfr=tfr)
+
+# e(0) from CDMLT West
+e0 <- c(18.03431, 20.44308, 22.85202, 25.26012, 27.66740, 30.07391,
+        32.47963, 34.88452, 37.28851, 39.69149, 42.09338, 44.49401, 47.08864,
+        49.54198, 51.79709, 54.08686, 56.40571, 58.75305, 61.1244, 63.51476,
+        65.85406, 68.33622, 70.91915, 73.5699, 76.27995)
+
+## empirical TFR/e0 pairs that span the space
+# data points
+usa <- c(2.05,77)
+ven <- c(6.5,65)
+ache <- c(8,37.5)
+kung <- c(4,34)
+taiwan <- c(7.35,29)
+
+
+contour(tfr,e0,t(rr), 
+        lwd=2, col="blue4", 
+        xlim=c(2,8), 
+        xlab="Total Fertility Rate", 
+        ylab="Life Expectancy")
+
+text(usa[1],usa[2],"USA", col="red4", bg="red4")
+text(ven[1],ven[2], "Venezuela", col="red4", bg="red4")
+text(ache[1],ache[2], "Ache", col="red4", bg="red4")
+text(kung[1],kung[2], "!Kung", col="red4", bg="red4")
+```
+The contours represent a surface that increases monotonically as it goes up and to the right (i.e., as $e_0$ and TFR increase). The four populations largely span the space and each one is above the $r=0$ contour (though the USA is just barely above). Venezuela (in 1967) was characterized by very high life expectancy and incredibly high fertility, giving it an astounding growth rate of nearly $r=0.04$. This is likely the fastest a sizable human population has ever grown intrinsically. That translates into a doubling every 17 years! See @jones2009 for more details.
 
 ## Plotting Tricks
 
-I have a whole other set of notes on how to produce scientific figures in `R`. However, I've repeatedly done some things in these notes that merit a brief explanation. Otherwise, there is a risk of things seeming obscure and generally confusing.
+In chapter @sec-draw, I will introduce how to produce scientific figures in `R`. However, I've repeatedly done some things in these notes that merit a brief explanation. Otherwise, there is a risk of things seeming obscure and generally confusing.
 
 Theoretical plots usually don't depend on specific values of inputs or functions -- you typically care just about the shapes and not the specific values. You are trying to show the general behavior of your system. `R` is a statistical programming language and, as such, expects you to be plotting data. Presumably, you care about the actual values when data are involved. For our theoretical plots, we usually want to suppress the values on the plot's axes. This is why nearly all of these figures include the arguments to the `plot()` command `axes=FALSE` and `frame=TRUE`. This suppresses the axes and any ticks and labels indicating specific values on them. We can then add in custom axis labels, such as the critical population size for each species in the multi-species epidemic isoclines using the command `axis()`.
 
 Perhaps a more mysterious trick I use is to include the arguments `xaxs="i"` and `yaxs="i"`. This is really the special sauce of a scientific-theory plot in `R`. Again, `R` expects data when you call the `plot()` command. A good aesthetic practice for data plots is to pad the range of the observed data and `R` does this by default. By forcing the style of the axes to be "internal" (that's what the "i" stands for), you restrict the axes to the range of your data. This means that $y$-intercepts actually intercept the $y$ axis, curves that should start at zero actually look like they're starting at zero, etc.
 
 We often want to lay out the axes but not draw a curve quite yet. To do this, we add the argument `type="n"` to the `plot()` command. This allows us to build up complex figures with more precision and control. You might notice that we often plot the actual curve we care about last. This is because we want it on top of the various lines we've added to indicate interesting bits of the curve (e.g., equilibria and such).
+
+### `locator`
+
+Sometimes you need to find a spot on your figure where you want to add text or draw a segment or an arrow. `R` has a very handy function that allows you to interactively determine the coordinates of a point on your axes. Use the function `locator(n)` with a plot rendered in the RStudio window. You can then click your mouse `n` times on the plot and will get returned a list with the `n` (x,y)-coordinate pairs. There are a couple figures in chapter @sec-draw where I use `locator()` to find coordinates for drawing points or text. This interactive usage is hard to translate into static notes, so I have to hard-code the coordinates in this document. 
 
 ### Colors
 
