@@ -816,9 +816,9 @@ require(viridisLite)
 plasma(3)
 ```
 
-A good color palette is designed to do several things. I should make attractive figures. Basically, you want the colors to be cool and, well, colorful. But you also want them to be perceptually uniform, meaning that values that are close to each other have colors that are close to each other throughout the range of the palette. Ideally, you also want your color choices to be robust for people with color blindness. 
+A good color palette is designed to do several things. It should make attractive figures. Basically, you want the colors to be cool and, well, colorful. But you also want them to be perceptually uniform, meaning that values that are close to each other have colors that are close to each other throughout the range of the palette. Ideally, you also want your color choices to be robust for people with color blindness. 
 
-My personal favorite color-palette package is `MetBrewer`, which translates the color schemes of various masterworks from the [Metropolitan Museum of Art](https://www.metmuseum.org/). You can check oout the various palettes and the works that inspired them on the [MetBrewer GitHub](https://github.com/BlakeRMills/MetBrewer).
+My personal favorite color-palette package is `MetBrewer`, which translates the color schemes of various masterworks from the [Metropolitan Museum of Art](https://www.metmuseum.org/). You can check out the various palettes and the works that inspired them on the [MetBrewer GitHub](https://github.com/BlakeRMills/MetBrewer).
 
 ```{r}
 library(MetBrewer)

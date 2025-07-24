@@ -35,7 +35,7 @@ The call to the function `make_graph()` (which can be shortened to `graph()`) ta
 For small graphs representing the relationships between a few named individuals, we can create a graph using `graph_from_literal()`. Undirected edges are indicated with one or more dashes `-`, `--`, etc. It doesn't matter how many dashes you use -- you can use as many as you want to make your code more readable. The colon operator `:` links "vertex sets" -- i.e., creates ties between all members of two groups of vertices. So, for the Scooby Gang, we could specify the following graph
 
 ```{r}
-g <- graph_from_literal(Fred-Daphne:Velma-Shaggy, Fred-Shaggy-Scooby)
+g <- graph_from_literal(Fred:Daphne:Velma:Shaggy-Fred:Daphne:Velma:Shaggy, Shaggy-Scooby)
 plot(g, vertex.shape="none", vertex.label.color="black")
 ```
 

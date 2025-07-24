@@ -306,7 +306,7 @@ window.Quarto = {
 <p>The call to the function <code>make_graph()</code> (which can be shortened to <code>graph()</code>) takes three arguments in this case. First, we enumerate the edges by listing the pairs of vertices which are connected. In this graph, there are six edges. Second, we define the size of our graph. This simple graph has five vertices, so <code>n=5</code>. Third, the default graph type is directed, so to create an undirected graph, we need to specify <code>dir=FALSE</code>. The function <code>graph()</code> creates a graph object which, like any <code>R</code> object, is associated with a number of methods. When we plot a graph object, the plotting method used is <code>plot.igraph()</code>. There are a number of features (or perhaps peculiarities) of the defaults of <code>plot.igraph()</code>. First, is the vertex color. It’s not hideous but it’s not an obvious choice for a default color either. Second, the default font label style is Roman, which can make the labels look cluttered. I typically change to a sens-serif font using the argument <code>vertex.label.family="Helvetica"</code>. Third, the layout will not necessarily make sense to you as a human viewer of the graph and will typically change each time you call <code>plot.igraph()</code>. Fortunately, <code>igraph</code> has a number of excellent tools for assisting with graph layout.</p>
 <p>For small graphs representing the relationships between a few named individuals, we can create a graph using <code>graph_from_literal()</code>. Undirected edges are indicated with one or more dashes <code>-</code>, <code>--</code>, etc. It doesn’t matter how many dashes you use – you can use as many as you want to make your code more readable. The colon operator <code>:</code> links “vertex sets” – i.e., creates ties between all members of two groups of vertices. So, for the Scooby Gang, we could specify the following graph</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_literal</span>(Fred<span class="sc">-</span>Daphne<span class="sc">:</span>Velma<span class="sc">-</span>Shaggy, Fred<span class="sc">-</span>Shaggy<span class="sc">-</span>Scooby)</span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>g <span class="ot">&lt;-</span> <span class="fu">graph_from_literal</span>(Fred<span class="sc">:</span>Daphne<span class="sc">:</span>Velma<span class="sc">:</span>Shaggy<span class="sc">-</span>Fred<span class="sc">:</span>Daphne<span class="sc">:</span>Velma<span class="sc">:</span>Shaggy, Shaggy<span class="sc">-</span>Scooby)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g, <span class="at">vertex.shape=</span><span class="st">"none"</span>, <span class="at">vertex.label.color=</span><span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -366,8 +366,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lattice</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>g3 <span class="ot">&lt;-</span> <span class="fu">make_lattice</span>(<span class="at">dimvector=</span><span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">10</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g3, <span class="at">vertex.color=</span><span class="st">"skyblue2"</span>, <span class="at">vertex.size=</span><span class="dv">10</span>, <span class="at">vertex.label=</span><span class="cn">NA</span>, </span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">layout=</span><span class="fu">layout_on_grid</span>(g3))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g3, <span class="at">vertex.color=</span><span class="st">"skyblue2"</span>, <span class="at">vertex.size=</span><span class="dv">10</span>, <span class="at">vertex.label=</span><span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -478,9 +477,9 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## look at the structure</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>g4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 12b4865 U--- 20 19 -- Tree
+<pre><code>IGRAPH 11e3c3c U--- 20 19 -- Tree
 + attr: name (g/c), children (g/n), mode (g/c)
-+ edges from 12b4865:
++ edges from 11e3c3c:
  [1] 1-- 2 1-- 3 1-- 4 2-- 5 2-- 6 2-- 7 3-- 8 3-- 9 3--10 4--11 4--12 4--13
 [13] 5--14 5--15 5--16 6--17 6--18 6--19 7--20</code></pre>
 </div>
@@ -488,9 +487,9 @@ window.Quarto = {
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## see how it's changed</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>g4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 12b4865 UN-- 20 19 -- Tree
+<pre><code>IGRAPH 11e3c3c UN-- 20 19 -- Tree
 + attr: name (g/c), children (g/n), mode (g/c), name (v/c)
-+ edges from 12b4865 (vertex names):
++ edges from 11e3c3c (vertex names):
  [1] A--B A--C A--D B--E B--F B--G C--H C--I C--J D--K D--L D--M E--N E--O E--P
 [16] F--Q F--R F--S G--T</code></pre>
 </div>
@@ -500,10 +499,10 @@ window.Quarto = {
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g4)<span class="sc">$</span>edge.color <span class="ot">&lt;-</span> <span class="st">"#abed8e"</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>g4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 12b4865 UN-- 20 19 -- Tree
+<pre><code>IGRAPH 11e3c3c UN-- 20 19 -- Tree
 + attr: name (g/c), children (g/n), mode (g/c), name (v/c),
 | vertex.color (v/c), edge.color (e/c)
-+ edges from 12b4865 (vertex names):
++ edges from 11e3c3c (vertex names):
  [1] A--B A--C A--D B--E B--F B--G C--H C--I C--J D--K D--L D--M E--N E--O E--P
 [16] F--Q F--R F--S G--T</code></pre>
 </div>
