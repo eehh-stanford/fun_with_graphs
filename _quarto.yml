@@ -13,6 +13,8 @@ book:
     - drawing.qmd
     - graphs.qmd
     - odes.qmd
+    - demog1.qmd
+    - demog2.qmd
     - references.qmd
 
 bibliography: graphics.bib

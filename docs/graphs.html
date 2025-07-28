@@ -207,6 +207,18 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./demog1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Demography I: Mortality</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./demog2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Demography II: Matrix Population Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -321,7 +333,7 @@ window.Quarto = {
 </section>
 <section id="a-note-on-visualizing-graphs" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="a-note-on-visualizing-graphs"><span class="header-section-number">4.3</span> A Note On Visualizing Graphs</h2>
-<p>You will notice that many of the graphs in these notes are a bit cramped. This happens because when I <code>render</code> the Quartz document, <code>R</code> generates fairly small .png files. If you have, for example, vertex labels that really need to be read, it is a good idea to send your plot to a file that uses a vector-based format and potentially make it big. My preference is .pdf, but an argument can be made that .svg is even better. To do this, you just need to wrap your plotting commands in call to .pdf: <code>pdf(file="filename.pdf", height14, width=14)</code> and then don’t forget to close this off (i.e., after all your plotting commands) with <code>dev.off()</code> or you’ll keep sending graphics to your pdf file! The default size for pdf is <span class="math inline">\(7 \times 7\)</span> (in inches). By specifying the optional arguments <code>height</code> and <code>width</code>, we’ve doubled the size of the plot. This will spread things out quite a bit and you may actually have to increase the size of your vertices, labels, etc.</p>
+<p>You will notice that many of the graphs in these notes are a bit cramped. This happens because when I <code>render</code> the Quarto document, <code>R</code> generates fairly small .png files. If you have, for example, vertex labels that really need to be read, it is a good idea to send your plot to a file that uses a vector-based format and potentially make it big. My preference is .pdf, but an argument can be made that .svg is even better. To do this, you just need to wrap your plotting commands in call to .pdf: <code>pdf(file="filename.pdf", height14, width=14)</code> and then don’t forget to close this off (i.e., after all your plotting commands) with <code>dev.off()</code> or you’ll keep sending graphics to your pdf file! The default size for pdf is <span class="math inline">\(7 \times 7\)</span> (in inches). By specifying the optional arguments <code>height</code> and <code>width</code>, we’ve doubled the size of the plot. This will spread things out quite a bit and you may actually have to increase the size of your vertices, labels, etc.</p>
 </section>
 <section id="special-graphs" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="special-graphs"><span class="header-section-number">4.4</span> Special Graphs</h2>
@@ -477,9 +489,9 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## look at the structure</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>g4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 11e3c3c U--- 20 19 -- Tree
+<pre><code>IGRAPH 95612d0 U--- 20 19 -- Tree
 + attr: name (g/c), children (g/n), mode (g/c)
-+ edges from 11e3c3c:
++ edges from 95612d0:
  [1] 1-- 2 1-- 3 1-- 4 2-- 5 2-- 6 2-- 7 3-- 8 3-- 9 3--10 4--11 4--12 4--13
 [13] 5--14 5--15 5--16 6--17 6--18 6--19 7--20</code></pre>
 </div>
@@ -487,9 +499,9 @@ window.Quarto = {
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## see how it's changed</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>g4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 11e3c3c UN-- 20 19 -- Tree
+<pre><code>IGRAPH 95612d0 UN-- 20 19 -- Tree
 + attr: name (g/c), children (g/n), mode (g/c), name (v/c)
-+ edges from 11e3c3c (vertex names):
++ edges from 95612d0 (vertex names):
  [1] A--B A--C A--D B--E B--F B--G C--H C--I C--J D--K D--L D--M E--N E--O E--P
 [16] F--Q F--R F--S G--T</code></pre>
 </div>
@@ -499,10 +511,10 @@ window.Quarto = {
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">E</span>(g4)<span class="sc">$</span>edge.color <span class="ot">&lt;-</span> <span class="st">"#abed8e"</span></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>g4</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>IGRAPH 11e3c3c UN-- 20 19 -- Tree
+<pre><code>IGRAPH 95612d0 UN-- 20 19 -- Tree
 + attr: name (g/c), children (g/n), mode (g/c), name (v/c),
 | vertex.color (v/c), edge.color (e/c)
-+ edges from 11e3c3c (vertex names):
++ edges from 95612d0 (vertex names):
  [1] A--B A--C A--D B--E B--F B--G C--H C--I C--J D--K D--L D--M E--N E--O E--P
 [16] F--Q F--R F--S G--T</code></pre>
 </div>

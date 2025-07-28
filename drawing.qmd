@@ -1015,9 +1015,8 @@ abline(h=0, lty=2)
 ## To Do
 
 1. Splines
-2. Fitness surface/contour plot
-3. Kinship/genealogy
-4. Phylogenetic trees
-5. DAGs/causal diagrams
-6. Lexis diagram
-7. Show how cobwebbed Ricker recruitment translates into chaotic time series
+2. Kinship/genealogy
+3. Phylogenetic trees
+4. DAGs/causal diagrams
+5. Show how cobwebbed Ricker recruitment translates into chaotic time series
+

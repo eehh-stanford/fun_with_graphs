@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>6&nbsp; Demography I: Mortality – Fun with Graphs</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./demog2.html" rel="next">
+<link href="./odes.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-626149efe8f5d16e1d391ba177679bf0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./demog1.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Demography I: Mortality</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Fun with Graphs</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fun with Graphs</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./gettingR.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started in R</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./interpreting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Interpreting Scientific Figures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./drawing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Theoretical Scientific Figures in <code>R</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./graphs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Actual Graphs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./odes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./demog1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Demography I: Mortality</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./demog2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Demography II: Matrix Population Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#cohorts-and-periods" id="toc-cohorts-and-periods" class="nav-link active" data-scroll-target="#cohorts-and-periods"><span class="header-section-number">6.1</span> Cohorts and Periods</a>
+  <ul class="collapse">
+  <li><a href="#the-lexis-diagram." id="toc-the-lexis-diagram." class="nav-link" data-scroll-target="#the-lexis-diagram."><span class="header-section-number">6.1.1</span> The Lexis diagram.</a></li>
+  </ul></li>
+  <li><a href="#anatomy-of-the-human-mortality-curve" id="toc-anatomy-of-the-human-mortality-curve" class="nav-link" data-scroll-target="#anatomy-of-the-human-mortality-curve"><span class="header-section-number">6.2</span> Anatomy of the Human Mortality Curve</a></li>
+  <li><a href="#period-life-table" id="toc-period-life-table" class="nav-link" data-scroll-target="#period-life-table"><span class="header-section-number">6.3</span> Period Life Table</a></li>
+  <li><a href="#constructing-a-period-life-table" id="toc-constructing-a-period-life-table" class="nav-link" data-scroll-target="#constructing-a-period-life-table"><span class="header-section-number">6.4</span> Constructing a Period Life Table</a></li>
+  <li><a href="#the-mortality-database" id="toc-the-mortality-database" class="nav-link" data-scroll-target="#the-mortality-database"><span class="header-section-number">6.5</span> The Mortality Database</a></li>
+  <li><a href="#survival-analysis" id="toc-survival-analysis" class="nav-link" data-scroll-target="#survival-analysis"><span class="header-section-number">6.6</span> Survival Analysis</a>
+  <ul class="collapse">
+  <li><a href="#some-features" id="toc-some-features" class="nav-link" data-scroll-target="#some-features"><span class="header-section-number">6.6.1</span> Some Features</a></li>
+  <li><a href="#kaplan-meier-estimator" id="toc-kaplan-meier-estimator" class="nav-link" data-scroll-target="#kaplan-meier-estimator"><span class="header-section-number">6.6.2</span> Kaplan-Meier Estimator</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-demog1" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Demography I: Mortality</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="cohorts-and-periods" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="cohorts-and-periods"><span class="header-section-number">6.1</span> Cohorts and Periods</h2>
+<p>Demographic rates typically take the form of so-called event/exposure rates. In essence, we count the number of events of interest (e.g., births, deaths, marriages, bouts of diarrhea, job losses) and divide by the population at risk for the event. The population at risk is a combination of two things: (1) the number of people in the time period and (2) the length of the period. The measure that combines these is known as <strong>person-years</strong> at risk for the event. Much of demography involves measuring these person-years of risk. This is why it is sometimes said that Epidemiology measures numerators while Demography measures denominators.</p>
+<p>Time enters demography in two distinct ways: (1) through calendar time (which is the same for everyone) and (2) through personal time measured for each person as age. This distinction in time leads to two different ways of conceiving of a population. A <strong>cohort</strong> is a group of individuals that we follow simultaneously through time. In contrast, a <strong>period</strong> is a specific historical span of time and the population that occupies that time. The <strong>Lexis diagram</strong> is a useful graphical device that helps organize thinking about ages, periods, and cohorts. It plots calendar time along the horizontal axis and age along the vertical axis. A person who is born at some time <span class="math inline">\(t\)</span> is plotted with a <strong>lifeline</strong> that intercepts the horizontal axis at <span class="math inline">\(t\)</span> and then increases with a slope of unity (since for every year that passes, a person is a year older) until death.</p>
+<section id="the-lexis-diagram." class="level3" data-number="6.1.1">
+<h3 data-number="6.1.1" class="anchored" data-anchor-id="the-lexis-diagram."><span class="header-section-number">6.1.1</span> The Lexis diagram.</h3>
+<p>We can use the <code>Epi</code> package to conveniently draw Lexis diagrams.</p>
+<p>I am an honorary Berkeley Demography Nerd and as my homage to the great Ken Wachter, I will use historical data from the UK to illustrate the Lexis diagram. Ken had a habit of using literary and historical examples in his teaching and writing. King Edward III of England reigned from 1312-1377 and had 11 children. We know the dates of birth and death of all but one of these children</p>
+<p>Children of King Edward III of England (1312-1377)</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Birth</th>
+<th>Death</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Edward, The Black Prince</td>
+<td>1330</td>
+<td>1376</td>
+</tr>
+<tr class="even">
+<td>Isabel</td>
+<td>1332</td>
+<td>1382</td>
+</tr>
+<tr class="odd">
+<td>Joan</td>
+<td>1335</td>
+<td>1348</td>
+</tr>
+<tr class="even">
+<td>William of Hatfield</td>
+<td>1336</td>
+<td>?</td>
+</tr>
+<tr class="odd">
+<td>Lionel of Antwerp, Duke of Clarence</td>
+<td>1338</td>
+<td>1368</td>
+</tr>
+<tr class="even">
+<td>John of Gaunt, Duke of Lancaster</td>
+<td>1340</td>
+<td>1398</td>
+</tr>
+<tr class="odd">
+<td>Edmund Langley, Duke of York</td>
+<td>1341</td>
+<td>1402</td>
+</tr>
+<tr class="even">
+<td>Blanche</td>
+<td>1342</td>
+<td>1342</td>
+</tr>
+<tr class="odd">
+<td>Mary</td>
+<td>1344</td>
+<td>1362</td>
+</tr>
+<tr class="even">
+<td>Margaret</td>
+<td>1346</td>
+<td>1361</td>
+</tr>
+<tr class="odd">
+<td>Thomas of Woodstock, Duke of Gloucester</td>
+<td>1355</td>
+<td>1397</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(Epi)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Lexis.diagram</span>(<span class="at">date=</span><span class="fu">c</span>(<span class="dv">1330</span>,<span class="dv">1405</span>), <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">62</span>), <span class="at">int=</span><span class="dv">5</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">entry.date=</span><span class="fu">c</span>(<span class="dv">1330</span>,<span class="dv">1332</span>,<span class="dv">1335</span>,<span class="dv">1336</span>,<span class="dv">1338</span>,<span class="dv">1340</span>,<span class="dv">1341</span>,<span class="dv">1342</span>,<span class="dv">1344</span>,<span class="dv">1346</span>,<span class="dv">1355</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">exit.date=</span><span class="fu">c</span>(<span class="dv">1376</span>,<span class="dv">1382</span>,<span class="dv">1348</span>,<span class="dv">1336</span>,<span class="dv">1368</span>,<span class="dv">1398</span>,<span class="dv">1402</span>,<span class="dv">1342</span>,<span class="dv">1362</span>,<span class="dv">1361</span>,<span class="dv">1397</span>),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">entry.age =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">11</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">fail=</span><span class="fu">c</span>(T,T,T,F,T,T,T,T,T,T,T),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">lwd.life=</span><span class="dv">2</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">pch.fail=</span><span class="dv">19</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">col.fail=</span><span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"black"</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">cex.fail=</span><span class="fl">1.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Each individual is represented by a line with x-origin of their birth-date. The line has a slope of 1 because each year that passes, the individual is one year older. So what’s so profound about plotting a line of age vs.&nbsp;time? They’re literally just a collection of lines with a slope of 1. In fact, in most applications, we supress individual life lines and work with the more abstract space. The Lexis diagram is actually surprisingly helpful for thinking about problems of age vs.&nbsp;period vs.&nbsp;cohort. The so-called <strong>age-period-cohort problem</strong> is ubiquitous in demography and epidemiology and it’s nice to have a tool to help us understand it. Think about the possibilities for confounding: age effects arise because of intrinsic biological processes like development and aging; periods effects arise because of historical circumstances that affect everyone alive at that moment; cohort effects arise from the particular circumstances experienced by a cohort as they move through time.</p>
+<p>The half plane that defines the Lexis diagram is called the <strong>age-time plane</strong>. The Lexis diagram employs some standard demographic conventions, which are useful to state explicitly: A person’s exact age at any given time is the time elapsed since their birth. A person’s age in completed years at any given time is the greatest integer less than their exact age. Age in completed years is also referred to as “age at last birthday.” Time refers to a point in time, while a <strong>time period</strong> refers to an interval beginning and ending at specified times. Time and time period are analogous to exact age and age group.</p>
+<p>We can divide up the age-time plane in different ways. Any straight line segment in the age-time plane represents the set of individuals whose life lines intersect this line. A line segment perpendicular to the time axis, intersecting at time <span class="math inline">\(t\)</span>, represents the set of all individuals in the population at time <span class="math inline">\(t\)</span>. If we did a census at <span class="math inline">\(t\)</span>, these are the people we would count, so we can call the individuals intersected by this line the <strong>census set</strong> of the population at time <span class="math inline">\(t\)</span>.</p>
+<p>We can also draw rectangles, which will intersect with larger groups of individuals. Vertical rectangles capture time periods, while horizontal rectangles capture age groups. Diagonal parallelograms capture cohort experience.</p>
+<p>In the following Lexis diagram, if we wanted to calculate the mortality rate for the period 1960-1980 (the black rectangle), we’d count up the number of events (black circles) and divide by the total length of the line segments contained in the rectangle.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>entry.ages <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">50</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>birth.dates <span class="ot">&lt;-</span> <span class="fu">runif</span>(<span class="dv">50</span>,<span class="at">min=</span><span class="dv">1900</span>,<span class="at">max=</span><span class="dv">1970</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>exit.ages <span class="ot">&lt;-</span> <span class="fu">rgamma</span>(<span class="dv">50</span>,<span class="at">shape=</span><span class="dv">18</span>,<span class="at">scale=</span><span class="dv">4</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>fails <span class="ot">&lt;-</span> <span class="fu">rep</span>(F,<span class="dv">50</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">Lexis.diagram</span>( <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">80</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">date=</span><span class="fu">c</span>(<span class="dv">1950</span>,<span class="dv">1990</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">age.grid=</span><span class="cn">FALSE</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">date.grid=</span><span class="cn">FALSE</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">entry.age=</span>entry.ages,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>              <span class="at">birth.date=</span>birth.dates,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">exit.age=</span>exit.ages,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>              <span class="at">fail=</span>fails,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">pch.fail=</span><span class="dv">19</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>              <span class="at">cex=</span><span class="fl">0.5</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>              <span class="at">lwd.life=</span><span class="fl">0.25</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1960</span>,<span class="dv">0</span>,<span class="dv">1960</span>,<span class="dv">80</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1960</span>,<span class="dv">80</span>,<span class="dv">1980</span>,<span class="dv">80</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1980</span>,<span class="dv">0</span>,<span class="dv">1980</span>,<span class="dv">80</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1960</span>,<span class="dv">0</span>,<span class="dv">1980</span>,<span class="dv">0</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Incidentally, that’s not really a practical way to calculate mortality rates; it’s conceptual.</p>
+<p>If we wanted to examine the mortality of a cohort of people born within ten years of each other, what would the Lexis rectangle look like? Here we follow the people born between 1950-1960 until 1990 (when most of the life lines are right-censored). Our rectangle has turned into a parallelogram.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Lexis.diagram</span>( <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">80</span>),</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">date=</span><span class="fu">c</span>(<span class="dv">1950</span>,<span class="dv">1990</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">age.grid=</span><span class="cn">FALSE</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">date.grid=</span><span class="cn">FALSE</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">entry.age=</span>entry.ages,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">birth.date=</span>birth.dates,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">exit.age=</span>exit.ages,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">fail=</span>fails,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">pch.fail=</span><span class="dv">19</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">cex=</span><span class="fl">0.5</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">lwd.life=</span><span class="fl">0.25</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1950</span>,<span class="dv">0</span>,<span class="dv">1990</span>,<span class="dv">40</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1960</span>,<span class="dv">0</span>,<span class="dv">1990</span>,<span class="dv">30</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1990</span>,<span class="dv">30</span>,<span class="dv">1990</span>,<span class="dv">40</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">1950</span>,<span class="dv">0</span>,<span class="dv">1960</span>,<span class="dv">0</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Because we haven’t talked about enough geometric shapes yet, here’s another. Turns out, making triangles by dividing parallelograms in half is really useful.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Lexis.diagram</span>( <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5</span>),</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">date=</span><span class="fu">c</span>(<span class="dv">2000</span>,<span class="dv">2005</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">int =</span> <span class="dv">1</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">age.grid=</span><span class="cn">TRUE</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">date.grid=</span><span class="cn">TRUE</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rect</span>(<span class="dv">2003</span>,<span class="dv">0</span>,<span class="dv">2004</span>,<span class="dv">5</span>, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">218</span>, <span class="dv">112</span>, <span class="dv">214</span>, <span class="dv">100</span>, <span class="at">maxColorValue =</span> <span class="dv">255</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2000</span><span class="sc">:</span><span class="dv">2005</span>,<span class="dv">2005</span><span class="sc">:</span><span class="dv">2000</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>yy <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">5</span>,<span class="dv">4</span><span class="sc">:</span><span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">polygon</span>(xx,yy, <span class="at">col=</span><span class="fu">rgb</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">220</span>,<span class="dv">120</span>, <span class="at">maxColorValue =</span> <span class="dv">255</span>))</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## lower triangle</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">2003</span>,<span class="dv">2</span>,<span class="dv">2003</span>,<span class="dv">3</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">2003</span>,<span class="dv">3</span>,<span class="dv">2004</span>,<span class="dv">3</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">2003</span>,<span class="dv">2</span>,<span class="dv">2004</span>,<span class="dv">3</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## upper triangle</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">2003</span>,<span class="dv">3</span>,<span class="dv">2004</span>,<span class="dv">4</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">segments</span>(<span class="dv">2004</span>,<span class="dv">4</span>,<span class="dv">2004</span>,<span class="dv">3</span>,<span class="at">lwd=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In this Lexis diagram, the orchid vertical rectangle represents the period from 2003-2004. The blue diagonal represents all individuals born in calendar year 2000. Their intersection describes the two <strong>Lexis triangles</strong>. The lower Lexis triangle is all individuals born in 2000 who are 2 at their last birthday in the year 2003. The upper Lexis triangle is that individuals born in 2000 who are 3 at their last birthday in 2003. Individuals from a particular cohort, <span class="math inline">\(t-x\)</span>, are thus split across two different Lexis squares, which combine a a period and age class of the same width. Another way to think about this is that every Lexis square contains events that happened to individuals from the <span class="math inline">\(t-x\)</span> and <span class="math inline">\(t-x+1\)</span> cohorts.</p>
+<p>The <a href="https://www.mortality.org/File/GetDocument/Public/Docs/MethodsProtocolV6.pdf">Human Mortality Database</a> makes extensive use of Lexis triangles in its calculations. For example, the cross-classification required to locate a Lexis triangle—you need to know the year of birth, the age at death, and the year of death to place a death in a triangle—provides important quality checks on mortality data. Moreover, by knowing the distribution of deaths in upper vs.&nbsp;lower triangles, we can impute unknown ages at death, as described in the document linked above.</p>
+<p>One final Lexis variant. This is called a <strong>Lexis surface</strong> plot. I’ve downloaded the yearly central death rates for the USA from 1933-2023 from HMD. We’ll plot Lexis surfaces for women, men, and the ratio of female-to-male log-mortality. Might need to work a bit on the color scale, but it’s a start.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(MetBrewer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: MetBrewer</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>usa <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file=</span><span class="st">"./data/usa_mx_1x1.txt"</span>, <span class="at">skip=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(usa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Year Age   Female     Male    Total
+1 1933   0 0.054177 0.068175 0.061292
+2 1933   1 0.008866 0.010039 0.009459
+3 1933   2 0.004025 0.004671 0.004351
+4 1933   3 0.002869 0.003333 0.003104
+5 1933   4 0.002230 0.002537 0.002386
+6 1933   5 0.001852 0.002092 0.001975</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 91 years of mortality</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(usa<span class="sc">$</span>Year))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 91</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize 2 matrices to hold the age x year mortality rates</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fmx <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow=</span><span class="dv">111</span>,<span class="at">ncol=</span><span class="dv">91</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>mmx <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>,<span class="at">nrow=</span><span class="dv">111</span>,<span class="at">ncol=</span><span class="dv">91</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># insert the columns</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">90</span>){</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  fmx[,i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> usa<span class="sc">$</span>Female[usa<span class="sc">$</span>Year<span class="sc">==</span>i<span class="sc">+</span><span class="dv">1933</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">90</span>){</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  mmx[,i<span class="sc">+</span><span class="dv">1</span>] <span class="ot">&lt;-</span> usa<span class="sc">$</span>Male[usa<span class="sc">$</span>Year<span class="sc">==</span>i<span class="sc">+</span><span class="dv">1933</span>]</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">110</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="dv">1933</span><span class="sc">:</span><span class="dv">2023</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>bounds <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">min</span>(<span class="fu">log10</span>(<span class="fu">range</span>(usa<span class="sc">$</span>Female))),<span class="fu">max</span>(<span class="fu">log10</span>(<span class="fu">range</span>(usa<span class="sc">$</span>Male))))</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>ccc <span class="ot">&lt;-</span> <span class="fu">met.brewer</span>(<span class="st">"Johnson"</span>,<span class="dv">24</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="do">## need to transpose the matrix to get the dimensions to match</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(<span class="at">x=</span>year, <span class="at">y=</span>age, <span class="at">z=</span><span class="fu">log10</span>(<span class="fu">t</span>(fmx)),</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>               <span class="at">col=</span>ccc, <span class="at">levels=</span><span class="fu">pretty</span>(bounds,<span class="dv">20</span>),</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>               <span class="at">xlab=</span><span class="st">"Year"</span>, <span class="at">ylab=</span><span class="st">"Age"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Female"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(<span class="at">x=</span>year, <span class="at">y=</span>age, <span class="at">z=</span><span class="fu">log10</span>(<span class="fu">t</span>(mmx)),</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">col=</span>ccc, <span class="at">levels=</span><span class="fu">pretty</span>(bounds,<span class="dv">20</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">xlab=</span><span class="st">"Year"</span>, <span class="at">ylab=</span><span class="st">"Age"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Male"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Ratio of log-Mx</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>mux.ratio <span class="ot">&lt;-</span> <span class="fu">t</span>(fmx)<span class="sc">/</span><span class="fu">t</span>(mmx)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">filled.contour</span>(<span class="at">x=</span>year,<span class="at">y=</span>age,<span class="at">z=</span><span class="fu">log10</span>(mux.ratio),<span class="at">col=</span><span class="fu">topo.colors</span>(<span class="dv">25</span>), </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">xlab=</span><span class="st">"Year"</span>, <span class="at">ylab=</span><span class="st">"Age"</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span>(<span class="st">"Female/Male log-Mortality Ratio"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Need to think a bit about what this last surface is. Take the ratio of female-to-male mortality and then take the common logarithm of that. If female mortality is less than male mortality, this ratio will be less than one and its logarithm will be negative. The darker the blue, the greater male mortality is relative to female mortality. Yellow means a male mortality advantage, while green means that they are approximately equal.</p>
+<p>Can you see the mortality cross-over? What about the accident hump?</p>
+<p>What was happening in the 1960s and 1970s to 60 year-old men? Is that smoking? Is that basically the Don Draper bulge? And what happened to the accident hump in 1997? I actually know the answer to the latter, but I’m still not sure about the former. That said, it’s worth noting that that 1960s bulge happens to be a cohort of men who fought in WWII 20 years earlier, in an era where we pretended that mental health of veterans wasn’t a problem and people regularly self-medicated. Regarding the rise and precipitous drop of male disadvantage across the 1980s-1990s: In 1997, David Ho’s team published a <a href="https://doi.org/10.1038/387188a0">paper in <em>Nature</em></a> describing their success in suppressing HIV-1 in the cells of infected patients using combination anti-retroviral therapy. This marked the beginning of the end of the AIDS era. The growing excess of male deaths among young adults in the 1980s and early 1990s reflects the fact that HIV/AIDS was primarily a disease of gay men in the United States when it first emergeged.</p>
+</section>
+</section>
+<section id="anatomy-of-the-human-mortality-curve" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="anatomy-of-the-human-mortality-curve"><span class="header-section-number">6.2</span> Anatomy of the Human Mortality Curve</h2>
+<p>The mortality curve is a plot of the log of the central mortality rate against age. It has a general bathtub shape. There are marked sex differences (males typically higher at all ages). Mortality is high immediately after birth and declines rapidly. Mortality is lowest during mid-childhood. Males typically show an adolescent accident hump. Mortality increases linearly on a log scale from ages 30 onward. There is frequently a decline in the mortality rate among the oldest old</p>
+<p>There are seven characteristic features of the human mortality curve:</p>
+<ol type="1">
+<li>An overall “bathtub” shape</li>
+<li>Male mortality generally higher than female mortality at most ages</li>
+<li>An early peak in mortality rate</li>
+<li>A bottoming-out of mortality in middle childhood</li>
+<li>A nearly linear increase in mortality on a log-scale starting at age 30</li>
+<li>An eventual decline in mortality (from very high levels) at the oldest ages</li>
+<li>An “accident hump” in male mortality in late adolescence or early adulthood</li>
+</ol>
+</section>
+<section id="period-life-table" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="period-life-table"><span class="header-section-number">6.3</span> Period Life Table</h2>
+<p>A life table is a summary of the mortality experience of a cohort of people. A <em>cohort</em> life table follows an actual cohort of people through time. Cohort life tables are typically quite limited because to know the full mortality experience of a cohort, you have to follow it through cohort extinction. Since people can live for 100 years or more, this means you typically don’t have cohort life tables for recent populations. It also means that the mortality experience of those who died young often happened in a very different time, where sources of mortality and healthcare might have been very different indeed.</p>
+<p>A <em>period</em> life table summarizes the mortality experience of a synthetic cohort of people, doing the <em>as-if</em> experiment of what this population would look like if it experienced the mortality conditions as they pertain to the present time. It’s very important to always remember that a period life table is actually a fiction. It’s a useful fiction, but a fiction nonetheless. One area where we currently (July 2025) are seeing a lot of confusion about the useful fiction of period demographic measures is not about mortality but fertility (notes forthcoming). There is currently a great deal of consternation about falling birth rates in the US and around the world. Elon Musk thinks that population collapse is the second biggest threat to humanity (after AI, of course). Vice President JD Vance wants “more babies.” Two UT economists have written a book about population collapse called <em>After the Spike</em>. I just read an editorial in the <em>Wall Street Journal</em> about fertility decline this morning. The thing is, the fertility rate of 1.6 births/woman that currently characterizes the US (the lowest ever recorded), and is causing widespread panic, is a <em>period measure</em>. It’s one of these useful fictions. If the population, composed as it is by a mixture of cohorts, is actively changing its behavior—for example, delaying childbearing until later in life—then the period-measure of fertility (the total fertility rate or TFR) will <em>underestimate</em> the actual completed fertility of younger women during a period. This is a widely understood phenomenon among demographers—typically discussed under the moniker <strong>Quantum vs.&nbsp;Tempo</strong> of reproduction—and has been nicely summarized by a group of outstanding contemporary demographers (Leslie Root, Karen Benjamin Guzzo and Shelly Clark) who specialize in fertility in a recent <a href="https://theconversation.com/fears-that-falling-birth-rates-in-us-could-lead-to-population-collapse-are-based-on-faulty-assumptions-261031">explainer in <em>The Conversation</em></a>.</p>
+<p>You might see the adjective <em>abridged</em> used for life tables, mostly in older literature. This typically means that the ages included in the life table are all five-year classes except for the first two, which are one year (0-1, infants) and four years (1-5, young children). A complete life table would have values for all individual years. Life tables with five-year age classes (called <em>quinquennia</em>) are by far the most common form you will encounter.</p>
+<p>The period life table is one of the central tools of demography. It follows a hypothetical cohort (i.e., a group of people born at the same moment) through time until every one of its members die. Life tables are conceptually simple but they contain a lot of notation, so strap in. Many of the entries of a life table have both pre- and post-subscripts (typically <span class="math inline">\(n\)</span> and <span class="math inline">\(x\)</span> respectively). Take, for example, the mortality rate between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x + n\)</span>:</p>
+<p><span class="math display">\[ {_nm_x} = \frac{ {_nd_x}}{{_nL_x}}. \]</span></p>
+<p>The term in the numerator on the right-hand side of the equality represents the number of deaths between exact ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span>, while the denominator is the number of person-years lived between these ages. In general, the post-subscript <span class="math inline">\(x\)</span> indicates the exact age at a person’s last birthday, while the pre-subscript <span class="math inline">\(n\)</span> represents the number of years in the age interval. If there is no pre-subscript, this value is generally taken to be a single year.</p>
+<p>We typically estimate this mortality rate by dividing the enumerated deaths between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x + n\)</span> by the mid-population census size between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x + n\)</span>. It is important to note that these are rates and not probabilities and that in order to construct a life table, we have to convert the rates to probabilities.</p>
+<p>Demography necessarily involves a lot of book-keeping. This means that it is fairly notation-heavy. The notation takes a bit of getting used to, but there is nothing really fundamentally difficult about it. The following table summarizes the columns of a life table.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 89%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Symbol</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(x\)</span></td>
+<td>Exact age at the start of the interval</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(l_x\)</span></td>
+<td>Number alive at age <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(_nd_x\)</span></td>
+<td>Number dying between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(_nq_x\)</span></td>
+<td>(<span class="math inline">\(= {_n}d_x/l_x\)</span>) Probability of dying between <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(_np_x\)</span></td>
+<td>(<span class="math inline">\(=1- {_n}d_x/l_x\)</span>) Probability of surviving between <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(_nL_x\)</span></td>
+<td>Number of person-years lived between <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(_nT_x\)</span></td>
+<td>Number of person-years that a cohort lives after reaching <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(e_x\)</span></td>
+<td>(<span class="math inline">\(=T_x/l_x\)</span>) Expected length of life after reaching age <span class="math inline">\(x\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(_nm_x\)</span></td>
+<td>(<span class="math inline">\(={_nd}_x/{_nL}_x\)</span>) Death rate in the age interval <span class="math inline">\(x\)</span> to <span class="math inline">\(x+n\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(_na_x\)</span></td>
+<td>Average number of person-years lived by those who die between ages <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>In a particular period, vital statistics collected by the state provide the number of deaths by age group <span class="math inline">\(_nD_x\)</span> (note the capital letter) and the corresponding mid-year populations <span class="math inline">\(_nK_x\)</span>. From these we can estimate the death rates</p>
+<p><span class="math display">\[_nM_x = \frac{_nD_x}{_nK_x} \]</span></p>
+<p>We capitalize this death rate to indicate that it is empirical—it results from the observed deaths divided by the mid-interval population size. This is our approximation of the life-table mortality rate <span class="math inline">\(_nm_x\)</span>.</p>
+<p>We now follow a hypothetical (synthetic) cohort of <span class="math inline">\(l_0\)</span> (the size of which is called the <strong>radix</strong> of the life table) individuals through life as though they experienced the above mortality rates, which are estimates of</p>
+<p><span class="math display">\[ _nm_x = \frac{_nd_x}{_nL_x} \]</span></p>
+<p>Recall that the probabilities of dying are:</p>
+<p><span class="math display">\[ _nq_x = \frac{_nd_x}{l_x} =  \frac{_nd_x}{_nL_x}\frac{_nL_x}{l_x} =
+{_n}m_x \frac{_nL_x}{l_x} \]</span></p>
+<p>The person-years lived between <span class="math inline">\(x\)</span> and <span class="math inline">\(x+n\)</span> is the <span class="math inline">\(l_{x+n}\)</span> survivors who each live <span class="math inline">\(n\)</span> years <strong>plus</strong> the years lived by the <span class="math inline">\(_nd_x\)</span> who die in the interval, the average of which is <span class="math inline">\(_na_x\)</span></p>
+<p><span class="math display">\[ _nL_x = n\, l_{x+n} + {_nd_x}\; {_n}a_x \]</span></p>
+<p>Remember that <span class="math inline">\(_nd_x = l_x - l_{x+n}\)</span>, or <span class="math inline">\(l_{x+n} = l_x - {_nd_x}\)</span>. Substitute this for <span class="math inline">\(l_{x+n}\)</span> above to get</p>
+<p><span class="math display">\[ l_x = \frac{_nL_x + {_nd_x}(n - {_n}a_x)}{n}, \]</span></p>
+<p>which we then substitute this into the formula for <span class="math inline">\(_nq_x\)</span>:</p>
+<p><span class="math display">\[ _nq_x = \frac{_nd_x}{l_x} = \frac{n \cdot  {_nd_x}}{_nL_x + {_nd_x}(n -
+  {_na_x})}. \]</span></p>
+<p>Finally, divide both numerator and denominator by <span class="math inline">\(_nL_x\)</span></p>
+<p><span class="math display">\[ _nq_x =  \frac{n \cdot \frac{_nd_x}{_nL_x}}{\frac{_nL_x}{_nL_x} +
+  \frac{_nd_x}{_nL_x}(n - {_n}a_x)},
+\]</span></p>
+<p>Simplify and we are left with</p>
+<p><span class="math display">\[ _nq_x = \frac{n \cdot {_nm_x}}{1 + {_n}m_x(n- {_n}a_x)}. \]</span></p>
+<p>This is known as the <em>Greville equation</em> and it’s how we convert our observed mortality rates into the life-table probabilities (assuming that <span class="math inline">\(_nM_x \approx {_n}m_x\)</span>).</p>
+<p>To construct a period life table from estimates of the central mortality rate, we only need the average number of person-years lived by individuals dying in the interval <span class="math inline">\(_na_x\)</span>. But wait, how do we know the <span class="math inline">\(_na_x\)</span>? The following relationships are due to Keyfitz:</p>
+<p><span class="math display">\[ _1a_0 = 0.07 + 1.7\ {_1m_0}, \]</span></p>
+<p><span class="math display">\[ _4a_1 = 1.587 - 2.816\ {_1m_0}, \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ _na_x = n/2,~~~~~x \in 5, 10, 15, \ldots \]</span></p>
+<p>Keyfitz found values of <span class="math inline">\(_1a_0\)</span> and <span class="math inline">\(_4a_1\)</span> through regression of observed values of years lived among those dying in infancy and early childhood on measures of infant mortality. These estimates generally work pretty well, but will be off for very high-mortality populations.</p>
+<p>The last age interval is usually open. For example 85+, which includes ages 85 through the oldest observed age at death in the population. Since everyone must die,</p>
+<p><span class="math display">\[ _{\infty}q_x = 1 \]</span></p>
+<p>This is a logical result and applies regardless of the observed death rate <span class="math inline">\(_nm_x\)</span>. The last observed death rate is</p>
+<p><span class="math display">\[ _{\infty}m_x =  {_\infty}d_x/ {_\infty}L_x \]</span></p>
+<p>Since everyone dies, the number of deaths in the final open interval is equal to the number who enter</p>
+<p><span class="math display">\[  _{\infty}d_x = l_x. \]</span></p>
+<p>In the construction of a life table, this quantity is already constructed, so we now can write the expression for person-years lived in the open interval:</p>
+<p><span class="math display">\[ _{\infty}L_x = l_x/ {_{\infty}m_x}. \]</span> So now that you’re totally overwhelmed with notation, let’s actually construct a life table.</p>
+</section>
+<section id="constructing-a-period-life-table" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="constructing-a-period-life-table"><span class="header-section-number">6.4</span> Constructing a Period Life Table</h2>
+<p>Let’s make a period life table. We’ll start with vectors of reported deaths and mid-interval population sizes. The ages are pretty standard. Because mortality changes very fast early in life, our first age classes are shorter than subsequent ones. So we have ages 0, 1, and 5 and then every five years until the maximum age. For this data set, the maximum age is 85. Of course, it’s an open age class. It really means “85 years old or greater.”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">35</span>, <span class="dv">40</span>, <span class="dv">45</span>, <span class="dv">50</span>, <span class="dv">55</span>, <span class="dv">60</span>, <span class="dv">65</span>, <span class="dv">70</span>, <span class="dv">75</span>, <span class="dv">80</span>, <span class="dv">85</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>nDx <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">15706</span>, <span class="dv">15502</span>, <span class="dv">5813</span>, <span class="dv">2550</span>, <span class="dv">3264</span>, <span class="dv">3162</span>, <span class="dv">3570</span>, <span class="dv">2958</span>, <span class="dv">2958</span>, <span class="dv">2448</span>, <span class="dv">2244</span>, <span class="dv">1836</span>, <span class="dv">2040</span>, <span class="dv">1938</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>         <span class="dv">2754</span>, <span class="dv">2792</span>, <span class="dv">2277</span>, <span class="dv">1548</span>, <span class="dv">1640</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>nKx <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">115272</span>, <span class="dv">443973</span>, <span class="dv">453764</span>, <span class="dv">385103</span>, <span class="dv">299524</span>, <span class="dv">225887</span>, <span class="dv">228872</span>, <span class="dv">178123</span>, <span class="dv">179117</span>, <span class="dv">140309</span>, <span class="dv">126378</span>,  <span class="dv">97519</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="dv">88564</span>,  <span class="dv">53735</span>,  <span class="dv">45774</span>,  <span class="dv">32766</span>,  <span class="dv">20115</span>,  <span class="dv">10710</span>,   <span class="dv">8056</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a> nmax <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a> iwidth <span class="ot">&lt;-</span> x[<span class="dv">4</span>]<span class="sc">-</span>x[<span class="dv">3</span>] <span class="co"># width of older age classes</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the central death rate</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a> nMx <span class="ot">&lt;-</span> nDx<span class="sc">/</span>nKx</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This turns out to be a high-mortality population, so the Keyfitz appraoch to <span class="math inline">\(_na_x\)</span> will not work. We will instead use an approach attributable to Coale and Demeney. It is based on the same idea—regression of observed person-years lived on infant mortality—it just involves quite different values. In very high-mortality environments, the number of person-years lived by infants or young children dying in the interval will be substantially less than in low-mortality environments. That’s because in high-mortality conditions, you are more likely to die early and thus contribute fewer years to <span class="math inline">\(_na_x\)</span>. We’ll actually write a simple function to determine the coefficients to use and calculate our <span class="math inline">\(_na_x\)</span> values for the first two age classes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>coale <span class="ot">&lt;-</span> <span class="cf">function</span>(b1,b4,nMx){</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span>(nMx[<span class="dv">1</span>]<span class="sc">&gt;</span><span class="fl">0.107</span>){</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>     b1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.350</span>,<span class="dv">0</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>     b4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.361</span>,<span class="dv">0</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>   nax12 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>   nax12[<span class="dv">1</span>] <span class="ot">&lt;-</span> b1[<span class="dv">1</span>] <span class="sc">+</span> b1[<span class="dv">2</span>] <span class="sc">*</span>nMx[<span class="dv">1</span>]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>   nax12[<span class="dv">2</span>] <span class="ot">&lt;-</span> b4[<span class="dv">1</span>] <span class="sc">+</span> b4[<span class="dv">2</span>]<span class="sc">*</span> nMx[<span class="dv">1</span>]</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">return</span>(nax12)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>nax12 <span class="ot">&lt;-</span> <span class="fu">coale</span>(<span class="at">b1=</span><span class="fu">c</span>(<span class="fl">0.053</span>,<span class="fl">2.8</span>), <span class="at">b4=</span><span class="fu">c</span>(<span class="fl">1.522</span>,<span class="fl">1.518</span>), nMx)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize nax vector</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>nax <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>nax[<span class="dv">1</span>] <span class="ot">&lt;-</span> nax12[<span class="dv">1</span>]</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>nax[<span class="dv">2</span>] <span class="ot">&lt;-</span> nax12[<span class="dv">2</span>]</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>nax[<span class="dv">3</span><span class="sc">:</span>(nmax<span class="dv">-1</span>)] <span class="ot">&lt;-</span> iwidth<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>nax[nmax] <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span>nMx[nmax]</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co"># width of the intervals -- make last interval essentially unbounded</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>, <span class="fu">rep</span>(iwidth, nmax <span class="sc">-</span> <span class="dv">3</span>),<span class="dv">999</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Greville equation</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a> nqx <span class="ot">&lt;-</span> (n<span class="sc">*</span>nMx) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> (n<span class="sc">-</span>nax)<span class="sc">*</span>nMx)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co"># everyone has to die by the last interval, by definition</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a> nqx[nmax] <span class="ot">&lt;-</span> <span class="fl">1.0</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co"># survivorship lx</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>lx <span class="ot">&lt;-</span> <span class="fu">cumprod</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span><span class="sc">-</span>nqx))</span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a><span class="co"># dx </span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a> ndx <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">diff</span>(lx)</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="co"># person-years lived by survivors</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>lxpn <span class="ot">&lt;-</span> lx[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>nLx <span class="ot">&lt;-</span> n<span class="sc">*</span>lxpn <span class="sc">+</span> ndx<span class="sc">*</span>nax</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>Tx <span class="ot">&lt;-</span> <span class="fu">rev</span>(<span class="fu">cumsum</span>(<span class="fu">rev</span>(nLx)))</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="co"># life expectancy</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>ex <span class="ot">&lt;-</span> Tx<span class="sc">/</span>lx[<span class="dv">1</span><span class="sc">:</span>nmax]</span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="do">## format the life table</span></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>lt <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, <span class="at">nax =</span> <span class="fu">round</span>(nax,<span class="dv">4</span>), </span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>                <span class="at">nMx =</span> <span class="fu">round</span>(nMx,<span class="dv">4</span>), </span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>                <span class="at">nqx =</span> <span class="fu">round</span>(nqx[<span class="dv">1</span><span class="sc">:</span>nmax],<span class="dv">4</span>), </span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>                <span class="at">lx =</span> <span class="fu">round</span>(lx[<span class="dv">1</span><span class="sc">:</span>nmax],<span class="dv">4</span>), </span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>                <span class="at">ndx =</span> <span class="fu">round</span>(ndx,<span class="dv">4</span>), </span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>                <span class="at">nLx =</span> <span class="fu">round</span>(nLx,<span class="dv">4</span>),</span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>                <span class="at">Tx =</span> <span class="fu">round</span>(Tx,<span class="dv">2</span>),</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>                <span class="at">ex =</span> <span class="fu">round</span>(ex,<span class="dv">2</span>) )</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>lt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    x    nax    nMx    nqx     lx    ndx    nLx    Tx    ex
+1   0 0.3500 0.1363 0.1252 1.0000 0.1252 0.9186 38.52 38.52
+2   1 1.3610 0.0349 0.1279 0.8748 0.1119 3.2041 37.60 42.98
+3   5 2.5000 0.0128 0.0621 0.7630 0.0474 3.6964 34.40 45.08
+4  10 2.5000 0.0066 0.0326 0.7156 0.0233 3.5198 30.70 42.90
+5  15 2.5000 0.0109 0.0530 0.6923 0.0367 3.3697 27.18 39.26
+6  20 2.5000 0.0140 0.0676 0.6556 0.0443 3.1671 23.81 36.32
+7  25 2.5000 0.0156 0.0751 0.6112 0.0459 2.9415 20.64 33.77
+8  30 2.5000 0.0166 0.0797 0.5654 0.0451 2.7141 17.70 31.31
+9  35 2.5000 0.0165 0.0793 0.5203 0.0413 2.4983 14.99 28.81
+10 40 2.5000 0.0174 0.0836 0.4790 0.0400 2.2951 12.49 26.07
+11 45 2.5000 0.0178 0.0850 0.4390 0.0373 2.1017 10.19 23.22
+12 50 2.5000 0.0188 0.0899 0.4017 0.0361 1.9181  8.09 20.15
+13 55 2.5000 0.0230 0.1089 0.3656 0.0398 1.7283  6.17 16.89
+14 60 2.5000 0.0361 0.1654 0.3258 0.0539 1.4940  4.45 13.65
+15 65 2.5000 0.0602 0.2615 0.2719 0.0711 1.1816  2.95 10.86
+16 70 2.5000 0.0852 0.3512 0.2008 0.0705 0.8276  1.77  8.82
+17 75 2.5000 0.1132 0.4412 0.1303 0.0575 0.5076  0.94  7.24
+18 80 2.5000 0.1445 0.5309 0.0728 0.0386 0.2674  0.44  5.98
+19 85 4.9122 0.2036 1.0000 0.0342 0.0342 0.1678  0.17  4.91</code></pre>
+</div>
+</div>
+<p>Make some plots.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">plot</span>(lt<span class="sc">$</span>x, <span class="fu">log</span>(lt<span class="sc">$</span>nMx), <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab=</span><span class="st">"Age"</span>, <span class="at">ylab=</span><span class="st">"log(nMx)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">plot</span>(lt<span class="sc">$</span>x, lt<span class="sc">$</span>ndx, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">xlab=</span><span class="st">"Age"</span>, <span class="at">ylab=</span><span class="st">"Probability of Death"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>That all seems like kind of a lot to remember every time you want to calculate a life table. Fortunately, I have written a package called <code>demogR</code> that provides all these commands as a simple function—and much more! The data that we used in the laborious life-table example are from Madagascar in 1966. There is a data set included in <code>demogR</code> that has vital-rate data from this population as well as Venezuela in 1965, and the United States in 1967. We use the function <code>life.table()</code> to construct the period life table. The function has a lot ways to customize life-table construction. One of these is the <code>type</code> argument. This is how we calculate the first two values of <span class="math inline">\(_na_x\)</span>. It takes as its default the Keyfitz method. Because infant mortality is so high in the Madagascar data, we need to use the Coale-Demeny option (<code>type="cd"</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(demogR)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MetBrewer)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>cols <span class="ot">&lt;-</span> <span class="fu">met.brewer</span>(<span class="st">"Johnson"</span>,<span class="dv">3</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(goodman)</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Madagascar</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>mlt <span class="ot">&lt;-</span> <span class="fu">with</span>(goodman, <span class="fu">life.table</span>(<span class="at">x=</span>age, <span class="at">nDx=</span>mad.nDx, <span class="at">nKx=</span>mad.nKx, <span class="at">type=</span><span class="st">"cd"</span>))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Venezuela</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>vlt <span class="ot">&lt;-</span> <span class="fu">with</span>(goodman, <span class="fu">life.table</span>(<span class="at">x=</span>age, <span class="at">nDx=</span>ven.nDx, <span class="at">nKx=</span>ven.nKx))</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># USA</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>ult <span class="ot">&lt;-</span> <span class="fu">with</span>(goodman, <span class="fu">life.table</span>(<span class="at">x=</span>age, <span class="at">nDx=</span>usa.nDx, <span class="at">nKx=</span>usa.nKx))</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(mlt<span class="sc">$</span>x, mlt<span class="sc">$</span>lx, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">col=</span>cols[<span class="dv">1</span>], <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xlab=</span><span class="st">"Age"</span>, <span class="at">ylab=</span><span class="st">"Survivorship"</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(vlt<span class="sc">$</span>x, vlt<span class="sc">$</span>lx, <span class="at">col=</span>cols[<span class="dv">2</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ult<span class="sc">$</span>x, ult<span class="sc">$</span>lx, <span class="at">col=</span>cols[<span class="dv">3</span>], <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"Madagascar"</span>,<span class="st">"Venezuela"</span>,<span class="st">"USA"</span>), <span class="at">col=</span>cols, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We obviously don’t have enough age categories for Venezuela and the USA! Turns out that Goodman et al.&nbsp;didn’t need the older ages for their analysis (which was awesome, by the way; one of my all-time favorite papers).</p>
+</section>
+<section id="the-mortality-database" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="the-mortality-database"><span class="header-section-number">6.5</span> The Mortality Database</h2>
+<p><a href="https://mortality.org">The Human Mortality Database</a> is an online collection of high-quality mortality data, primarily from more developed countries. To download data, it requires you to have an account. There is actually an <code>R</code> package for interfacing the the database (<code>HMDHFDplus</code>), but I won’t use that for pedagogical reasons. You can download <span class="math inline">\(_nD_x\)</span> and <span class="math inline">\(_nK_x\)</span> data or life tables that have already been calculated for you.</p>
+<p>I’ve downloaded the men’s and women’s life tables for 5-year age classes and 10-year intervals from 1751-2020. Let’s compare the mortality curves for the 1810 life table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sf <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file=</span><span class="st">"./data/sweden_flt_5x10.txt"</span>, <span class="at">skip=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>sm <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="at">file=</span><span class="st">"./data/sweden_mlt_5x10.txt"</span>, <span class="at">skip=</span><span class="dv">1</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="do">## pull out 1810 data</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="do">## use a regex, matching "1810"</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>f1810 <span class="ot">&lt;-</span> sf[<span class="fu">grep</span>(<span class="st">"1810"</span>,sf<span class="sc">$</span>Year),]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>m1810 <span class="ot">&lt;-</span> sm[<span class="fu">grep</span>(<span class="st">"1810"</span>,sm<span class="sc">$</span>Year),]</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># fix the ages</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>f1810<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">110</span>,<span class="at">by=</span><span class="dv">5</span>))</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>m1810<span class="sc">$</span>Age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="fu">seq</span>(<span class="dv">5</span>,<span class="dv">110</span>,<span class="at">by=</span><span class="dv">5</span>))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="do">## plot central death rates</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(f1810<span class="sc">$</span>Age, <span class="fu">log</span>(f1810<span class="sc">$</span>mx), <span class="at">type=</span><span class="st">"l"</span> , <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"magenta4"</span>, <span class="at">xlab=</span><span class="st">"Age"</span>, <span class="at">ylab=</span><span class="st">"log(nMx)"</span>)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(m1810<span class="sc">$</span>Age, <span class="fu">log</span>(m1810<span class="sc">$</span>mx), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">"blue4"</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>,<span class="fu">c</span>(<span class="st">"Female"</span>,<span class="st">"Male"</span>),<span class="at">lwd=</span><span class="dv">2</span>,<span class="at">col=</span><span class="fu">c</span>(<span class="st">"magenta4"</span>,<span class="st">"blue4"</span>))</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a><span class="do">## annotate: I actually used p &lt;- locator(7) to get the points</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">34.87</span>,  <span class="fl">49.75</span>,  <span class="fl">2.5</span>,  <span class="fl">49.25</span>,  <span class="fl">11.5</span>, <span class="fl">110.27</span>,  <span class="fl">19.25</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.16</span>, <span class="sc">-</span><span class="fl">4.09</span>, <span class="sc">-</span><span class="fl">1.5</span>, <span class="sc">-</span><span class="fl">3.26</span>, <span class="sc">-</span><span class="fl">4.90</span>, <span class="sc">-</span><span class="fl">0.57</span>, <span class="sc">-</span><span class="fl">4.42</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">labels=</span><span class="fu">c</span>(<span class="st">"(1)"</span>, <span class="st">"(2)"</span>, <span class="st">"(3)"</span>, <span class="st">"(5)"</span>, <span class="st">"(4)"</span>, <span class="st">"(6)"</span>, <span class="st">"(7)"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># I got one out of order when I used locator()!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can see all the features of the human mortality schedule here:</p>
+<ol type="1">
+<li>An overall “bathtub” shape</li>
+<li>Male mortality generally higher than female mortality at most ages</li>
+<li>An early peak in mortality rate</li>
+<li>A bottoming-out of mortality in middle childhood</li>
+<li>A nearly linear increase in mortality on a log-scale starting at age 30</li>
+<li>An eventual decline in mortality (from very high levels) at the oldest ages</li>
+<li>An “accident hump” in male mortality in late adolescence or early adulthood</li>
+</ol>
+</section>
+<section id="survival-analysis" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="survival-analysis"><span class="header-section-number">6.6</span> Survival Analysis</h2>
+<p>The life table turns out to be a special—high-on-notation—case of a broader form of statistical analysis called <em>survival analysis</em> or <em>event-history analysis</em>. Here are just a few quick notes on this. Plenty more notation, but generally done more with calculus than with discrete categories. Just remember that whenever you see an integral, it’s a (continuous) sum and when you see a derivative, it’s a slope.</p>
+<p>Let <span class="math inline">\(T\)</span> denote the failure time of individuals (or other items) in a population. <span class="math inline">\(T\)</span> is a continuous non-negative random variable with probability density function <span class="math inline">\(f(t)\)</span> and cumulative probability function (cdf) <span class="math inline">\(F(T)\)</span>. That is,</p>
+<p><span class="math display">\[ F(T) = P(t \leq t) = \int_0^t f(u) du \]</span></p>
+<p>Define the <strong>survivor function</strong> as the probability of an individual surviving until time <span class="math inline">\(T\)</span></p>
+<p><span class="math display">\[ S(t) = Pr(T &gt; t) = 1 - F(t) \]</span></p>
+<p><span class="math inline">\(S(t)\)</span> is monotone decreasing and <span class="math inline">\(S(0)=1\)</span> (everyone is alive when they are born).</p>
+<p>The <strong>hazard function</strong> <span class="math inline">\(h(t)\)</span> is the instantaneous rate of failure at time <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[ h(t) = \lim_{\Delta t \rightarrow 0} \frac{Pr[ t \leq T &lt; t +
+    \Delta t | T \geq t ]}{\Delta t} \]</span></p>
+<p>Note that this is a rate, not a probability (except in the limit <span class="math inline">\(\Delta t \rightarrow 0\)</span>). This means that <span class="math inline">\(h(t)\)</span> is not bounded from above.</p>
+<p>Our three measures of interest are related in the following way:</p>
+<p><span class="math display">\[h(t) = f(t)/S(t)\]</span></p>
+<p>Does this look like anything we’ve seen already? <span class="math inline">\(f(t)\)</span>, <span class="math inline">\(S(t)\)</span>, and <span class="math inline">\(h(t)\)</span> all provide identical and complete characterizations of the distribution of <span class="math inline">\(T\)</span>.</p>
+<p>Since <span class="math inline">\(S(t) = 1 - F(t)\)</span>, <span class="math inline">\(f(t) = -d/dt S(t)\)</span>, we have</p>
+<p><span class="math display">\[ h(t) = - \frac{d}{dt} \log [ S(t) ] \]</span></p>
+<p>and</p>
+<p><span class="math display">\[ S(t) = \exp \left( - \int_0^t h(u) du \right) \]</span> In other words, the hazard at age <span class="math inline">\(t\)</span> is the minus the slope of the log-survivor function at that age and the survivor function at age <span class="math inline">\(t\)</span> is the exponential of minus the integrated (or cumulative) hazard to that age.</p>
+<p>The <strong>cumulative hazard</strong> <span class="math inline">\(H(t) = \int_0^t h(u)du\)</span> is related to the survivor function as</p>
+<p><span class="math display">\[ S(t) = \exp(-H(t)) \]</span>.</p>
+<p>As a sanity check, note that at moment of (live) birth (i.e., <span class="math inline">\(t=0\)</span>), an individual has not yet experienced any mortality hazard. So what is the value of the survivor function?</p>
+<p>You have, no doubt, picked up on this already, but corresponding life-table entries for <span class="math inline">\(S(t)\)</span>, <span class="math inline">\(f(t)\)</span>, and <span class="math inline">\(h(t)\)</span> are <span class="math inline">\(l_x\)</span>, <span class="math inline">\(_nd_x\)</span>, and <span class="math inline">\(_nm_x\)</span>. Sometimes, it’s good to have our intuitions validated.</p>
+<section id="some-features" class="level3" data-number="6.6.1">
+<h3 data-number="6.6.1" class="anchored" data-anchor-id="some-features"><span class="header-section-number">6.6.1</span> Some Features</h3>
+<p>Time-to-event or failure data are non-negative: <span class="math inline">\(T \geq 0\)</span>. Times can be continuous, i.e., defined on <span class="math inline">\((0,\infty)\)</span> or can occur at discrete values. <strong>Censoring</strong> is one of the features that distinguishes survival analysis from other, more conventional statistical models. Censoring means that we observe an individual case in whole or only partially. Consider a censoring variable <span class="math inline">\(C\)</span>. If <span class="math inline">\(T_i \leq C_i\)</span>, then event <span class="math inline">\(i\)</span> is observed; otherwise it is censored. What we actually observe then is <span class="math inline">\(X_i = \min(T_i,C_i)\)</span>.</p>
+<p>It is very important to account for censored observations in our estimates of survival/hazards. Note with Edward III’s children, if we were trying to estimate a mortality rate and excluded William of Hatfield, who died young but at an unknown age, our estimate would be biased. It would be too high. This is because, even if we don’t know the outcome of a censored individual, they contribute to the risk set while they are observed. Eliminating censored observations is a rookie mistake that biases survival estimates. In the case of William of Hatfield, it biased the estimate upward. However, in many empirical cases where you follow a cohort for a fixed amount of time and cease observations before everyone has exited, it will bias survival estimates downward because you eliminate those who live the longest!</p>
+<p>There are multiple types of censoring. <strong>Left censoring</strong> occurs when individuals have been exposed to the event of interest before the study started. This is very common in field studies of mortality where individuals are alive when the study starts. Think: Gombe chimpanzees when Jane Goodall arrived in 1960. <strong>Right censoring</strong> happens (among other reasons) when a study ends and individuals are still alive. There can also be <strong>interval censoring</strong> where you lose track of some individuals in a study. This is less of an issue for mortality studies, but can matter a lot for recurrent phenomena like fertility or bouts of some illness.</p>
+<p>We say that censoring is independent or non-informative if <span class="math inline">\(C_i\)</span> is independent of <span class="math inline">\(T_i\)</span>. This won’t always be the case: e.g., a patient may drop out of a study because he becomes very sick and can’t easily leave their bed. In this case becoming lost-to-follow-up and death are probably not independent. Censoring that occurs because a study ends and study individuals are still alive is probably approximately independent. Censoring that occurs because individuals are alive when you start your study is probably not totally independent because those observed individuals had to live long enough to be observed in the first place. This is related to a well-known phenomenon in epidemiology known as <strong>length-time bias</strong> (I swear; don’t ask me why it’s not time-length bias). Length-time bias leads to over-estimation of survival.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(Epi)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Lexis.diagram</span>(<span class="at">date=</span><span class="fu">c</span>(<span class="dv">1960</span>,<span class="dv">1980</span>), <span class="at">age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">15</span>), <span class="at">int=</span><span class="dv">1</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">entry.age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">exit.age=</span><span class="fu">c</span>(<span class="fl">11.1</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="fl">12.4</span>,<span class="fl">11.8</span>),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">birth.date=</span><span class="fu">c</span>(<span class="fl">1960.17</span>,<span class="fl">1962.5</span>,<span class="fl">1963.05</span>,<span class="fl">1967.13</span>,<span class="fl">1969.33</span>),</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">fail=</span><span class="fu">c</span>(<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">TRUE</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">lwd.life=</span><span class="dv">3</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">pch.fail=</span><span class="dv">19</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">cex.fail=</span><span class="fl">1.1</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="do">## some censored observations</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">Lexis.lines</span>( <span class="at">entry.age=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>),</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">exit.age=</span><span class="fu">c</span>(<span class="fl">5.2</span>,<span class="fl">2.33</span>,<span class="fl">3.17</span>),</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">birth.date=</span><span class="fu">c</span>(<span class="fl">1961.57</span>, <span class="fl">1962.4</span>, <span class="fl">1966.07</span>),</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">fail=</span><span class="fu">c</span>(<span class="cn">FALSE</span>,<span class="cn">FALSE</span>,<span class="cn">FALSE</span>),</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>            <span class="at">lwd.life=</span><span class="dv">3</span>,</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">col.fail=</span><span class="st">"red"</span>,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">pch.fail=</span><span class="dv">19</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">cex.fail=</span><span class="fl">1.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see the impact ignoring the censored observations has on estimating the hazard.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## mortality hazard from figure using only complete observations</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="sc">/</span><span class="fu">sum</span>(<span class="fu">c</span>(<span class="fl">11.1</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="fl">12.4</span>,<span class="fl">11.8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.07898894</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="do">## now include the censored observations in the risk set</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span><span class="sc">/</span><span class="fu">sum</span>(<span class="fu">c</span>(<span class="fl">11.1</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="fl">12.4</span>,<span class="fl">11.8</span>,<span class="fl">5.2</span>,<span class="fl">2.33</span>,<span class="fl">3.17</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.06756757</code></pre>
+</div>
+</div>
+</section>
+<section id="kaplan-meier-estimator" class="level3" data-number="6.6.2">
+<h3 data-number="6.6.2" class="anchored" data-anchor-id="kaplan-meier-estimator"><span class="header-section-number">6.6.2</span> Kaplan-Meier Estimator</h3>
+<p>If there is no censoring, a good empirical estimate of the survival function, <span class="math inline">\(\tilde{S}(t)\)</span>, is simply the fraction of individuals with event times greater than <span class="math inline">\(t\)</span>. If there is censoring, this is not such a good estimator.</p>
+<p>Consider the data <code>aml</code> in the <code>survival</code> package, which describes the survival times of leukemia patients. The data contains one covariate: whether treatment was maintained or not.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survival)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>aml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   time status             x
+1     9      1    Maintained
+2    13      1    Maintained
+3    13      0    Maintained
+4    18      1    Maintained
+5    23      1    Maintained
+6    28      0    Maintained
+7    31      1    Maintained
+8    34      1    Maintained
+9    45      0    Maintained
+10   48      1    Maintained
+11  161      0    Maintained
+12    5      1 Nonmaintained
+13    5      1 Nonmaintained
+14    8      1 Nonmaintained
+15    8      1 Nonmaintained
+16   12      1 Nonmaintained
+17   16      0 Nonmaintained
+18   23      1 Nonmaintained
+19   27      1 Nonmaintained
+20   30      1 Nonmaintained
+21   33      1 Nonmaintained
+22   43      1 Nonmaintained
+23   45      1 Nonmaintained</code></pre>
+</div>
+</div>
+<p>Divide the time range into discrete chunks <span class="math inline">\(1,2,\ldots,J\)</span>. The Kaplan-Meier estimator of the survival curve at age <span class="math inline">\(j\)</span> is simply the product of of all <span class="math inline">\(i&lt;j\)</span> of the probabilities of surviving each of these. This is given by:</p>
+<p><span class="math display">\[ \tilde{S}(t) = \prod_{i: t_i &lt; t} 1 - \frac{d_i}{r_i}, \]</span></p>
+<p>the <span class="math inline">\(d_i\)</span> are observed deaths at time <span class="math inline">\(t_i\)</span> and <span class="math inline">\(r_i\)</span> is the number at risk at time <span class="math inline">\(t_i\)</span>.</p>
+<p>The risk set is where the censored individuals contribute to estimation. While they may not contribute any deaths to estimation, they <em>do</em> contribute to the risk pool. Note that if there are no observed deaths in an interval <span class="math inline">\(i\)</span>, the probability of surviving the interval is 1! This means that the KM survival curve will be jagged and only go down when there is an observed death.</p>
+<p>The risk set at age <span class="math inline">\(j\)</span> is just the risk set at age <span class="math inline">\(j-1\)</span> minus any deaths and censoring events at that age.</p>
+<p><span class="math display">\[
+r_j = r_{j-1} - d_{j-1} - c_{j-1}
+\]</span></p>
+<p>The risk set is also the sum of all future events (deaths and censorings):</p>
+<p><span class="math display">\[
+r_j = \sum_{l \geq j} (c_l+d_l).
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>leuk_surv <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time) <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data=</span>aml)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(leuk_surv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: survfit(formula = Surv(time) ~ 1, data = aml)
+
+ time n.risk n.event survival std.err lower 95% CI upper 95% CI
+    5     23       2   0.9130  0.0588      0.80485        1.000
+    8     21       2   0.8261  0.0790      0.68484        0.996
+    9     19       1   0.7826  0.0860      0.63096        0.971
+   12     18       1   0.7391  0.0916      0.57980        0.942
+   13     17       2   0.6522  0.0993      0.48389        0.879
+   16     15       1   0.6087  0.1018      0.43862        0.845
+   18     14       1   0.5652  0.1034      0.39496        0.809
+   23     13       2   0.4783  0.1042      0.31209        0.733
+   27     11       1   0.4348  0.1034      0.27284        0.693
+   28     10       1   0.3913  0.1018      0.23504        0.651
+   30      9       1   0.3478  0.0993      0.19876        0.609
+   31      8       1   0.3043  0.0959      0.16407        0.565
+   33      7       1   0.2609  0.0916      0.13112        0.519
+   34      6       1   0.2174  0.0860      0.10011        0.472
+   43      5       1   0.1739  0.0790      0.07137        0.424
+   45      4       2   0.0870  0.0588      0.02313        0.327
+   48      2       1   0.0435  0.0425      0.00639        0.296
+  161      1       1   0.0000     NaN           NA           NA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="do">## now separate the curves by the treatment covariate</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>leuk_surv <span class="ot">&lt;-</span> <span class="fu">survfit</span>(<span class="fu">Surv</span>(time) <span class="sc">~</span> x, <span class="at">data=</span>aml)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(leuk_surv, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">xaxs=</span><span class="st">"i"</span>, <span class="at">xlab=</span><span class="st">"Time (months)"</span>, <span class="at">ylab=</span><span class="st">"Fraction Surviving"</span>)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="do">## weird way to do color, right? seriously old-skool</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"maintained"</span>, <span class="st">"not maintained"</span>), <span class="at">lty=</span><span class="dv">1</span>, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Looks like you might prefer being maintained!</p>
+<p>Let’s do something a bit more social/behavioral science. This is an example data set from the great text Singer &amp; Willett, <em>Applied Longitudinal Data Analysis</em>. As an aside: this is the book that Ruth Mace suggested I get to learn how to do the sort of demographic event-history analysis she did with data from The Gambia. The data are a subset of data from Capaldi, Crosby, and Stoolmiller (1996), who measured the grade year of first sexual intercourse in a sample of 180 at-risk heterosexual boys. Boys were followed from Grade 7 up to Grade 12 or until they reported experiencing sexual intercourse for the first time. The data includes a couple of covariates: <code>pt</code> is an indicator of whether the boy experienced a “parental transition” (i.e., separation or reunification) in his family in the last year, and <code>pas</code> is a composite measure of parental antisocial behavior.</p>
+<p>We’ll approximately recreate a figure or two from Singer &amp; Willett. The first will be the baseline hazards of boys who have and have not experienced a parental transition.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># figure 11.1</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://stats.idre.ucla.edu/stat/examples/alda/firstsex.csv"</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>firstsex <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url,<span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>ts0 <span class="ot">&lt;-</span> <span class="fu">survfit</span>( <span class="fu">Surv</span>(time, <span class="dv">1</span><span class="sc">-</span>censor)<span class="sc">~</span> <span class="dv">1</span>, <span class="at">conf.type=</span><span class="st">"none"</span>, <span class="at">subset=</span>(pt<span class="sc">==</span><span class="dv">0</span>), <span class="at">data=</span>firstsex)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>ts1 <span class="ot">&lt;-</span> <span class="fu">survfit</span>( <span class="fu">Surv</span>(time, <span class="dv">1</span><span class="sc">-</span>censor)<span class="sc">~</span> <span class="dv">1</span>, <span class="at">conf.type=</span><span class="st">"none"</span>, <span class="at">subset=</span>(pt<span class="sc">==</span><span class="dv">1</span>), <span class="at">data=</span>firstsex)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>h0 <span class="ot">&lt;-</span> ts0<span class="sc">$</span>n.event<span class="sc">/</span>ts0<span class="sc">$</span>n.risk</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>h1 <span class="ot">&lt;-</span> ts1<span class="sc">$</span>n.event<span class="sc">/</span>ts1<span class="sc">$</span>n.risk</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ts0<span class="sc">$</span>time, h0, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"magenta3"</span>,</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Estimated Hazard probability"</span>, <span class="at">xlab=</span><span class="st">"Grade"</span>, </span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.0</span>, <span class="fl">0.5</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">12</span>))</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ts1<span class="sc">$</span>time, h1, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"blue3"</span>)</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"pt = TRUE"</span>,<span class="st">"pt = FALSE"</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue3"</span>,<span class="st">"magenta3"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Pretty suggestive evidence that an unstable family life makes boys (at least) more likely to initiate sex (early).</p>
+<p>Now look at the survivor function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ts0<span class="sc">$</span>time, ts0<span class="sc">$</span>surv, <span class="at">type=</span><span class="st">"l"</span>, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"magenta3"</span>,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Estimated Survival Function"</span>, <span class="at">xlab=</span><span class="st">"Grade"</span>, </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="fl">0.0</span>, <span class="fl">1.0</span>), <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">12</span>))</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ts1<span class="sc">$</span>time, ts1<span class="sc">$</span>surv, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"blue3"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="do">## median survival</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">c</span>(<span class="fl">0.5</span>), <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="fu">c</span>(<span class="st">"pt = TRUE"</span>,<span class="st">"pt = FALSE"</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue3"</span>,<span class="st">"magenta3"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Nearly 50% of boys who did not experience a parental transition remained virgins, whereas less than 20% of the boys who did experience a parental transition did.</p>
+<p>Here’s a plot that isn’t in Singer &amp; Willett, but it gives you a sense of the sorts of things you can do. It’s often easier to see differences in either the hazard (as above) or sometimes the cumulative hazard than it is in the survival curves.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ts1, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"blue3"</span>, <span class="at">conf.int=</span><span class="dv">0</span>, <span class="at">cumhaz=</span><span class="cn">TRUE</span>, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Grade"</span>, <span class="at">ylab=</span><span class="st">"Cumulative Hazard"</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">12</span>))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(ts0, <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">"magenta3"</span>, <span class="at">conf.int=</span><span class="dv">0</span>, <span class="at">cumhaz=</span><span class="cn">TRUE</span>)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topleft"</span>, <span class="fu">c</span>(<span class="st">"pt = TRUE"</span>,<span class="st">"pt = FALSE"</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="st">"blue3"</span>,<span class="st">"magenta3"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="demog1_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Survival analysis is one of the areas where I have literally never seen any tidyverse work. Surely it exists. The <code>survival</code> package, which actually pre-dates the development of <code>R</code>, is pretty old-school.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./odes.html" class="pagination-link" aria-label="ODEs in `R`">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ODEs in <code>R</code></span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./demog2.html" class="pagination-link" aria-label="Demography II: Matrix Population Models">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Demography II: Matrix Population Models</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
